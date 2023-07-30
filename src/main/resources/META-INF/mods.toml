@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[32,)"
+issueTrackerURL = ""
+license = "MIT License"
+
+[[mods]]
+    modId = "foolish_asteroids"
+    version = "${file.jarVersion}"
+    logoFile = "logo.png"
+    itemIcon = "minecraft:dirt"
+    configBackground = "minecraft:textures/block/dirt.png"
+    authors = "DavigJ"
+    credits = "DavigJ"
+    displayURL = ""
+    displayName = "Foolish Asteroids"
+    description = '''
+    A custom content mod for Prankster Comets. Download for your own pack at your own risk!
+    '''
+
+[[dependencies.foolish_asteroids]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.18.2,1.19)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.foolish_asteroids]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[40.1.0,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.foolish_asteroids]]
+    modId = "blueprint"
+    mandatory = true
+    versionRange = "[5.4.1,)"
+    ordering = "AFTER"
+    side = "BOTH"
