@@ -77,6 +77,9 @@ sourceSets.main.resources {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft}-${project.forge}"
     implementation fg.deobf("com.teamabnormals:blueprint:${project.minecraft}-${project.blueprint}")
+    implementation fg.deobf("curse.maven:pehkui-319596:4641041")
+    implementation fg.deobf("curse.maven:size_shifting_potions-447440:3735634")
+
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}")
@@ -88,6 +91,7 @@ repositories {
     maven { url "https://maven.jaackson.me" }
     maven { url "https://dvs1.progwml6.com/files/maven/" }
     maven { url "https://modmaven.k-4u.nl" }
+    maven { url "https://www.cursemaven.com" }
 }
 
 jar {
