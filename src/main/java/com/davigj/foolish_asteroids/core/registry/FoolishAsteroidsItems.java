@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core.registry;
 
+import com.davigj.foolish_asteroids.common.item.BucolicElixirItem;
 import com.davigj.foolish_asteroids.common.item.CommandElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
@@ -45,10 +46,15 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PIQUANT_ELIXIR = HELPER.createItem("piquant_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.PIQUANT));
 
+	public static final RegistryObject<Item> BUCOLIC_ELIXIR = HELPER.createItem("bucolic_elixir", () -> new BucolicElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
+
+
 	static class Elixirs {
 		public static final FoodProperties ELIXIR = (new FoodProperties.Builder()).nutrition(0).saturationMod(0).alwaysEat().build();
-		public static final FoodProperties ESTRANGED_ELIXIR = (new FoodProperties.Builder()).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 60), 1.0F).nutrition(0).saturationMod(0).alwaysEat().build();
-		public static final FoodProperties MYCOLOGICAL_ELIXIR = (new FoodProperties.Builder()).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 80), 1.0F).nutrition(0).saturationMod(0).alwaysEat().build();
+		public static final FoodProperties ESTRANGED_ELIXIR = (new FoodProperties.Builder()).effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 100, 0), 1.0F).nutrition(0).saturationMod(0).alwaysEat().build();
+		public static final FoodProperties MYCOLOGICAL_ELIXIR = (new FoodProperties.Builder()).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0), 1.0F).nutrition(0).saturationMod(0).alwaysEat().build();
 	}
 
 	static class CommandLists {
