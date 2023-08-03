@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "foolish_asteroids:item/arcadian_elixir"
+  }
+}
