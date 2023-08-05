@@ -2,11 +2,10 @@ package com.davigj.foolish_asteroids.common.item;
 
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,11 +16,11 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class EmpyreanElixirItem extends Item {
+public class WretchedElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(EmpyreanElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EndemicElixirItem.class.getName());
 
-    public EmpyreanElixirItem(Properties properties) {
+    public WretchedElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -32,9 +31,11 @@ public class EmpyreanElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            double x = player.getX();
-            double z = player.getZ();
-            player.teleportTo(x, 256, z);
+            for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
+                living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 300, 0, false, true));
+                living.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2, false, true));
+                living.addEffect(new MobEffectInstance(MobEffects.WITHER, 300, 1, false, true));
+            }
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

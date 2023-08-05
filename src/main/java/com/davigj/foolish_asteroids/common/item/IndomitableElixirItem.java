@@ -3,6 +3,7 @@ package com.davigj.foolish_asteroids.common.item;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.teamabnormals.upgrade_aquatic.core.registry.UAMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -44,6 +45,8 @@ public class IndomitableElixirItem extends Item {
 
             // Be invincible for eight seconds, have Speed II for eight seconds
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, RAINBOW_DURATION, 4));
+            // Remember to replace this with whatever effect makes it do thorns damage instead
+            player.addEffect(new MobEffectInstance(UAMobEffects.REPELLENCE.get(), RAINBOW_DURATION, 4));
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, RAINBOW_DURATION, 1));
 
             UUID playerId = player.getUUID();

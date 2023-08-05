@@ -80,6 +80,7 @@ dependencies {
     implementation fg.deobf("curse.maven:pehkui-319596:4641041")
     implementation fg.deobf("curse.maven:citadel-331936:3783096")
     implementation fg.deobf("curse.maven:alexsmobs-426558:3853078")
+    implementation fg.deobf("curse.maven:upgrade_aquatic-326895:4365140")
 
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")

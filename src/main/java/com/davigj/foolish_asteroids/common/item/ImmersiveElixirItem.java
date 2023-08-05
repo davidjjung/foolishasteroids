@@ -17,11 +17,11 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class EmpyreanElixirItem extends Item {
+public class ImmersiveElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(EmpyreanElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ImmersiveElixirItem.class.getName());
 
-    public EmpyreanElixirItem(Properties properties) {
+    public ImmersiveElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -33,8 +33,9 @@ public class EmpyreanElixirItem extends Item {
             }
 
             double x = player.getX();
+            double y = player.getY();
             double z = player.getZ();
-            player.teleportTo(x, 256, z);
+            player.teleportTo(x, y-2, z);
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());
