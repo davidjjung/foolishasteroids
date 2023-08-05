@@ -2,6 +2,7 @@ package com.davigj.foolish_asteroids.core.registry;
 
 import com.davigj.foolish_asteroids.common.item.BucolicElixirItem;
 import com.davigj.foolish_asteroids.common.item.CommandElixirItem;
+import com.davigj.foolish_asteroids.common.item.EmpyreanElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,8 +41,8 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> MYCOLOGICAL_ELIXIR = HELPER.createItem("mycological_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.MYCOLOGICAL_ELIXIR), CommandLists.MYCOLOGICAL));
 
-	public static final RegistryObject<Item> PARADOXICAL_ELIXIR = HELPER.createItem("paradoxical_elixir", () -> new CommandElixirItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.PARADOXICAL));
+	public static final RegistryObject<Item> QUADRATIC_ELIXIR = HELPER.createItem("quadratic_elixir", () -> new CommandElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.QUADRATIC));
 
 	public static final RegistryObject<Item> PIQUANT_ELIXIR = HELPER.createItem("piquant_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.PIQUANT));
@@ -49,6 +50,13 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> BUCOLIC_ELIXIR = HELPER.createItem("bucolic_elixir", () -> new BucolicElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
+
+	// Turbulent Elixirs
+	public static final RegistryObject<Item> EMPYREAN_ELIXIR = HELPER.createItem("empyrean_elixir", () -> new EmpyreanElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
+	public static final RegistryObject<Item> FRIABLE_ELIXIR = HELPER.createItem("friable_elixir", () -> new CommandElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.FRIABLE));
 
 
 	static class Elixirs {
@@ -74,12 +82,10 @@ public class FoolishAsteroidsItems {
 				));
 		public static final List<String> ESTRANGED = new ArrayList<>(List.of(
 				"/scale set pehkui:model_height 1.4 ",
-				"/scale set pehkui:model_width 0.8 ",
-				"/scale set pehkui:eye_height 1.4 "
+				"/scale set pehkui:model_width 0.8 "
 				));
 		public static final List<String> JEJUNE = new ArrayList<>(List.of(
 				"/scale set pehkui:step_height 2.0 ",
-				"/scale set pehkui:hitbox_height 2.0 ",
 				"/scale set pehkui:motion 0.75 "
 				));
 		public static final List<String> MYCOLOGICAL = new ArrayList<>(List.of(
@@ -88,9 +94,10 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:model_height 1.2 ",
 				"/scale set pehkui:model_width 1.2 "
 				));
-		public static final List<String> PARADOXICAL = new ArrayList<>(List.of(
+		public static final List<String> QUADRATIC = new ArrayList<>(List.of(
 				"/scale set pehkui:projectiles 1.4 ",
 				"/scale set pehkui:held_item 1.4 ",
+				"/scale set pehkui:reach 0.6 ",
 				"/scale set pehkui:drops 1.4 "
 				));
 		public static final List<String> PIQUANT = new ArrayList<>(List.of(
@@ -98,6 +105,14 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:width 0.7 ",
 				"/scale set pehkui:held_item 0.4 ",
 				"/scale set pehkui:drops 0.4 "
+				));
+		public static final List<String> FRIABLE = new ArrayList<>(List.of(
+				"/scale set pehkui:height 0.4 ",
+				"/scale set pehkui:width 0.4 ",
+				"/scale set pehkui:motion 0.6 ",
+				"/scale set pehkui:defense 0.5 ",
+				"/scale set pehkui:attack 0.4 ",
+				"/scale set pehkui:reach 3.0 "
 				));
 	}
 }
