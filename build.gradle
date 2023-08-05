@@ -78,7 +78,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft}-${project.forge}"
     implementation fg.deobf("com.teamabnormals:blueprint:${project.minecraft}-${project.blueprint}")
     implementation fg.deobf("curse.maven:pehkui-319596:4641041")
-    implementation fg.deobf("curse.maven:size_shifting_potions-447440:3735634")
+    implementation fg.deobf("curse.maven:citadel-331936:3783096")
+    implementation fg.deobf("curse.maven:alexsmobs-426558:3853078")
 
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")

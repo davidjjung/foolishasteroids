@@ -1,9 +1,6 @@
 package com.davigj.foolish_asteroids.core.registry;
 
-import com.davigj.foolish_asteroids.common.item.BucolicElixirItem;
-import com.davigj.foolish_asteroids.common.item.CommandElixirItem;
-import com.davigj.foolish_asteroids.common.item.EmpyreanElixirItem;
-import com.davigj.foolish_asteroids.common.item.GarrulousElixirItem;
+import com.davigj.foolish_asteroids.common.item.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -60,6 +57,9 @@ public class FoolishAsteroidsItems {
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.FRIABLE));
 
 	public static final RegistryObject<Item> GARRULOUS_ELIXIR = HELPER.createItem("garrulous_elixir", () -> new GarrulousElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
+	public static final RegistryObject<Item> INDOMITABLE_ELIXIR = HELPER.createItem("indomitable_elixir", () -> new IndomitableElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
 
