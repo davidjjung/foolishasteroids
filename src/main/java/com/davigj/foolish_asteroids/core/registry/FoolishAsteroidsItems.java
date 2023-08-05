@@ -3,6 +3,7 @@ package com.davigj.foolish_asteroids.core.registry;
 import com.davigj.foolish_asteroids.common.item.BucolicElixirItem;
 import com.davigj.foolish_asteroids.common.item.CommandElixirItem;
 import com.davigj.foolish_asteroids.common.item.EmpyreanElixirItem;
+import com.davigj.foolish_asteroids.common.item.GarrulousElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -58,6 +59,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> FRIABLE_ELIXIR = HELPER.createItem("friable_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.FRIABLE));
 
+	public static final RegistryObject<Item> GARRULOUS_ELIXIR = HELPER.createItem("garrulous_elixir", () -> new GarrulousElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
 
 	static class Elixirs {
 		public static final FoodProperties ELIXIR = (new FoodProperties.Builder()).nutrition(0).saturationMod(0).alwaysEat().build();
@@ -112,7 +116,8 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:motion 0.6 ",
 				"/scale set pehkui:defense 0.5 ",
 				"/scale set pehkui:attack 0.4 ",
-				"/scale set pehkui:reach 3.0 "
+				"/scale set pehkui:reach 3.0 ",
+				"/scale set pehkui:jump_height 2.0 "
 				));
 	}
 }

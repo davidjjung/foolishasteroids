@@ -1,13 +1,15 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -25,6 +27,11 @@ public class CommandElixirItem extends Item {
 
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {
+            if (entityLiving instanceof ServerPlayer) {
+                ServerPlayer serverPlayerEntity = (ServerPlayer) entityLiving;
+                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
+                serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
+            }
             // Get the playertag of the entity that used the item
             String entityTag = player.getDisplayName().getString();
             for (String command : this.commands) {
@@ -44,7 +51,19 @@ public class CommandElixirItem extends Item {
                     }
                 }
             }
-            return stack;
+            if (stack.isEmpty()) {
+                return new ItemStack(FoolishAsteroidsItems.FLASK.get());
+            } else {
+                if (!((Player) entityLiving).getAbilities().instabuild) {
+                    stack.shrink(1);
+                    ItemStack itemstack = new ItemStack(FoolishAsteroidsItems.FLASK.get());
+                    Player playerEntity = (Player) entityLiving;
+                    if (!playerEntity.getInventory().add(itemstack)) {
+                        playerEntity.drop(itemstack, false);
+                    }
+                }
+                return stack;
+            }
         }
         return super.finishUsingItem(stack, world, entityLiving);
     }

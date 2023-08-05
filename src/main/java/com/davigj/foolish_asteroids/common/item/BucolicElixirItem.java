@@ -1,7 +1,11 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,8 +28,11 @@ public class BucolicElixirItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        if (entity instanceof Player &&!level.isClientSide) {
-            Player player = (Player) entity;
+        if (entity instanceof Player player &&!level.isClientSide) {
+            if (entity instanceof ServerPlayer serverPlayerEntity) {
+                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
+                serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
+            }
             BlockPos playerPos = player.blockPosition();
 
             // Replicate the functionality on six random blocks around the player
@@ -39,8 +46,7 @@ public class BucolicElixirItem extends Item {
                     // Check if the top side of the block is air
                     if (level.isEmptyBlock(targetPos.above())) {
                         // Perform the bone meal effect on the block
-                        if (targetBlock instanceof BonemealableBlock) {
-                            BonemealableBlock bonemealableBlock = (BonemealableBlock) targetBlock;
+                        if (targetBlock instanceof BonemealableBlock bonemealableBlock) {
                             if (bonemealableBlock.isValidBonemealTarget(level, targetPos, targetBlockState, level.isClientSide)) {
                                 if (level instanceof ServerLevel) {
                                     if (bonemealableBlock.isBonemealSuccess((ServerLevel) level, level.random, targetPos, targetBlockState)) {
@@ -54,6 +60,19 @@ public class BucolicElixirItem extends Item {
                         level.levelEvent(2005, targetPos, 0);
                     }
                 }
+            }
+            if (stack.isEmpty()) {
+                return new ItemStack(FoolishAsteroidsItems.FLASK.get());
+            } else {
+                if (!((Player) entity).getAbilities().instabuild) {
+                    stack.shrink(1);
+                    ItemStack itemstack = new ItemStack(FoolishAsteroidsItems.FLASK.get());
+                    Player playerEntity = (Player) entity;
+                    if (!playerEntity.getInventory().add(itemstack)) {
+                        playerEntity.drop(itemstack, false);
+                    }
+                }
+                return stack;
             }
         }
 
