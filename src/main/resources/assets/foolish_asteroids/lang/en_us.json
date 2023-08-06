@@ -1,5 +1,6 @@
 {
   "item.foolish_asteroids.flask": "Flask",
   "item.foolish_asteroids.arcadian_elixir": "Arcadian Elixir",
-  "message.tenebrous_elixir.look_behind": "Look behind you."
+  "message.tenebrous_elixir.look_behind": "Look behind you.",
+  "message.quiescent_elixir.value": "Step right up! Your step height is %s"
 }

@@ -48,6 +48,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> BUCOLIC_ELIXIR = HELPER.createItem("bucolic_elixir", () -> new BucolicElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
+	public static final RegistryObject<Item> QUIESCENT_ELIXIR = HELPER.createItem("quiescent_elixir", () -> new QuiescentElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
 	// Awkward Elixirs
 	public static final RegistryObject<Item> ENDEMIC_ELIXIR = HELPER.createItem("endemic_elixir", () -> new EndemicElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));

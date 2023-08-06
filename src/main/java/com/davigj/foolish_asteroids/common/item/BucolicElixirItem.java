@@ -1,12 +1,19 @@
 package com.davigj.foolish_asteroids.common.item;
 
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +21,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Random;
@@ -49,8 +57,28 @@ public class BucolicElixirItem extends Item {
                         if (targetBlock instanceof BonemealableBlock bonemealableBlock) {
                             if (bonemealableBlock.isValidBonemealTarget(level, targetPos, targetBlockState, level.isClientSide)) {
                                 if (level instanceof ServerLevel) {
+                                    player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 140, 0));
                                     if (bonemealableBlock.isBonemealSuccess((ServerLevel) level, level.random, targetPos, targetBlockState)) {
                                         bonemealableBlock.performBonemeal((ServerLevel) level, level.random, targetPos, targetBlockState);
+                                        if (level.random.nextFloat() < 0.1f) {
+                                            BlockPos babyBeePos = targetPos.above();
+                                            Bee babyBee = EntityType.BEE.create(level);
+                                            if (babyBee != null) {
+                                                babyBee.setBaby(true);
+                                                babyBee.moveTo(babyBeePos, 0, 0); // Move to the correct position
+                                                babyBee.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(babyBee.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                                                level.addFreshEntity(babyBee);
+                                            }
+                                        }
+                                        if (level.random.nextFloat() < 0.05f) {
+                                            BlockPos hummingbirdPos = targetPos.above();
+                                            EntityHummingbird hummingbird = AMEntityRegistry.HUMMINGBIRD.get().create(level);
+                                            if (hummingbird != null) {
+                                                hummingbird.moveTo(hummingbirdPos, 0, 0); // Move to the correct position
+                                                hummingbird.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(hummingbird.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                                                level.addFreshEntity(hummingbird);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -61,6 +89,7 @@ public class BucolicElixirItem extends Item {
                     }
                 }
             }
+
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());
             } else {
