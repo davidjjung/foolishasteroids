@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.commands.CommandSourceStack;
@@ -172,7 +173,7 @@ public class GarrulousElixirItem extends Item {
     }
 
     public int getUseDuration(ItemStack p_43001_) {
-        return 44;
+        return ElixirConstants.DRINK_TIME;
     }
 
     public UseAnim getUseAnimation(ItemStack p_42997_) {

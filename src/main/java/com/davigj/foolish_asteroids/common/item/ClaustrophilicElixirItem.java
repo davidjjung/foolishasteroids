@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.commands.CommandSourceStack;
@@ -34,13 +35,12 @@ public class ClaustrophilicElixirItem extends Item {
             }
 
             float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
-            LOGGER.info(String.valueOf(reach));
             float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
             float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
+            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
 
             if (reach > 0.2f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.2f);
+                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
             }
             if (miningSpeed > 0.2f) {
                 ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
@@ -48,8 +48,8 @@ public class ClaustrophilicElixirItem extends Item {
             if (jumpHeight > 0.2f) {
                 ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
             }
-            if (defense < 2.0f) {
-                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.1f);
+            if (health < 5.0f) {
+                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(miningSpeed + 1.0f);
             }
 
             if (stack.isEmpty()) {
@@ -71,7 +71,7 @@ public class ClaustrophilicElixirItem extends Item {
 
 
     public int getUseDuration(ItemStack p_43001_) {
-        return 44;
+        return ElixirConstants.DRINK_TIME;
     }
 
     public UseAnim getUseAnimation(ItemStack p_42997_) {
