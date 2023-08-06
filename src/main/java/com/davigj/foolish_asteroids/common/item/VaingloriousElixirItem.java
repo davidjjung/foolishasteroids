@@ -36,14 +36,20 @@ public class VaingloriousElixirItem extends Item {
 
             float stepHeight = ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).getBaseScale();
             float fallDamage = ScaleTypes.FALLING.getScaleData(entityLiving).getBaseScale();
-            float modelHeight = ScaleTypes.MODEL_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float modelWidth = ScaleTypes.MODEL_WIDTH.getScaleData(entityLiving).getBaseScale();
+            float height = ScaleTypes.HEIGHT.getScaleData(entityLiving).getBaseScale();
+            float width = ScaleTypes.WIDTH.getScaleData(entityLiving).getBaseScale();
 
             if (stepHeight < 10.0) {
-                ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).setTargetScale(stepHeight + 1.0f);
+                ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).setTargetScale(stepHeight + 1.0f);
             }
             if (fallDamage < 10.0) {
                 ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(fallDamage + 1.0f);
+            }
+            if (height < 5.0) {
+                ScaleTypes.HEIGHT.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
+            }
+            if (width < 5.0) {
+                ScaleTypes.WIDTH.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
             }
 
             if (stack.isEmpty()) {

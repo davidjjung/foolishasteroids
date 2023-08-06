@@ -3,10 +3,7 @@ package com.davigj.foolish_asteroids.common.item;
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,15 +16,14 @@ import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleType;
 import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class QuiescentElixirItem extends Item {
+public class SagaciousElixirItem extends Item {
     ScaleType scaleType = ScaleTypes.STEP_HEIGHT;
 
-    private static final Logger LOGGER = Logger.getLogger(QuiescentElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SagaciousElixirItem.class.getName());
 
-    public QuiescentElixirItem(Properties properties) {
+    public SagaciousElixirItem(Properties properties) {
         super(properties);
     }
 
