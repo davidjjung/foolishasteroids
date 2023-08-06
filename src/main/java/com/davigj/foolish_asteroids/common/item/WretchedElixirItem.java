@@ -32,8 +32,9 @@ public class WretchedElixirItem extends Item {
             }
 
             for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
-                living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 300, 0, false, true));
-                living.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2, false, true));
+                living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 1, false, true));
+                living.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 600, 1, false, true));
+                living.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 1, false, true));
                 living.addEffect(new MobEffectInstance(MobEffects.WITHER, 300, 1, false, true));
             }
 
