@@ -19,11 +19,11 @@ import virtuoel.pehkui.api.ScaleTypes;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ClaustrophilicElixirItem extends Item {
+public class StentorianElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(ClaustrophilicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StentorianElixirItem.class.getName());
 
-    public ClaustrophilicElixirItem(Properties properties) {
+    public StentorianElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -34,22 +34,14 @@ public class ClaustrophilicElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
             float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
-            float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
+            float visibility = ScaleTypes.VISIBILITY.getScaleData(entityLiving).getBaseScale();
 
-            if (reach > 0.2f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
+            if (miningSpeed < 2.8) {
+                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.3f);
             }
-            if (miningSpeed > 0.2f) {
-                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
-            }
-            if (jumpHeight > 0.2f) {
-                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight - 0.1f);
-            }
-            if (health < 5.0f) {
-                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(health + 1.0f);
+            if (visibility < 5.0) {
+                ScaleTypes.VISIBILITY.getScaleData(entityLiving).setTargetScale(visibility + 0.5f);
             }
 
             if (stack.isEmpty()) {

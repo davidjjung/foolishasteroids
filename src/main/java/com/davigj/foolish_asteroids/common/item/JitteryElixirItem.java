@@ -19,11 +19,11 @@ import virtuoel.pehkui.api.ScaleTypes;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ClaustrophilicElixirItem extends Item {
+public class JitteryElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(ClaustrophilicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JitteryElixirItem.class.getName());
 
-    public ClaustrophilicElixirItem(Properties properties) {
+    public JitteryElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -34,22 +34,18 @@ public class ClaustrophilicElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
-            float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
-            float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
+            float miningSpeed = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
+            float visibility = ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).getBaseScale();
+            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
 
-            if (reach > 0.2f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
+            if (miningSpeed < 2.8) {
+                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.2f);
             }
-            if (miningSpeed > 0.2f) {
-                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
+            if (visibility > .2) {
+                ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
             }
-            if (jumpHeight > 0.2f) {
-                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight - 0.1f);
-            }
-            if (health < 5.0f) {
-                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(health + 1.0f);
+            if (defense > 0.2) {
+                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
             }
 
             if (stack.isEmpty()) {

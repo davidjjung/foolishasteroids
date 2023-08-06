@@ -19,11 +19,11 @@ import virtuoel.pehkui.api.ScaleTypes;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ClaustrophilicElixirItem extends Item {
+public class TouchyElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(ClaustrophilicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TouchyElixirItem.class.getName());
 
-    public ClaustrophilicElixirItem(Properties properties) {
+    public TouchyElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -35,21 +35,25 @@ public class ClaustrophilicElixirItem extends Item {
             }
 
             float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
-            float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
-            float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
+            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
+            float hitboxHeight = ScaleTypes.HITBOX_HEIGHT.getScaleData(entityLiving).getBaseScale();
+            float hitboxWidth = ScaleTypes.HITBOX_WIDTH.getScaleData(entityLiving).getBaseScale();
+            float explosion = ScaleTypes.EXPLOSIONS.getScaleData(entityLiving).getBaseScale();
 
-            if (reach > 0.2f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
+            if (defense > 0.2f) {
+                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
             }
-            if (miningSpeed > 0.2f) {
-                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
+            if (reach < 6.0f) {
+                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach + 0.3f);
             }
-            if (jumpHeight > 0.2f) {
-                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight - 0.1f);
+            if (hitboxWidth < 5.0f) {
+                ScaleTypes.HITBOX_WIDTH.getScaleData(entityLiving).setTargetScale(hitboxWidth + 0.25f);
             }
-            if (health < 5.0f) {
-                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(health + 1.0f);
+            if (hitboxHeight < 5.0f) {
+                ScaleTypes.HITBOX_HEIGHT.getScaleData(entityLiving).setTargetScale(hitboxHeight + 0.25f);
+            }
+            if (explosion < 5.0f) {
+                ScaleTypes.EXPLOSIONS.getScaleData(entityLiving).setTargetScale(explosion + 0.25f);
             }
 
             if (stack.isEmpty()) {

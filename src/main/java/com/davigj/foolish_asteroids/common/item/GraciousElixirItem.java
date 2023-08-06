@@ -41,7 +41,7 @@ public class GraciousElixirItem extends Item {
                 ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).setTargetScale(entityReach - 0.2f);
             }
             if (fallDamage > 0.5) {
-                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(entityReach - 0.1f);
+                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(fallDamage - 0.1f);
             }
 
             if (stack.isEmpty()) {
