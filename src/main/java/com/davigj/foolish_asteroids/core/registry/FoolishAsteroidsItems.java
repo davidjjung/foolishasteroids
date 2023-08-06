@@ -59,6 +59,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> EVANESCENT_ELIXIR = HELPER.createItem("evanescent_elixir", () -> new EvanescentElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.EVANESCENT));
 
+	public static final RegistryObject<Item> FRIABLE_ELIXIR = HELPER.createItem("friable_elixir", () -> new CommandElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.FRIABLE));
+
 	public static final RegistryObject<Item> ICARIAN_ELIXIR = HELPER.createItem("icarian_elixir", () -> new IcarianElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
@@ -82,13 +85,13 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> EMPYREAN_ELIXIR = HELPER.createItem("empyrean_elixir", () -> new EmpyreanElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
-	public static final RegistryObject<Item> FRIABLE_ELIXIR = HELPER.createItem("friable_elixir", () -> new CommandElixirItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR), CommandLists.FRIABLE));
-
 	public static final RegistryObject<Item> GARRULOUS_ELIXIR = HELPER.createItem("garrulous_elixir", () -> new GarrulousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
 	public static final RegistryObject<Item> INDOMITABLE_ELIXIR = HELPER.createItem("indomitable_elixir", () -> new IndomitableElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
+
+	public static final RegistryObject<Item> PROFOUND_ELIXIR = HELPER.createItem("profound_elixir", () -> new ProfoundElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()).food(Elixirs.ELIXIR)));
 
 	public static final RegistryObject<Item> TENEBROUS_ELIXIR = HELPER.createItem("tenebrous_elixir", () -> new TenebrousElixirItem(

@@ -15,6 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,22 +35,29 @@ public class TenebrousElixirItem extends Item {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-
-            for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
-                if (!living.getUUID().equals(player.getUUID())) {
-                    living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
-                    living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
-                    if (living instanceof Player) {
-                        // A message pops up, telling the player "Look behind you." The message shows up in the style as when you try to use beds but cannot.
-                        TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.look_behind");
+            ScaleData data = ScaleTypes.HEALTH.getScaleData(entityLiving);
+            if (data.getBaseScale() > 0.1f) {
+                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
+                    if (!living.getUUID().equals(player.getUUID())) {
+                        living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
+                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
+                        if (living instanceof Player) {
+                            // A message pops up, telling the player "Look behind you." The message shows up in the style as when you try to use beds but cannot.
+                            TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.look_behind");
+                            ((Player) living).displayClientMessage(message, true);
+                        }
+                    } else {
+                        TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.user");
                         ((Player) living).displayClientMessage(message, true);
+                        data.setTargetScale(data.getBaseScale() - 0.1f);
+                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
                     }
-                } else {
-                    TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.user");
-                    living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
-                    ((Player) living).displayClientMessage(message, true);
                 }
+            } else {
+                TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.insufficient");
+                ((Player) entityLiving).displayClientMessage(message, true);
             }
+
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

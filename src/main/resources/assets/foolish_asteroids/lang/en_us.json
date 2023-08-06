@@ -31,8 +31,13 @@
   "item.foolish_asteroids.wretched_elixir": "Wretched Elixir",
   "item.foolish_asteroids.vainglorious_elixir": "Vainglorious Elixir",
 
-
-  "message.tenebrous_elixir.look_behind": "Look behind you.",
   "message.sagacious_elixir.attribute": "%s.",
-  "message.tenebrous_elixir.user": "You feel a shadow seep out of your body..."
+  "message.tenebrous_elixir.look_behind": "You feel a chill...",
+  "message.tenebrous_elixir.insufficient": "You cannot conjure any shadows at this time.",
+  "message.tenebrous_elixir.user": "You feel a shadow seep out of your body...",
+  "message.profound_elixir.used": "Peace at last...",
+  "message.profound_elixir.victim": "You suddenly feel too serene to speak.",
+  "message.profound_elixir.chat_disabled": "You are currently beyond words.",
+  "message.profound_elixir.garbled": "Wow.",
+  "message.profound_elixir.chat_enabled": "You snap out of your trance, and may speak again."
 }
