@@ -29,7 +29,7 @@ public class IndomitableElixirItem extends Item {
 
     private static final Logger LOGGER = Logger.getLogger(IndomitableElixirItem.class.getName());
     private static final int RAINBOW_DURATION = 160;
-    private static final int RAINBOW_TIMER_DURATION = 200;
+    private static final int RAINBOW_TIMER_DURATION = RAINBOW_DURATION * 2;
     private static final Map<UUID, Integer> rainbowTimers = new HashMap<>();
 
     public IndomitableElixirItem(Properties properties) {
