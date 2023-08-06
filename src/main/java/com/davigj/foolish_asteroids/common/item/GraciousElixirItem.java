@@ -1,28 +1,28 @@
 package com.davigj.foolish_asteroids.common.item;
 
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-public class TenebrousElixirItem extends Item {
+public class GraciousElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(EndemicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GraciousElixirItem.class.getName());
 
-    public TenebrousElixirItem(Properties properties) {
+    public GraciousElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -33,20 +33,14 @@ public class TenebrousElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
-                if (!living.getUUID().equals(player.getUUID())) {
-                    living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
-                    living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
-                    if (living instanceof Player) {
-                        // A message pops up, telling the player "Look behind you." The message shows up in the style as when you try to use beds but cannot.
-                        TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.look_behind");
-                        ((Player) living).displayClientMessage(message, true);
-                    }
-                } else {
-                    TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.user");
-                    living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
-                    ((Player) living).displayClientMessage(message, true);
-                }
+            float entityReach = ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).getBaseScale();
+            float fallDamage = ScaleTypes.FALLING.getScaleData(entityLiving).getBaseScale();
+
+            if (entityReach > 0.2) {
+                ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).setTargetScale(entityReach - 0.2f);
+            }
+            if (fallDamage > 0.5) {
+                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(entityReach - 0.1f);
             }
 
             if (stack.isEmpty()) {
