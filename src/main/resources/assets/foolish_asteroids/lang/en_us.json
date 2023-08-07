@@ -35,7 +35,7 @@
 
   "message.sagacious.attribute": "%s.",
   "message.tenebrous.look_behind": "You feel a chill...",
-  "message.tenebrous.insufficient": "You cannot conjure any shadows at this time.",
+  "message.tenebrous.insufficient": "You cannot conjure any more shadows at this time.",
   "message.tenebrous.user": "You feel a shadow seep out from your body...",
   "message.profound.used": "Peace at last...",
   "message.profound.victim": "You suddenly feel too serene to speak.",

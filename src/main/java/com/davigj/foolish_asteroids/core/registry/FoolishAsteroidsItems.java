@@ -68,6 +68,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> IMMERSIVE_ELIXIR = HELPER.createItem("immersive_elixir", () -> new ImmersiveElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
+	public static final RegistryObject<Item> INCENDIARY_ELIXIR = HELPER.createItem("incendiary_elixir", () -> new IncendiaryElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
 	public static final RegistryObject<Item> IRKSOME_ELIXIR = HELPER.createItem("irksome_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.IRKSOME));
 

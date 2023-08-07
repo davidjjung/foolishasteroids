@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +45,6 @@ public class TenebrousElixirItem extends Item {
                         living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
                         living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
                         if (living instanceof Player) {
-                            // A message pops up, telling the player "Look behind you." The message shows up in the style as when you try to use beds but cannot.
                             TranslatableComponent message = new TranslatableComponent("message.tenebrous.look_behind");
                             ((Player) living).displayClientMessage(message, true);
                         }
@@ -56,6 +56,7 @@ public class TenebrousElixirItem extends Item {
                     }
                 }
             } else {
+                entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
                 TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
                 ((Player) entityLiving).displayClientMessage(message, true);
             }
