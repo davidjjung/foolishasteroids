@@ -85,7 +85,7 @@ public class ParsimoniousElixirItem extends Item {
         } else {
             scaleHeight.getScaleData(entityLiving).setTargetScale(height + 0.05f);
             scaleWidth.getScaleData(entityLiving).setTargetScale(width + 0.05f);
-            entityLiving.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, entitiesTreated, false, false));
+            entityLiving.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, (int) (entitiesTreated / 2), false, false));
             message = new TranslatableComponent("message.parsimonious.user");
         }
         player.displayClientMessage(message, true);

@@ -112,7 +112,6 @@ public class BenevolentElixirItem extends Item {
         }
     }
 
-
     public int getUseDuration(ItemStack p_43001_) {
         return ElixirConstants.DRINK_TIME;
     }

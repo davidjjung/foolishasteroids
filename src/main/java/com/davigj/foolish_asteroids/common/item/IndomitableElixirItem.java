@@ -8,12 +8,15 @@ import com.teamabnormals.upgrade_aquatic.core.registry.UAMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
@@ -71,6 +74,9 @@ public class IndomitableElixirItem extends Item {
         return super.finishUsingItem(stack, world, entityLiving);
     }
 
+    public InteractionResultHolder<ItemStack> use(Level p_42993_, Player p_42994_, InteractionHand p_42995_) {
+        return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);
+    }
     public int getUseDuration(ItemStack p_43001_) {
         return ElixirConstants.DRINK_TIME;
     }
