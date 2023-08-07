@@ -2,10 +2,7 @@ package com.davigj.foolish_asteroids.common.item;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,8 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +36,18 @@ public class ProfoundElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
             if (server != null) {
-                chatDisableMap.put((ServerPlayer) entityLiving, System.currentTimeMillis() + silenceDuration);
-                TranslatableComponent message = new TranslatableComponent("message.profound_elixir.used");
-                player.displayClientMessage(message, true);
+                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(4.0D, 3.0D, 4.0D))) {
+                    if (!living.getUUID().equals(player.getUUID())) {
+                        if (living instanceof Player) {
+                            chatDisableMap.put((ServerPlayer) living, System.currentTimeMillis() + silenceDuration);
+                            TranslatableComponent message = new TranslatableComponent("message.profound.victim");
+                            ((Player) living).displayClientMessage(message, true);
+                        }
+                    } else {
+                        TranslatableComponent message = new TranslatableComponent("message.profound.used");
+                        ((Player) living).displayClientMessage(message, true);
+                    }
+                }
             }
 
             if (stack.isEmpty()) {

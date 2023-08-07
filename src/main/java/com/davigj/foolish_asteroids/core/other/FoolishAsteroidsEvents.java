@@ -2,10 +2,8 @@ package com.davigj.foolish_asteroids.core.other;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
-import net.minecraft.Util;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,10 +21,11 @@ public class FoolishAsteroidsEvents {
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
         if (chatDisableMap.containsKey(player)) {
-            TranslatableComponent garbled = new TranslatableComponent("message.profound_elixir.garbled");
-            event.setComponent(garbled);
+//            The commented out code below would be implemented if I wanted the player to say something other than what they sent, as opposed to nothing
+//            TranslatableComponent garbled = new TranslatableComponent("message.profound_elixir.garbled");
+//            event.setComponent(garbled);
             event.setCanceled(true);
-            TranslatableComponent message = new TranslatableComponent("message.profound_elixir.chat_disabled");
+            TranslatableComponent message = new TranslatableComponent("message.profound.chat_disabled");
             player.displayClientMessage(message, true);
         }
     }
@@ -54,7 +53,7 @@ public class FoolishAsteroidsEvents {
 
             // If the player's chat is disabled and the specified time has elapsed, re-enable chat
             if (chatDisableTime != null && System.currentTimeMillis() >= chatDisableTime) {
-                TranslatableComponent message = new TranslatableComponent("message.profound_elixir.chat_enabled");
+                TranslatableComponent message = new TranslatableComponent("message.profound.chat_enabled");
                 player.displayClientMessage(message, true);
                 chatDisableMap.remove(player);
             }

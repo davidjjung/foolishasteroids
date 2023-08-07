@@ -76,7 +76,7 @@ public class SagaciousElixirItem extends Item {
                 }
                 ScaleData data = scaleType.getScaleData(entityLiving);
                 String result = type + String.format("%.2f", data.getBaseScale());
-                TranslatableComponent message = new TranslatableComponent("message.sagacious_elixir.attribute", result);
+                TranslatableComponent message = new TranslatableComponent("message.sagacious.attribute", result);
 
                 player.displayClientMessage(message, true);
             }

@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class TenebrousElixirItem extends Item {
@@ -43,18 +42,18 @@ public class TenebrousElixirItem extends Item {
                         living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
                         if (living instanceof Player) {
                             // A message pops up, telling the player "Look behind you." The message shows up in the style as when you try to use beds but cannot.
-                            TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.look_behind");
+                            TranslatableComponent message = new TranslatableComponent("message.tenebrous.look_behind");
                             ((Player) living).displayClientMessage(message, true);
                         }
                     } else {
-                        TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.user");
+                        TranslatableComponent message = new TranslatableComponent("message.tenebrous.user");
                         ((Player) living).displayClientMessage(message, true);
                         data.setTargetScale(data.getBaseScale() - 0.1f);
                         living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
                     }
                 }
             } else {
-                TranslatableComponent message = new TranslatableComponent("message.tenebrous_elixir.insufficient");
+                TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
                 ((Player) entityLiving).displayClientMessage(message, true);
             }
 

@@ -21,6 +21,8 @@
   "item.foolish_asteroids.gracious_elixir": "Gracious Elixir",
 
   "item.foolish_asteroids.empyrean_elixir": "Empyrean Elixir",
+  "item.foolish_asteroids.benevolent_elixir": "Benevolent Elixir",
+  "item.foolish_asteroids.parsimonious_elixir": "Parsimonious Elixir",
   "item.foolish_asteroids.freaky_elixir": "Freaky Elixir",
   "item.foolish_asteroids.friable_elixir": "Friable Elixir",
   "item.foolish_asteroids.garrulous_elixir": "Garrulous Elixir",
@@ -31,13 +33,17 @@
   "item.foolish_asteroids.wretched_elixir": "Wretched Elixir",
   "item.foolish_asteroids.vainglorious_elixir": "Vainglorious Elixir",
 
-  "message.sagacious_elixir.attribute": "%s.",
-  "message.tenebrous_elixir.look_behind": "You feel a chill...",
-  "message.tenebrous_elixir.insufficient": "You cannot conjure any shadows at this time.",
-  "message.tenebrous_elixir.user": "You feel a shadow seep out of your body...",
-  "message.profound_elixir.used": "Peace at last...",
-  "message.profound_elixir.victim": "You suddenly feel too serene to speak.",
-  "message.profound_elixir.chat_disabled": "You are currently beyond words.",
-  "message.profound_elixir.garbled": "Wow.",
-  "message.profound_elixir.chat_enabled": "You snap out of your trance, and may speak again."
+  "message.sagacious.attribute": "%s.",
+  "message.tenebrous.look_behind": "You feel a chill...",
+  "message.tenebrous.insufficient": "You cannot conjure any shadows at this time.",
+  "message.tenebrous.user": "You feel a shadow seep out of your body...",
+  "message.profound.used": "Peace at last...",
+  "message.profound.victim": "You suddenly feel too serene to speak.",
+  "message.profound.chat_disabled": "You are currently beyond words.",
+  "message.profound.garbled": "Wow.",
+  "message.profound.chat_enabled": "You snap out of your trance, and may speak again.",
+  "message.benevolent.user": "You feel a surge of empathy...",
+  "message.benevolent.no_entities": "No one around in need of reaching out.",
+  "message.parsimonious.user": "You feel a surge of antipathy...",
+  "message.parsimonious.no_entities": "Nobody around to drain..."
 }
