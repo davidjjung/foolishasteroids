@@ -72,40 +72,41 @@ public class FoolishAsteroidsEvents {
         }
         if (event.phase == TickEvent.Phase.START && event.player != null && event.player.level.isClientSide()) {
             UUID playerId = event.player.getUUID();
+            Player player = event.player;
+            ScaleData atk = ScaleTypes.ATTACK.getScaleData(player);
             if (smokingPlayers.containsKey(playerId)) {
                 int remainingTicks = smokingPlayers.get(playerId);
                 if (remainingTicks > 0) {
                     remainingTicks--;
-                    ScaleData atk = ScaleTypes.ATTACK.getScaleData(event.player);
-                    float atkVal = atk.getBaseScale();
                     smokingPlayers.put(playerId, remainingTicks);
+                    float atkVal = atk.getBaseScale();
                     ParticleOptions particle;
                     if (remainingTicks <= 400 && remainingTicks >= 201) {
                         particle = ParticleTypes.POOF;
                         atk.setTargetScale(atkVal + 0.006f);
                     } else if (remainingTicks < 200) {
-                        atk.setTargetScale(atkVal * 1.028f);
+                        atk.setTargetScale(atkVal * 1.02f);
                         particle = ParticleTypes.CAMPFIRE_COSY_SMOKE;
                     } else {
                         particle = ParticleTypes.SMOKE;
                         atk.setTargetScale(atkVal + 0.01f);
                     }
                     // Spawn campfire smoke particles
-                    Level level = event.player.level;
-                    Player player = level.getPlayerByUUID(playerId);
+                    Level level = player.level;
                     Random random = new Random();
-                    if (random.nextInt(10) < 7 && player != null && !player.isSpectator() && !player.isCreative()) {
-                        double x = player.getX();
-                        double y = player.getY() + player.getEyeHeight();
-                        double z = player.getZ();
+                    double x = player.getX();
+                    double y = player.getY() + player.getEyeHeight();
+                    double z = player.getZ();
+                    if (random.nextInt(10) >= 4 && !player.isSpectator() && !player.isCreative()) {
                         level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
                     }
                     if (remainingTicks < 20) {
-                        event.player.setSecondsOnFire(8);
+                        player.setSecondsOnFire(8);
                         atk.setTargetScale(0.25f);
                     }
-                    if (event.player.isInWaterRainOrBubble() || event.player.isInPowderSnow) {
-                        event.player.playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
+                    if (player.isInWaterRainOrBubble() || player.isInPowderSnow) {
+                        atk.setTargetScale(atkVal * 0.75f);
+                        player.playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
                         smokingPlayers.remove(playerId);
                     }
                 } else {
@@ -113,6 +114,7 @@ public class FoolishAsteroidsEvents {
                 }
             }
         }
+
     }
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
