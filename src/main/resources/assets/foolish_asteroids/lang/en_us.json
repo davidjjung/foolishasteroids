@@ -19,6 +19,7 @@
   "item.foolish_asteroids.jittery_elixir": "Jittery Elixir",
   "item.foolish_asteroids.stentorian_elixir": "Stentorian Elixir",
   "item.foolish_asteroids.gracious_elixir": "Gracious Elixir",
+  "item.foolish_asteroids.incendiary_elixir": "Incendiary Elixir",
 
   "item.foolish_asteroids.empyrean_elixir": "Empyrean Elixir",
   "item.foolish_asteroids.benevolent_elixir": "Benevolent Elixir",
@@ -45,5 +46,9 @@
   "message.benevolent.user": "You feel a surge of empathy...",
   "message.benevolent.no_entities": "No one around in need of reaching out.",
   "message.parsimonious.user": "You feel a surge of antipathy...",
-  "message.parsimonious.no_entities": "Nobody around to drain..."
+  "message.parsimonious.no_entities": "Nobody around to drain...",
+
+  "message.unconscionable.1": "'s plead for death was answered.",
+  "message.unconscionable.2": " attempted chicken cannibalism, much to the chicken's chagrin",
+  "message.unconscionable.3": " "
 }

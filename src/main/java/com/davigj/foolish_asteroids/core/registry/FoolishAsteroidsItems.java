@@ -3,9 +3,6 @@ package com.davigj.foolish_asteroids.core.registry;
 import com.davigj.foolish_asteroids.common.item.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -65,7 +62,7 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> ICARIAN_ELIXIR = HELPER.createItem("icarian_elixir", () -> new IcarianElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
-	public static final RegistryObject<Item> IMMERSIVE_ELIXIR = HELPER.createItem("immersive_elixir", () -> new ImmersiveElixirItem(
+	public static final RegistryObject<Item> EARTHBOUND_ELIXIR = HELPER.createItem("earthbound_elixir", () -> new EarthboundElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
 	public static final RegistryObject<Item> INCENDIARY_ELIXIR = HELPER.createItem("incendiary_elixir", () -> new IncendiaryElixirItem(

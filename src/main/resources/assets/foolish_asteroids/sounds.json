@@ -1,0 +1,38 @@
+{
+  "item.mycological_elixir.mushroom": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/mushroom",
+        "stream": true
+      }
+    ]
+  },
+  "item.estranged_elixir.weird_mushroom": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/weird_mushroom",
+        "stream": true
+      }
+    ]
+  },
+  "item.profound_elixir.hush": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/hush",
+        "stream": true
+      }
+    ]
+  },
+  "item.earthbound_elixir.earthbound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/earthbound",
+        "stream": true
+      }
+    ]
+  }
+}

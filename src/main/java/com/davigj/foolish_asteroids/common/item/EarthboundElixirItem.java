@@ -3,9 +3,6 @@ package com.davigj.foolish_asteroids.common.item;
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -18,14 +15,13 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class ImmersiveElixirItem extends Item {
+public class EarthboundElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(ImmersiveElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EarthboundElixirItem.class.getName());
 
-    public ImmersiveElixirItem(Properties properties) {
+    public EarthboundElixirItem(Properties properties) {
         super(properties);
     }
 

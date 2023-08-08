@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 
 public class IncendiaryElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(ImmersiveElixirItem.class.getName());
-    public static final Map<UUID, Integer> smokingPlayers = new HashMap<>(); // Change to a HashMap
+    private static final Logger LOGGER = Logger.getLogger(EarthboundElixirItem.class.getName());
+    public static final Map<UUID, Integer> smokingPlayers = new HashMap<>();
 
     public IncendiaryElixirItem(Properties properties) {
         super(properties);
