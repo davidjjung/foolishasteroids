@@ -2,9 +2,13 @@ package com.davigj.foolish_asteroids.core.other;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -12,6 +16,8 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.Random;
 import java.util.UUID;
@@ -38,7 +44,7 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && event.player != null) {
+        if (event.phase == TickEvent.Phase.START && event.player != null && !event.player.level.isClientSide) {
             UUID playerId = event.player.getUUID();
             if (rainbowTimers.containsKey(playerId)) {
                 int timerTicks = rainbowTimers.get(playerId);
@@ -64,19 +70,46 @@ public class FoolishAsteroidsEvents {
                 chatDisableMap.remove(player);
             }
         }
-        if (event.phase == TickEvent.Phase.START && event.player != null && event.player.level.isClientSide) {
-            for (UUID playerUUID : smokingPlayers) {
-                Level level = event.player.level;
-                Player player = level.getPlayerByUUID(playerUUID);
-                Random random = new Random();
-                if (random.nextInt(10) < 8) {
-                    if (player != null && !player.isSpectator() && !player.isCreative()) {
-                        // Spawn campfire smoke particles
+        if (event.phase == TickEvent.Phase.START && event.player != null && event.player.level.isClientSide()) {
+            UUID playerId = event.player.getUUID();
+            if (smokingPlayers.containsKey(playerId)) {
+                int remainingTicks = smokingPlayers.get(playerId);
+                if (remainingTicks > 0) {
+                    remainingTicks--;
+                    ScaleData atk = ScaleTypes.ATTACK.getScaleData(event.player);
+                    float atkVal = atk.getBaseScale();
+                    smokingPlayers.put(playerId, remainingTicks);
+                    ParticleOptions particle;
+                    if (remainingTicks <= 400 && remainingTicks >= 201) {
+                        particle = ParticleTypes.POOF;
+                        atk.setTargetScale(atkVal + 0.006f);
+                    } else if (remainingTicks < 200) {
+                        atk.setTargetScale(atkVal * 1.028f);
+                        particle = ParticleTypes.CAMPFIRE_COSY_SMOKE;
+                    } else {
+                        particle = ParticleTypes.SMOKE;
+                        atk.setTargetScale(atkVal + 0.01f);
+                    }
+                    // Spawn campfire smoke particles
+                    Level level = event.player.level;
+                    Player player = level.getPlayerByUUID(playerId);
+                    Random random = new Random();
+                    if (random.nextInt(10) < 7 && player != null && !player.isSpectator() && !player.isCreative()) {
                         double x = player.getX();
                         double y = player.getY() + player.getEyeHeight();
                         double z = player.getZ();
-                        level.addParticle(ParticleTypes.POOF, x, y, z, 0.0D, 0.0D, 0.0D);
+                        level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
                     }
+                    if (remainingTicks < 20) {
+                        event.player.setSecondsOnFire(8);
+                        atk.setTargetScale(0.25f);
+                    }
+                    if (event.player.isInWaterRainOrBubble() || event.player.isInPowderSnow) {
+                        event.player.playSound(SoundEvents.FIRE_EXTINGUISH, 1, 1);
+                        smokingPlayers.remove(playerId);
+                    }
+                } else {
+                    smokingPlayers.remove(playerId);
                 }
             }
         }
@@ -85,6 +118,7 @@ public class FoolishAsteroidsEvents {
     public static void onLivingDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             smokingPlayers.remove(player.getUUID());
+            rainbowTimers.remove(player.getUUID());
         }
     }
 

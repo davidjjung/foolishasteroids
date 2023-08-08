@@ -33,7 +33,6 @@ public class IndomitableElixirItem extends Item {
 
     private static final Logger LOGGER = Logger.getLogger(IndomitableElixirItem.class.getName());
     private static final int RAINBOW_DURATION = 160;
-    private static final int RAINBOW_TIMER_DURATION = RAINBOW_DURATION * 2;
     public static final Map<UUID, Integer> rainbowTimers = new HashMap<>();
 
     public IndomitableElixirItem(Properties properties) {
@@ -53,7 +52,7 @@ public class IndomitableElixirItem extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, RAINBOW_DURATION, 1));
 
             UUID playerId = player.getUUID();
-            rainbowTimers.put(playerId, RAINBOW_TIMER_DURATION); // Start the timer
+            rainbowTimers.put(playerId, RAINBOW_DURATION); // Start the timer
 
             RainbowUtil.setRainbowType(entityLiving, 1);
 

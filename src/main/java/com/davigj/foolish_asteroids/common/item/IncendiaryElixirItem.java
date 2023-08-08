@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class IncendiaryElixirItem extends Item {
 
     private static final Logger LOGGER = Logger.getLogger(ImmersiveElixirItem.class.getName());
-    public static final Set<UUID> smokingPlayers = new HashSet<>();
+    public static final Map<UUID, Integer> smokingPlayers = new HashMap<>(); // Change to a HashMap
 
     public IncendiaryElixirItem(Properties properties) {
         super(properties);
@@ -34,8 +34,11 @@ public class IncendiaryElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            // Activate the particle effect
-            smokingPlayers.add(player.getUUID());
+            // Set the duration of the effect (in ticks)
+            int effectDuration = 600; // Change this value to the desired duration
+
+            // Activate the particle effect with the specified duration
+            smokingPlayers.put(player.getUUID(), effectDuration);
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());
