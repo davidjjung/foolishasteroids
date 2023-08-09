@@ -23,7 +23,8 @@ public class HearsayUtil {
             {
                     new TranslatableComponent("message.hearsay.10"),
                     new TranslatableComponent("message.hearsay.11"),
-                    new TranslatableComponent("message.hearsay.12")
+                    new TranslatableComponent("message.hearsay.12"),
+                    new TranslatableComponent("message.hearsay.13")
             },
             {
                     new TranslatableComponent("message.hearsay.20"),
