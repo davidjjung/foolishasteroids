@@ -1,5 +1,6 @@
 {
   "item.foolish_asteroids.flask": "Flask",
+
   "item.foolish_asteroids.bellicose_elixir": "Bellicose Elixir",
   "item.foolish_asteroids.dilatory_elixir": "Dilatory Elixir",
   "item.foolish_asteroids.estranged_elixir": "Estranged Elixir",
@@ -14,7 +15,7 @@
   "item.foolish_asteroids.endemic_elixir": "Endemic Elixir",
   "item.foolish_asteroids.evanescent_elixir": "Evanescent Elixir",
   "item.foolish_asteroids.icarian_elixir": "Icarian Elixir",
-  "item.foolish_asteroids.immersive_elixir": "Immersive Elixir",
+  "item.foolish_asteroids.earthbound_elixir": "Immersive Elixir",
   "item.foolish_asteroids.irksome_elixir": "Irksome Elixir",
   "item.foolish_asteroids.jittery_elixir": "Jittery Elixir",
   "item.foolish_asteroids.stentorian_elixir": "Stentorian Elixir",
@@ -48,7 +49,20 @@
   "message.parsimonious.user": "You feel a surge of antipathy...",
   "message.parsimonious.no_entities": "Nobody around to drain...",
 
-  "message.unconscionable.1": "'s plead for death was answered.",
-  "message.unconscionable.2": " attempted chicken cannibalism, much to the chicken's chagrin",
-  "message.unconscionable.3": " "
+  "message.unconscionable.1": "%s's plead for death was answered.",
+  "message.unconscionable.2": "%s attempted chicken cannibalism, much to the chicken's chagrin",
+  "message.unconscionable.3": "%s never escaped the elephant-sized glue trap",
+  "message.unconscionable.4": "Maybe %s shouldn't have angered that shopkeeper",
+
+  "message.hearsay.user": "You begin eavesdropping on a different reality...",
+  "message.hearsay.use_end": "Your ears snap back to this universe.",
+
+  "message.hearsay.00": "%s oh",
+  "message.hearsay.01": "%s can you please leave",
+  "message.hearsay.10": "%s hrngh",
+  "message.hearsay.11": "%s soup",
+  "message.hearsay.12": "%s the lava beckons...",
+  "message.hearsay.20": "%s Convo 2, Line 1",
+  "message.hearsay.21": "%s Convo 2, Line 2",
+  "message.hearsay.22": "%s Convo 2, Line 3"
 }

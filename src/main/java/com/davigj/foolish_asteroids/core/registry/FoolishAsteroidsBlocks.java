@@ -12,5 +12,5 @@ import net.minecraftforge.registries.RegistryObject;
 public class FoolishAsteroidsBlocks {
 	public static final BlockSubRegistryHelper HELPER = FoolishAsteroidsMod.REGISTRY_HELPER.getBlockSubHelper();
 
-	public static final RegistryObject<Block> TEMPLATE_BLOCK = HELPER.createBlock("template_block", () -> new Block(Block.Properties.copy(Blocks.STONE)), CreativeModeTab.TAB_BUILDING_BLOCKS);
+//	public static final RegistryObject<Block> TEMPLATE_BLOCK = HELPER.createBlock("template_block", () -> new Block(Block.Properties.copy(Blocks.STONE)), CreativeModeTab.TAB_BUILDING_BLOCKS);
 }

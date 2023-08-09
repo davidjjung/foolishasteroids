@@ -1,11 +1,16 @@
 package com.davigj.foolish_asteroids.core.other;
 
+import com.davigj.foolish_asteroids.common.item.SagaciousElixirItem;
+import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -19,27 +24,68 @@ import net.minecraftforge.fml.common.Mod;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+import static com.davigj.foolish_asteroids.common.item.HearsayElixirItem.oracleMap;
 import static com.davigj.foolish_asteroids.common.item.IncendiaryElixirItem.smokingPlayers;
 import static com.davigj.foolish_asteroids.common.item.IndomitableElixirItem.rainbowTimers;
 import static com.davigj.foolish_asteroids.common.item.ProfoundElixirItem.chatDisableMap;
+import static com.davigj.foolish_asteroids.common.util.HearsayUtil.conversations;
 
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class FoolishAsteroidsEvents {
+
+    private static final Logger LOGGER = Logger.getLogger(FoolishAsteroidsEvents.class.getName());
+
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
+        String senderID = "<" + event.getUsername() + "> ";
+        TextComponent original = (TextComponent) new TextComponent(senderID).append(event.getMessage());
+        TranslatableComponent modified = new TranslatableComponent(HearsayUtil.getDialogueLine(player).getKey(), senderID);
         if (chatDisableMap.containsKey(player)) {
-//            The commented out code below would be implemented if I wanted the player to say something other than what they sent, as opposed to nothing
-//            TranslatableComponent garbled = new TranslatableComponent("message.profound_elixir.garbled");
-//            event.setComponent(garbled);
             event.setCanceled(true);
             TranslatableComponent message = new TranslatableComponent("message.profound.chat_disabled");
             player.displayClientMessage(message, true);
+        } else if (oracleMap.containsKey(player)) {
+            for (ServerPlayer receiver : Objects.requireNonNull(player.level.getServer()).getPlayerList().getPlayers()) {
+                if (!oracleMap.containsKey(receiver) || receiver == player) {
+                    receiver.sendMessage(original, receiver.getUUID());
+                } else {
+                    receiver.sendMessage(modified, receiver.getUUID());
+                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX) + 1;
+                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.CONVO_INDEX);
+                    TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, dialogueIndex);
+                    if (dialogueIndex == conversations[convoIndex].length) {
+                        Random random = new Random();
+                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, 0);
+                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.CONVO_INDEX, random.nextInt(3));
+                    }
+                }
+            }
+        } else {
+            for (ServerPlayer receiver : Objects.requireNonNull(player.level.getServer()).getPlayerList().getPlayers()) {
+                if (oracleMap.containsKey(receiver)) {
+                    receiver.sendMessage(modified, receiver.getUUID());
+                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX) + 1;
+                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.CONVO_INDEX);
+                    TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, dialogueIndex);
+                    if (dialogueIndex == conversations[convoIndex].length) {
+                        Random random = new Random();
+                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, 0);
+                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.CONVO_INDEX, random.nextInt(3));
+                    }
+                } else {
+                    receiver.sendMessage(original, receiver.getUUID());
+                }
+            }
         }
+        // anywho since we're hijacking this junt the original message has been disemboweled
+        event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -62,12 +108,21 @@ public class FoolishAsteroidsEvents {
         if (event.phase == TickEvent.Phase.END && !event.player.level.isClientSide) {
             ServerPlayer player = (ServerPlayer) event.player;
             Long chatDisableTime = chatDisableMap.get(player);
+            Long oracleTime = oracleMap.get(player);
 
             // If the player's chat is disabled and the specified time has elapsed, re-enable chat
             if (chatDisableTime != null && System.currentTimeMillis() >= chatDisableTime) {
                 TranslatableComponent message = new TranslatableComponent("message.profound.chat_enabled");
                 player.displayClientMessage(message, true);
                 chatDisableMap.remove(player);
+            }
+
+            Long oracleMapTime = oracleMap.get(player);
+            if (oracleTime != null && System.currentTimeMillis() >= oracleMapTime) {
+                TranslatableComponent message = new TranslatableComponent("message.hearsay.use_end");
+                player.displayClientMessage(message, true);
+                TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.HEARSAY_ACTIVE, false);
+                oracleMap.remove(player);
             }
         }
         if (event.phase == TickEvent.Phase.START && event.player != null && event.player.level.isClientSide()) {
@@ -116,6 +171,7 @@ public class FoolishAsteroidsEvents {
         }
 
     }
+
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {

@@ -18,7 +18,9 @@ public class FoolishAsteroidsMod {
 	public static final String MOD_ID = "foolish_asteroids";
 	public static final RegistryHelper REGISTRY_HELPER = new RegistryHelper(MOD_ID);
 
-	public static final TrackedData<Boolean> TEST_TRACKED_DATA = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> CONVO_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> DIALOGUE_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
+	public static final TrackedData<Boolean> HEARSAY_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -30,7 +32,9 @@ public class FoolishAsteroidsMod {
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::dataSetup);
-		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "tracked_data"), TEST_TRACKED_DATA);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "convo_index"), CONVO_INDEX);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "dialogue_index"), DIALOGUE_INDEX);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "hearsay_active"), HEARSAY_ACTIVE);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {
