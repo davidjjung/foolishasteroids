@@ -1,17 +1,12 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,16 +14,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.logging.Logger;
 
-public class TenebrousElixirItem extends Item {
+public class JitteryElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(EndemicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JitteryElixirItem.class.getName());
 
-    public TenebrousElixirItem(Properties properties) {
+    public JitteryElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -38,29 +32,20 @@ public class TenebrousElixirItem extends Item {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-            ScaleData data = ScaleTypes.HEALTH.getScaleData(entityLiving);
-            if (data.getBaseScale() > 0.1f) {
-                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
-                    if (!living.getUUID().equals(player.getUUID())) {
-                        living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
-                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
-                        if (living instanceof Player) {
-                            TranslatableComponent message = new TranslatableComponent("message.tenebrous.look_behind");
-                            ((Player) living).displayClientMessage(message, true);
-                        }
-                    } else {
-                        TranslatableComponent message = new TranslatableComponent("message.tenebrous.user");
-                        ((Player) living).displayClientMessage(message, true);
-                        data.setTargetScale(data.getBaseScale() - 0.1f);
-                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
-                    }
-                }
-            } else {
-                entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
-                TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
-                ((Player) entityLiving).displayClientMessage(message, true);
-            }
 
+            float miningSpeed = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
+            float visibility = ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).getBaseScale();
+            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
+
+            if (miningSpeed < 2.8) {
+                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.2f);
+            }
+            if (visibility > .2) {
+                ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
+            }
+            if (defense > 0.2) {
+                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
+            }
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

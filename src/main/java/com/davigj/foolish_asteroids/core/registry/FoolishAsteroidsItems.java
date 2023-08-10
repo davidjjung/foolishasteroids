@@ -1,6 +1,6 @@
 package com.davigj.foolish_asteroids.core.registry;
 
-import com.davigj.foolish_asteroids.common.item.*;
+import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.world.item.CreativeModeTab;

@@ -1,14 +1,12 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,12 +20,12 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class EstrangedElixirItem extends Item {
+public class EvanescentElixirItem extends Item {
     List<String> commands;
 
-    private static final Logger LOGGER = Logger.getLogger(EstrangedElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EvanescentElixirItem.class.getName());
 
-    public EstrangedElixirItem(Properties properties, List<String> commands) {
+    public EvanescentElixirItem(Properties properties, List<String> commands) {
         super(properties);
         this.commands = commands;
     }
@@ -39,6 +37,7 @@ public class EstrangedElixirItem extends Item {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
+            player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 160, 4));
             // Get the playertag of the entity that used the item
             String entityTag = player.getDisplayName().getString();
             for (String command : this.commands) {
@@ -49,9 +48,6 @@ public class EstrangedElixirItem extends Item {
                 // Ensure commandSource.getServer() and commandSource.getServer().getCommands() are not null
                 MinecraftServer server = commandSource.getServer();
                 if (server != null) {
-                    entityLiving.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0, false, false));
-                    // TODO: Replace temp sound with the actual sfx
-                    entityLiving.playSound(SoundEvents.BUCKET_FILL_AXOLOTL, 1, 1);
                     Commands commands = server.getCommands();
                     if (commands != null) {
                         commands.performCommand(commandSource, commandToExecute);

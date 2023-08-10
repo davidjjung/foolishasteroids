@@ -1,11 +1,10 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,16 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleTypes;
+import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
-public class VaingloriousElixirItem extends Item {
+public class HeresyElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(VaingloriousElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HeresyElixirItem.class.getName());
 
-    public VaingloriousElixirItem(Properties properties) {
+    public HeresyElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -37,23 +36,22 @@ public class VaingloriousElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float stepHeight = ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float fallDamage = ScaleTypes.FALLING.getScaleData(entityLiving).getBaseScale();
-            float height = ScaleTypes.HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float width = ScaleTypes.WIDTH.getScaleData(entityLiving).getBaseScale();
+            entityLiving.setSecondsOnFire(5);
+            Random random = new Random();
+            if (random.nextInt(20) >= 1 && entityLiving.getLevel().dimension() == Level.OVERWORLD) {
+                if (entityLiving instanceof ServerPlayer serverPlayer) {
+                    Level nether = serverPlayer.server.getLevel(Level.NETHER); // Get the Nether dimension
 
-            if (stepHeight < 10.0) {
-                ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).setTargetScale(stepHeight + 1.0f);
+                    if (nether != null) {
+                        BlockPos spawnPos = ((ServerLevel) nether).getSharedSpawnPos();
+                        Vec3 newPos = new Vec3(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+
+                        serverPlayer.teleportToWithTicket(newPos.x, newPos.y, newPos.z);
+                    }
+                }
             }
-            if (fallDamage < 10.0) {
-                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(fallDamage + 1.0f);
-            }
-            if (height < 5.0) {
-                ScaleTypes.HEIGHT.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
-            }
-            if (width < 5.0) {
-                ScaleTypes.WIDTH.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
-            }
+
+
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

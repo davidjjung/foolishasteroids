@@ -1,10 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -16,17 +14,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
-public class HeresyElixirItem extends Item {
+public class IncendiaryElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(HeresyElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EarthboundElixirItem.class.getName());
+    public static final Map<UUID, Integer> smokingPlayers = new HashMap<>();
 
-    public HeresyElixirItem(Properties properties) {
+    public IncendiaryElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -37,22 +34,11 @@ public class HeresyElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            entityLiving.setSecondsOnFire(5);
-            Random random = new Random();
-            if (random.nextInt(20) >= 1 && entityLiving.getLevel().dimension() == Level.OVERWORLD) {
-                if (entityLiving instanceof ServerPlayer serverPlayer) {
-                    Level nether = serverPlayer.server.getLevel(Level.NETHER); // Get the Nether dimension
+            // Set the duration of the effect (in ticks)
+            int effectDuration = 600; // Change this value to the desired duration
 
-                    if (nether != null) {
-                        BlockPos spawnPos = ((ServerLevel) nether).getSharedSpawnPos();
-                        Vec3 newPos = new Vec3(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
-
-                        serverPlayer.teleportToWithTicket(newPos.x, newPos.y, newPos.z);
-                    }
-                }
-            }
-
-
+            // Activate the particle effect with the specified duration
+            smokingPlayers.put(player.getUUID(), effectDuration);
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

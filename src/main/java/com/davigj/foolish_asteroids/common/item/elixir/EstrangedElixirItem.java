@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
@@ -7,54 +7,59 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ClaustrophilicElixirItem extends Item {
+public class EstrangedElixirItem extends Item {
+    List<String> commands;
 
-    private static final Logger LOGGER = Logger.getLogger(ClaustrophilicElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EstrangedElixirItem.class.getName());
 
-    public ClaustrophilicElixirItem(Properties properties) {
+    public EstrangedElixirItem(Properties properties, List<String> commands) {
         super(properties);
+        this.commands = commands;
     }
 
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {
-            if (entityLiving instanceof ServerPlayer serverPlayerEntity) {
+            if (entityLiving instanceof ServerPlayer) {
+                ServerPlayer serverPlayerEntity = (ServerPlayer) entityLiving;
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-
-            float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
-            float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
-            float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
-
-            if (reach > 0.2f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
+            // Get the playertag of the entity that used the item
+            String entityTag = player.getDisplayName().getString();
+            for (String command : this.commands) {
+                // Construct the command with the playertag
+                String commandToExecute = command + entityTag;
+                // Run the command silently without any output in the chat or server log
+                CommandSourceStack commandSource = player.createCommandSourceStack();
+                // Ensure commandSource.getServer() and commandSource.getServer().getCommands() are not null
+                MinecraftServer server = commandSource.getServer();
+                if (server != null) {
+                    entityLiving.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0, false, false));
+                    // TODO: Replace temp sound with the actual sfx
+                    entityLiving.playSound(SoundEvents.BUCKET_FILL_AXOLOTL, 1, 1);
+                    Commands commands = server.getCommands();
+                    if (commands != null) {
+                        commands.performCommand(commandSource, commandToExecute);
+//                        LOGGER.info(command);
+                    } else {
+                        LOGGER.warning("Command instance is null.");
+                    }
+                }
             }
-            if (miningSpeed > 0.2f) {
-                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
-            }
-            if (jumpHeight > 0.2f) {
-                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight - 0.1f);
-            }
-            if (health < 5.0f) {
-                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(health + 1.0f);
-            }
-
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());
             } else {

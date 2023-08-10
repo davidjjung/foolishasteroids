@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
@@ -10,8 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -20,12 +18,12 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class EvanescentElixirItem extends Item {
+public class CommandElixirItem extends Item {
     List<String> commands;
 
-    private static final Logger LOGGER = Logger.getLogger(EvanescentElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommandElixirItem.class.getName());
 
-    public EvanescentElixirItem(Properties properties, List<String> commands) {
+    public CommandElixirItem(Properties properties, List<String> commands) {
         super(properties);
         this.commands = commands;
     }
@@ -37,7 +35,6 @@ public class EvanescentElixirItem extends Item {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-            player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 160, 4));
             // Get the playertag of the entity that used the item
             String entityTag = player.getDisplayName().getString();
             for (String command : this.commands) {

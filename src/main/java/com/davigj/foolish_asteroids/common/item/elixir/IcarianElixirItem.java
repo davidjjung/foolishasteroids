@@ -1,11 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -19,14 +16,13 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class JitteryElixirItem extends Item {
+public class IcarianElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(JitteryElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IcarianElixirItem.class.getName());
 
-    public JitteryElixirItem(Properties properties) {
+    public IcarianElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -37,18 +33,14 @@ public class JitteryElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float miningSpeed = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
-            float visibility = ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).getBaseScale();
-            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
+            float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
+            float motion = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
 
-            if (miningSpeed < 2.8) {
-                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.2f);
+            if (jumpHeight < 4.4) {
+                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight + 0.2f);
             }
-            if (visibility > .2) {
-                ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
-            }
-            if (defense > 0.2) {
-                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(visibility - 0.1f);
+            if (motion > 0.2) {
+                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(motion - 0.1f);
             }
 
             if (stack.isEmpty()) {

@@ -1,15 +1,11 @@
 package com.davigj.foolish_asteroids.core.other;
 
-import com.davigj.foolish_asteroids.common.item.SagaciousElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,10 +25,10 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static com.davigj.foolish_asteroids.common.item.HearsayElixirItem.oracleMap;
-import static com.davigj.foolish_asteroids.common.item.IncendiaryElixirItem.smokingPlayers;
-import static com.davigj.foolish_asteroids.common.item.IndomitableElixirItem.rainbowTimers;
-import static com.davigj.foolish_asteroids.common.item.ProfoundElixirItem.chatDisableMap;
+import static com.davigj.foolish_asteroids.common.item.elixir.HearsayElixirItem.oracleMap;
+import static com.davigj.foolish_asteroids.common.item.elixir.IncendiaryElixirItem.smokingPlayers;
+import static com.davigj.foolish_asteroids.common.item.elixir.IndomitableElixirItem.rainbowTimers;
+import static com.davigj.foolish_asteroids.common.item.elixir.ProfoundElixirItem.chatDisableMap;
 import static com.davigj.foolish_asteroids.common.util.HearsayUtil.conversations;
 
 

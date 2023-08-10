@@ -1,11 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,16 +14,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class TouchyElixirItem extends Item {
+public class EmpyreanElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(TouchyElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EmpyreanElixirItem.class.getName());
 
-    public TouchyElixirItem(Properties properties) {
+    public EmpyreanElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -37,27 +32,9 @@ public class TouchyElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
-            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
-            float hitboxHeight = ScaleTypes.HITBOX_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float hitboxWidth = ScaleTypes.HITBOX_WIDTH.getScaleData(entityLiving).getBaseScale();
-            float explosion = ScaleTypes.EXPLOSIONS.getScaleData(entityLiving).getBaseScale();
-
-            if (defense > 0.2f) {
-                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
-            }
-            if (reach < 6.0f) {
-                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach + 0.3f);
-            }
-            if (hitboxWidth < 5.0f) {
-                ScaleTypes.HITBOX_WIDTH.getScaleData(entityLiving).setTargetScale(hitboxWidth + 0.25f);
-            }
-            if (hitboxHeight < 5.0f) {
-                ScaleTypes.HITBOX_HEIGHT.getScaleData(entityLiving).setTargetScale(hitboxHeight + 0.25f);
-            }
-            if (explosion < 5.0f) {
-                ScaleTypes.EXPLOSIONS.getScaleData(entityLiving).setTargetScale(explosion + 0.25f);
-            }
+            double x = player.getX();
+            double z = player.getZ();
+            player.teleportTo(x, 256, z);
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

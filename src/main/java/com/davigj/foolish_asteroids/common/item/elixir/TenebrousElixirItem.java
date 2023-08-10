@@ -1,66 +1,67 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class MycologicalElixirItem extends Item {
-    List<String> commands;
+public class TenebrousElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(MycologicalElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EndemicElixirItem.class.getName());
 
-    public MycologicalElixirItem(Properties properties, List<String> commands) {
+    public TenebrousElixirItem(Properties properties) {
         super(properties);
-        this.commands = commands;
     }
 
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {
-            if (entityLiving instanceof ServerPlayer) {
-                ServerPlayer serverPlayerEntity = (ServerPlayer) entityLiving;
+            if (entityLiving instanceof ServerPlayer serverPlayerEntity) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-            // Get the playertag of the entity that used the item
-            String entityTag = player.getDisplayName().getString();
-            for (String command : this.commands) {
-                // Construct the command with the playertag
-                String commandToExecute = command + entityTag;
-                // Run the command silently without any output in the chat or server log
-                CommandSourceStack commandSource = player.createCommandSourceStack();
-                // Ensure commandSource.getServer() and commandSource.getServer().getCommands() are not null
-                MinecraftServer server = commandSource.getServer();
-                if (server != null) {
-                    entityLiving.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0, false, false));
-                    // TODO: Replace temp sound with the actual sfx
-                    entityLiving.playSound(SoundEvents.BUCKET_FILL_AXOLOTL, 1, 1);
-                    Commands commands = server.getCommands();
-                    if (commands != null) {
-                        commands.performCommand(commandSource, commandToExecute);
-//                        LOGGER.info(command);
+            ScaleData data = ScaleTypes.HEALTH.getScaleData(entityLiving);
+            if (data.getBaseScale() > 0.1f) {
+                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(7.0D, 3.0D, 7.0D))) {
+                    if (!living.getUUID().equals(player.getUUID())) {
+                        living.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 200, 0, false, false));
+                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, false));
+                        if (living instanceof Player) {
+                            TranslatableComponent message = new TranslatableComponent("message.tenebrous.look_behind");
+                            ((Player) living).displayClientMessage(message, true);
+                        }
                     } else {
-                        LOGGER.warning("Command instance is null.");
+                        TranslatableComponent message = new TranslatableComponent("message.tenebrous.user");
+                        ((Player) living).displayClientMessage(message, true);
+                        data.setTargetScale(data.getBaseScale() - 0.1f);
+                        living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 0, false, false));
                     }
                 }
+            } else {
+                entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
+                TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
+                ((Player) entityLiving).displayClientMessage(message, true);
             }
+
+
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());
             } else {

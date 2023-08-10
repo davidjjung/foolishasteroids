@@ -1,9 +1,7 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
-import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -23,13 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class HearsayElixirItem extends Item {
+public class ProfoundElixirItem extends Item {
 
     private static final Logger LOGGER = Logger.getLogger(SagaciousElixirItem.class.getName());
-    public static final Map<ServerPlayer, Long> oracleMap = new HashMap<>();
-    private static final long oracleDuration = 60000L;
+    public static final Map<ServerPlayer, Long> chatDisableMap = new HashMap<>();
+    private static final long silenceDuration = 15000L;
 
-    public HearsayElixirItem(Properties properties) {
+    public ProfoundElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -41,12 +39,18 @@ public class HearsayElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
             if (server != null) {
-                // for the specified duration, put the player on the oracleMap
-                oracleMap.put((ServerPlayer) entityLiving, System.currentTimeMillis() + oracleDuration);
-
-                TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.HEARSAY_ACTIVE, true);
-                TranslatableComponent message = new TranslatableComponent("message.hearsay.user");
-                ((Player) entityLiving).displayClientMessage(message, true);
+                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(4.0D, 3.0D, 4.0D))) {
+                    if (!living.getUUID().equals(player.getUUID())) {
+                        if (living instanceof Player) {
+                            chatDisableMap.put((ServerPlayer) living, System.currentTimeMillis() + silenceDuration);
+                            TranslatableComponent message = new TranslatableComponent("message.profound.victim");
+                            ((Player) living).displayClientMessage(message, true);
+                        }
+                    } else {
+                        TranslatableComponent message = new TranslatableComponent("message.profound.used");
+                        ((Player) living).displayClientMessage(message, true);
+                    }
+                }
             }
 
             if (stack.isEmpty()) {

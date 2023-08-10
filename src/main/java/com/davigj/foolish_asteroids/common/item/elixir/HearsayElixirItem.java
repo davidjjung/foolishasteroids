@@ -1,10 +1,11 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
+import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -17,34 +18,35 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
-public class GraciousElixirItem extends Item {
+public class HearsayElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(GraciousElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SagaciousElixirItem.class.getName());
+    public static final Map<ServerPlayer, Long> oracleMap = new HashMap<>();
+    private static final long oracleDuration = 60000L;
 
-    public GraciousElixirItem(Properties properties) {
+    public HearsayElixirItem(Properties properties) {
         super(properties);
     }
 
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {
+            MinecraftServer server = entityLiving.getLevel().getServer();
             if (entityLiving instanceof ServerPlayer serverPlayerEntity) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
+            if (server != null) {
+                // for the specified duration, put the player on the oracleMap
+                oracleMap.put((ServerPlayer) entityLiving, System.currentTimeMillis() + oracleDuration);
 
-            float entityReach = ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).getBaseScale();
-            float fallDamage = ScaleTypes.FALLING.getScaleData(entityLiving).getBaseScale();
-
-            if (entityReach > 0.2) {
-                ScaleTypes.ENTITY_REACH.getScaleData(entityLiving).setTargetScale(entityReach - 0.2f);
-            }
-            if (fallDamage > 0.5) {
-                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(fallDamage - 0.1f);
+                TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.HEARSAY_ACTIVE, true);
+                TranslatableComponent message = new TranslatableComponent("message.hearsay.user");
+                ((Player) entityLiving).displayClientMessage(message, true);
             }
 
             if (stack.isEmpty()) {
@@ -63,7 +65,6 @@ public class GraciousElixirItem extends Item {
         }
         return super.finishUsingItem(stack, world, entityLiving);
     }
-
 
     public InteractionResultHolder<ItemStack> use(Level p_42993_, Player p_42994_, InteractionHand p_42995_) {
         return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);

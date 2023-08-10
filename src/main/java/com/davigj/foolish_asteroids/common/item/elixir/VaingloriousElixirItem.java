@@ -1,10 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -16,41 +14,41 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
-public class ProfoundElixirItem extends Item {
+public class VaingloriousElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(SagaciousElixirItem.class.getName());
-    public static final Map<ServerPlayer, Long> chatDisableMap = new HashMap<>();
-    private static final long silenceDuration = 15000L;
+    private static final Logger LOGGER = Logger.getLogger(VaingloriousElixirItem.class.getName());
 
-    public ProfoundElixirItem(Properties properties) {
+    public VaingloriousElixirItem(Properties properties) {
         super(properties);
     }
 
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entityLiving) {
         if (entityLiving instanceof Player player) {
-            MinecraftServer server = entityLiving.getLevel().getServer();
             if (entityLiving instanceof ServerPlayer serverPlayerEntity) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
-            if (server != null) {
-                for (LivingEntity living : entityLiving.level.getEntitiesOfClass(LivingEntity.class, entityLiving.getBoundingBox().inflate(4.0D, 3.0D, 4.0D))) {
-                    if (!living.getUUID().equals(player.getUUID())) {
-                        if (living instanceof Player) {
-                            chatDisableMap.put((ServerPlayer) living, System.currentTimeMillis() + silenceDuration);
-                            TranslatableComponent message = new TranslatableComponent("message.profound.victim");
-                            ((Player) living).displayClientMessage(message, true);
-                        }
-                    } else {
-                        TranslatableComponent message = new TranslatableComponent("message.profound.used");
-                        ((Player) living).displayClientMessage(message, true);
-                    }
-                }
+
+            float stepHeight = ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).getBaseScale();
+            float fallDamage = ScaleTypes.FALLING.getScaleData(entityLiving).getBaseScale();
+            float height = ScaleTypes.HEIGHT.getScaleData(entityLiving).getBaseScale();
+            float width = ScaleTypes.WIDTH.getScaleData(entityLiving).getBaseScale();
+
+            if (stepHeight < 10.0) {
+                ScaleTypes.STEP_HEIGHT.getScaleData(entityLiving).setTargetScale(stepHeight + 1.0f);
+            }
+            if (fallDamage < 10.0) {
+                ScaleTypes.FALLING.getScaleData(entityLiving).setTargetScale(fallDamage + 1.0f);
+            }
+            if (height < 5.0) {
+                ScaleTypes.HEIGHT.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
+            }
+            if (width < 5.0) {
+                ScaleTypes.WIDTH.getScaleData(entityLiving).setTargetScale(fallDamage + .5f);
             }
 
             if (stack.isEmpty()) {
@@ -69,6 +67,7 @@ public class ProfoundElixirItem extends Item {
         }
         return super.finishUsingItem(stack, world, entityLiving);
     }
+
 
     public InteractionResultHolder<ItemStack> use(Level p_42993_, Player p_42994_, InteractionHand p_42995_) {
         return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);

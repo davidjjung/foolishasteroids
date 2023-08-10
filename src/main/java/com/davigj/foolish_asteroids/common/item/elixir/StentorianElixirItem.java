@@ -1,11 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,15 +14,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class EmpyreanElixirItem extends Item {
+public class StentorianElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(EmpyreanElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StentorianElixirItem.class.getName());
 
-    public EmpyreanElixirItem(Properties properties) {
+    public StentorianElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -36,9 +33,15 @@ public class EmpyreanElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            double x = player.getX();
-            double z = player.getZ();
-            player.teleportTo(x, 256, z);
+            float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
+            float visibility = ScaleTypes.VISIBILITY.getScaleData(entityLiving).getBaseScale();
+
+            if (miningSpeed < 2.8) {
+                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed + 0.3f);
+            }
+            if (visibility < 5.0) {
+                ScaleTypes.VISIBILITY.getScaleData(entityLiving).setTargetScale(visibility + 0.5f);
+            }
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

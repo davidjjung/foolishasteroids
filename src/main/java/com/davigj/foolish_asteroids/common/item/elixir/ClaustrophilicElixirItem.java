@@ -1,11 +1,8 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.common.util.ElixirConstants;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -19,14 +16,13 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-public class IcarianElixirItem extends Item {
+public class ClaustrophilicElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(IcarianElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ClaustrophilicElixirItem.class.getName());
 
-    public IcarianElixirItem(Properties properties) {
+    public ClaustrophilicElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -37,14 +33,22 @@ public class IcarianElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
+            float reach = ScaleTypes.REACH.getScaleData(entityLiving).getBaseScale();
+            float miningSpeed = ScaleTypes.MINING_SPEED.getScaleData(entityLiving).getBaseScale();
             float jumpHeight = ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).getBaseScale();
-            float motion = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
+            float health = ScaleTypes.HEALTH.getScaleData(entityLiving).getBaseScale();
 
-            if (jumpHeight < 4.4) {
-                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight + 0.2f);
+            if (reach > 0.2f) {
+                ScaleTypes.REACH.getScaleData(entityLiving).setTargetScale(reach - 0.1f);
             }
-            if (motion > 0.2) {
-                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(motion - 0.1f);
+            if (miningSpeed > 0.2f) {
+                ScaleTypes.MINING_SPEED.getScaleData(entityLiving).setTargetScale(miningSpeed - 0.1f);
+            }
+            if (jumpHeight > 0.2f) {
+                ScaleTypes.JUMP_HEIGHT.getScaleData(entityLiving).setTargetScale(jumpHeight - 0.1f);
+            }
+            if (health < 5.0f) {
+                ScaleTypes.HEALTH.getScaleData(entityLiving).setTargetScale(health + 1.0f);
             }
 
             if (stack.isEmpty()) {
