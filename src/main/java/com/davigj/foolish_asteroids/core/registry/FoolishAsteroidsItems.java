@@ -103,6 +103,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PROFOUND_ELIXIR = HELPER.createItem("profound_elixir", () -> new ProfoundElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
+	public static final RegistryObject<Item> LOQUACIOUS_ELIXIR = HELPER.createItem("loquacious_elixir", () -> new LoquaciousElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
 	public static final RegistryObject<Item> TENEBROUS_ELIXIR = HELPER.createItem("tenebrous_elixir", () -> new TenebrousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
@@ -120,11 +123,6 @@ public class FoolishAsteroidsItems {
 		public static final List<String> BELLICOSE = new ArrayList<>(List.of(
 				"/scale set pehkui:jump_height 2.2 ",
 				"/scale set pehkui:height 0.9 "
-				));
-		public static final List<String> DILATORY = new ArrayList<>(List.of(
-				"/scale set pehkui:eye_height 3 ",
-				"/scale set pehkui:third_person 2.5 ",
-				"/scale set pehkui:visibility 3.0 "
 				));
 		public static final List<String> ESTRANGED = new ArrayList<>(List.of(
 				"/scale set pehkui:model_height 1.4 ",

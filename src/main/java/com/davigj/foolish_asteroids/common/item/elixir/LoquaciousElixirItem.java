@@ -9,8 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -18,19 +16,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import virtuoel.pehkui.api.ScaleData;
-import virtuoel.pehkui.api.ScaleType;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class SagaciousElixirItem extends Item {
+public class LoquaciousElixirItem extends Item {
 
+    private static final Logger LOGGER = Logger.getLogger(LoquaciousElixirItem.class.getName());
 
-    private static final Logger LOGGER = Logger.getLogger(SagaciousElixirItem.class.getName());
-
-    public SagaciousElixirItem(Properties properties) {
+    public LoquaciousElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -41,49 +38,47 @@ public class SagaciousElixirItem extends Item {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
+            float atk = ScaleTypes.ATTACK.getScaleData(entityLiving).getBaseScale();
 
+            if (atk < 4.0) {
+                ScaleTypes.ATTACK.getScaleData(entityLiving).setTargetScale(atk + 0.2f);
+                atk = ScaleTypes.ATTACK.getScaleData(entityLiving).getBaseScale();
+            }
             if (server != null) {
-                ScaleType scaleType = ScaleTypes.STEP_HEIGHT;
                 Random random = new Random();
-                String type = "";
-                int attribute = random.nextInt(6);
-                switch (attribute) {
+                int prompt = random.nextInt(5);
+                String announcement = "";
+                switch (prompt) {
                     case 0 -> {
-                        type = "Your capacity to step up has been amplified by a factor of ";
+                        announcement = "Good day for a swell battle! ";
                     }
                     case 1 -> {
-                        scaleType = ScaleTypes.DEFENSE;
-                        type = "Your ability to ward off damage has been amplified by a factor of ";
+                        announcement = "This match will get red hot! ";
                     }
                     case 2 -> {
-                        scaleType = ScaleTypes.MOTION;
-                        type = "Your swiftness has been amplified by a factor of ";
+                        announcement = "Here's a real high-class bout! ";
                     }
                     case 3 -> {
-                        scaleType = ScaleTypes.MINING_SPEED;
-                        type = "Your ability to mine has been amplified by a factor of ";
+                        announcement = "A great slam and then some! ";
                     }
                     case 4 -> {
-                        scaleType = ScaleTypes.VISIBILITY;
-                        type = "Your visibility has been amplified by a factor of ";
-                    }
-                    case 5 -> {
-                        scaleType = ScaleTypes.BLOCK_REACH;
-                        type = "Your ability to place blocks has been amplified by a factor of ";
-                    }
-                    case 6 -> {
-                        scaleType = ScaleTypes.ENTITY_REACH;
-                        type = "Your capacity to reach others has been amplified by a factor of ";
+                        announcement = "A brawl is surely brewing! ";
                     }
                 }
-                ScaleData data = scaleType.getScaleData(entityLiving);
-                String result = type + String.format("%.2f", data.getBaseScale());
-                TranslatableComponent message = new TranslatableComponent("message.sagacious.attribute", result);
+                String result = announcement + player.getDisplayName().getString() + "'s attack is multiplied by a factor of " + String.format("%.2f", atk);
+                TranslatableComponent message = new TranslatableComponent("message.loquacious.attribute", result);
+                // Choose a random active player that isn't the player who consumed the elixir
 
-                player.displayClientMessage(message, true);
+                List<ServerPlayer> eligiblePlayers = new ArrayList<>(server.getPlayerList().getPlayers());
+                eligiblePlayers.remove(player);
+
+                if (!eligiblePlayers.isEmpty()) {
+                    ServerPlayer randomPlayer = eligiblePlayers.get(new Random().nextInt(eligiblePlayers.size()));
+
+                    // Display the message to the chosen player
+                    randomPlayer.displayClientMessage(message, true);
+                }
             }
-            entityLiving.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 60, 0, false, false));
-
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

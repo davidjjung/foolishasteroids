@@ -44,7 +44,7 @@ public class DilatoryElixirItem extends Item {
                 ScaleTypes.VISIBILITY.getScaleData(entityLiving).setTargetScale(visibility + 0.3f);
             }
             if (eyeHeight > 5.0) {
-                ScaleTypes.EYE_HEIGHT.getScaleData(entityLiving).setTargetScale(visibility + 0.3f);
+                ScaleTypes.EYE_HEIGHT.getScaleData(entityLiving).setTargetScale(eyeHeight + 0.3f);
             }
 
             if (stack.isEmpty()) {

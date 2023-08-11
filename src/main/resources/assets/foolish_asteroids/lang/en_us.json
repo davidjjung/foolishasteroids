@@ -38,6 +38,7 @@
   "item.foolish_asteroids.vainglorious_elixir": "Vainglorious Elixir",
 
   "message.sagacious.attribute": "%s.",
+  "message.loquacious.attribute": "%s",
   "message.tenebrous.look_behind": "You feel a chill...",
   "message.tenebrous.insufficient": "You cannot conjure any more shadows at this time.",
   "message.tenebrous.user": "You feel a shadow seep out from your body...",
