@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core.other;
 
+import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
@@ -10,11 +11,16 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import virtuoel.pehkui.api.ScaleData;
@@ -173,6 +179,31 @@ public class FoolishAsteroidsEvents {
         if (event.getEntity() instanceof Player player) {
             smokingPlayers.remove(player.getUUID());
             rainbowTimers.remove(player.getUUID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSetAttackTarget(LivingSetAttackTargetEvent event) {
+        Entity target = event.getTarget();
+        LivingEntity entity = event.getEntityLiving();
+
+        // Check if the entity is a Witch and the target is a player holding a Heresy Elixir
+        if (entity instanceof Witch && target instanceof Player) {
+            Player player = (Player) target;
+            if (player.getMainHandItem().getItem() instanceof HeresyElixirItem ||
+                    player.getOffhandItem().getItem() instanceof HeresyElixirItem) {
+                // Cancel the event to prevent the Witch from attacking the player
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (TrackedDataManager.INSTANCE.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) == 2) {
+            TrackedDataManager.INSTANCE.setValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
+            TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
+            event.getPlayer().displayClientMessage(message, true);
         }
     }
 

@@ -10,6 +10,8 @@
   "item.foolish_asteroids.piquant_elixir": "Piquant Elixir",
   "item.foolish_asteroids.bucolic_elixir": "Bucolic Elixir",
   "item.foolish_asteroids.sagacious_elixir": "Sagacious Elixir",
+  "item.foolish_asteroids.hearsay_elixir": "Hearsay Elixir",
+  "item.foolish_asteroids.heresy_elixir": "Heresy Elixir",
 
   "item.foolish_asteroids.claustrophilic_elixir": "Claustrophilic Elixir",
   "item.foolish_asteroids.endemic_elixir": "Endemic Elixir",
@@ -65,5 +67,11 @@
   "message.hearsay.13": "%s what are you doing man",
   "message.hearsay.20": "%s Convo 2, Line 1",
   "message.hearsay.21": "%s Convo 2, Line 2",
-  "message.hearsay.22": "%s Convo 2, Line 3"
+  "message.hearsay.22": "%s Convo 2, Line 3",
+
+  "message.heresy.snap": "You feel your connection to the heavens is on the brink of severing.",
+  "message.heresy.snapping": "You feel your connection to the heavens sever...",
+  "message.heresy.snapped": "The flames of heresy consume you!",
+  "message.heresy.weaken": "You feel your connection to the heavens weaken...",
+  "message.hearsay.forgiveness": "The grace of the heavens briefly returns..."
 }
