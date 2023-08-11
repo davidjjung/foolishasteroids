@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -183,20 +184,28 @@ public class FoolishAsteroidsEvents {
     }
 
     @SubscribeEvent
-    public static void onSetAttackTarget(LivingSetAttackTargetEvent event) {
-        Entity target = event.getTarget();
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
 
-        // Check if the entity is a Witch and the target is a player holding a Heresy Elixir
-        if (entity instanceof Witch && target instanceof Player) {
-            Player player = (Player) target;
-            if (player.getMainHandItem().getItem() instanceof HeresyElixirItem ||
-                    player.getOffhandItem().getItem() instanceof HeresyElixirItem) {
-                // Cancel the event to prevent the Witch from attacking the player
-                event.setCanceled(true);
+        if (entity instanceof Witch && !entity.level.isClientSide()) {
+            // Only apply logic on the server side for Witches
+
+            if (entity.tickCount % 20 == 0) {
+                // Check every second (20 ticks) to reduce frequency
+
+                Entity target = ((Witch) entity).getTarget();
+                if (target instanceof Player) {
+                    Player player = (Player) target;
+                    if (player.getMainHandItem().getItem() instanceof HeresyElixirItem ||
+                            player.getOffhandItem().getItem() instanceof HeresyElixirItem) {
+                        // Cancel the event to prevent the Witch from attacking the player
+                        ((Witch) entity).setTarget(null);
+                    }
+                }
             }
         }
     }
+
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
