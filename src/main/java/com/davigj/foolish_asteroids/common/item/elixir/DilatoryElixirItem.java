@@ -18,11 +18,11 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.logging.Logger;
 
-public class JitteryElixirItem extends Item {
+public class DilatoryElixirItem extends Item {
 
-    private static final Logger LOGGER = Logger.getLogger(JitteryElixirItem.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DilatoryElixirItem.class.getName());
 
-    public JitteryElixirItem(Properties properties) {
+    public DilatoryElixirItem(Properties properties) {
         super(properties);
     }
 
@@ -33,18 +33,18 @@ public class JitteryElixirItem extends Item {
                 serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            float motion = ScaleTypes.MOTION.getScaleData(entityLiving).getBaseScale();
-            float viewBobbing = ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).getBaseScale();
-            float defense = ScaleTypes.DEFENSE.getScaleData(entityLiving).getBaseScale();
+            float thirdPerson = ScaleTypes.THIRD_PERSON.getScaleData(entityLiving).getBaseScale();
+            float visibility = ScaleTypes.VISIBILITY.getScaleData(entityLiving).getBaseScale();
+            float eyeHeight = ScaleTypes.EYE_HEIGHT.getScaleData(entityLiving).getBaseScale();
 
-            if (motion < 2.8) {
-                ScaleTypes.MOTION.getScaleData(entityLiving).setTargetScale(motion + 0.2f);
+            if (thirdPerson < 5.0) {
+                ScaleTypes.THIRD_PERSON.getScaleData(entityLiving).setTargetScale(thirdPerson + 0.3f);
             }
-            if (viewBobbing > .2) {
-                ScaleTypes.VIEW_BOBBING.getScaleData(entityLiving).setTargetScale(viewBobbing - 0.1f);
+            if (visibility < 4.0) {
+                ScaleTypes.VISIBILITY.getScaleData(entityLiving).setTargetScale(visibility + 0.3f);
             }
-            if (defense > 0.2) {
-                ScaleTypes.DEFENSE.getScaleData(entityLiving).setTargetScale(viewBobbing - 0.1f);
+            if (eyeHeight > 5.0) {
+                ScaleTypes.EYE_HEIGHT.getScaleData(entityLiving).setTargetScale(visibility + 0.3f);
             }
 
             if (stack.isEmpty()) {

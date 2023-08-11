@@ -180,6 +180,7 @@ public class FoolishAsteroidsEvents {
         if (event.getEntity() instanceof Player player) {
             smokingPlayers.remove(player.getUUID());
             rainbowTimers.remove(player.getUUID());
+            oracleMap.remove(player.getUUID());
         }
     }
 
@@ -209,7 +210,7 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (TrackedDataManager.INSTANCE.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) == 2) {
+        if (TrackedDataManager.INSTANCE.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
             TrackedDataManager.INSTANCE.setValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
             TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
             event.getPlayer().displayClientMessage(message, true);
