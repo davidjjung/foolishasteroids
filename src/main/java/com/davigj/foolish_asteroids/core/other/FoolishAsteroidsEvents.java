@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core.other;
 
+import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
@@ -14,6 +15,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +31,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import virtuoel.pehkui.api.ScaleData;
@@ -253,8 +257,36 @@ public class FoolishAsteroidsEvents {
     }
 
     @SubscribeEvent
-    public static void onPotionAdded(PotionEvent.PotionAddedEvent event) {
-
+    public static void onPotionAdded(PotionEvent.PotionApplicableEvent event) {
+        if (!event.getEntity().level.isClientSide()) {
+            if (event.getPotionEffect().getEffect() == BCEffects.TIPSY.get() && event.getEntity() instanceof Player player) {
+                MobEffectInstance tipsy = event.getPotionEffect();
+                int antiDrunk = TrackedDataManager.INSTANCE.getValue(player, FoolishAsteroidsMod.ANTI_DRUNK);
+                if (antiDrunk > 0) {
+                    int lvl = tipsy.getAmplifier() + 1; // gets actual level
+                    int duration = tipsy.getDuration();
+                    int existingTipsyLvl = 0;
+                    int existingTipsyDur = 0;
+                    for (MobEffectInstance existingEffect : player.getActiveEffects()) {
+                        if (existingEffect.getEffect().equals(BCEffects.TIPSY.get())) {
+                            existingTipsyLvl = existingEffect.getAmplifier() + 1; // current level of tipsy
+                            existingTipsyDur = existingEffect.getDuration();
+                        }
+                    }
+                    if (antiDrunk - lvl >= 0) {
+                        TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, antiDrunk - lvl);
+                    } else {
+                        // the incoming tipsy exceeds antidrunk
+                        TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, 0);
+                        if (existingTipsyLvl == 0) {
+                            player.addEffect(new MobEffectInstance(BCEffects.TIPSY.get(), (int) (duration * 0.5), lvl - antiDrunk - 1));
+                        } else {
+                            player.addEffect(new MobEffectInstance(BCEffects.TIPSY.get(), (int) (existingTipsyDur + (duration * 0.5)), existingTipsyLvl + lvl - antiDrunk - 2));
+                        }
+                    }
+                    event.setResult(Event.Result.DENY);
+                }
+            }
+        }
     }
-
 }

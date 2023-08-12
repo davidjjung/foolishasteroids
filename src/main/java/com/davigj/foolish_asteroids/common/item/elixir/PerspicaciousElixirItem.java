@@ -8,6 +8,7 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataMana
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -39,8 +40,15 @@ public class PerspicaciousElixirItem extends Item {
             }
             MinecraftServer server = entityLiving.getLevel().getServer();
             int antiDrunk = TrackedDataManager.INSTANCE.getValue(entityLiving, FoolishAsteroidsMod.ANTI_DRUNK);
-            if (server != null && antiDrunk < 5) {
-                TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.ANTI_DRUNK, antiDrunk + 1);
+            if (server != null) {
+                if (antiDrunk < 3) {
+                    TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.ANTI_DRUNK, antiDrunk + 1);
+                    TranslatableComponent message = new TranslatableComponent("message.perspicacious.glub");
+                    player.displayClientMessage(message, true);
+                } else {
+                    TranslatableComponent message = new TranslatableComponent("message.perspicacious.blug");
+                    player.displayClientMessage(message, true);
+                }
             }
 
             if (stack.isEmpty()) {
