@@ -22,6 +22,7 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Integer> DIALOGUE_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
 	public static final TrackedData<Boolean> HEARSAY_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> HIGHWAY_TO_HELL = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> ANTI_DRUNK = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -37,6 +38,7 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "dialogue_index"), DIALOGUE_INDEX);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "hearsay_active"), HEARSAY_ACTIVE);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "highway_to_hell"), HIGHWAY_TO_HELL);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "anti_drunk"), ANTI_DRUNK);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

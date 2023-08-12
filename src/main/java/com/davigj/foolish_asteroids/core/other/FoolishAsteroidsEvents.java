@@ -5,22 +5,28 @@ import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,7 +53,36 @@ public class FoolishAsteroidsEvents {
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
-        String senderID = "<" + event.getUsername() + "> ";
+        String senderID;
+        String trueSenderID = "<" + event.getUsername() + "> ";
+
+        ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
+        if (!helmet.isEmpty() && helmet.getItem() == EnvironmentalItems.THIEF_HOOD.get()) {
+            CompoundTag helmetTag = helmet.getTag();
+            if (helmetTag != null && helmetTag.contains("display", 10)) {
+                CompoundTag displayTag = helmetTag.getCompound("display");
+                if (displayTag.contains("Name", 8)) {
+                    String nameJson = displayTag.getString("Name");
+                    try {
+                        Component nameComponent = Component.Serializer.fromJson(nameJson);
+                        if (nameComponent instanceof TextComponent) {
+                            senderID = "<" + ((TextComponent) nameComponent).getText() + "> ";
+                        } else {
+                            senderID = "<Anonymous> ";
+                        }
+                    } catch (Exception e) {
+                        senderID = "<Anonymous> ";
+                    }
+                } else {
+                    senderID = "<Anonymous> ";
+                }
+            } else {
+                senderID = "<Anonymous> ";
+            }
+        } else {
+            senderID = "<" + event.getUsername() + "> ";
+        }
+
         TextComponent original = (TextComponent) new TextComponent(senderID).append(event.getMessage());
         TranslatableComponent modified = new TranslatableComponent(HearsayUtil.getDialogueLine(player).getKey(), senderID);
         if (chatDisableMap.containsKey(player)) {
@@ -215,6 +250,11 @@ public class FoolishAsteroidsEvents {
             TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
             event.getPlayer().displayClientMessage(message, true);
         }
+    }
+
+    @SubscribeEvent
+    public static void onPotionAdded(PotionEvent.PotionAddedEvent event) {
+
     }
 
 }
