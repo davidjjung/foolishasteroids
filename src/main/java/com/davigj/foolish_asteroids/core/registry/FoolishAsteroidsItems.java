@@ -103,6 +103,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PROFOUND_ELIXIR = HELPER.createItem("profound_elixir", () -> new ProfoundElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
+	public static final RegistryObject<Item> FREAKY_ELIXIR = HELPER.createItem("freaky_elixir", () -> new FreakyElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
 	public static final RegistryObject<Item> LOQUACIOUS_ELIXIR = HELPER.createItem("loquacious_elixir", () -> new LoquaciousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 

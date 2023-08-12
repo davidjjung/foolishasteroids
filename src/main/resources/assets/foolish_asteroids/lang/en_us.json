@@ -74,5 +74,9 @@
   "message.heresy.snapping": "You feel your connection to the heavens sever...",
   "message.heresy.snapped": "The flames of heresy consume you!",
   "message.heresy.weaken": "You feel your connection to the heavens weaken...",
-  "message.hearsay.forgiveness": "The grace of the heavens briefly returns..."
+  "message.hearsay.forgiveness": "The grace of the heavens briefly returns...",
+
+  "message.freaky.freaker": "Time to get freaky!",
+  "message.freaky.freakee": "You just got freaked with...",
+  "message.freaky.freakless": "Nobody to get freaky with..."
 }
