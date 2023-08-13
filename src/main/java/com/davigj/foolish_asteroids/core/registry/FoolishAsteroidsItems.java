@@ -36,6 +36,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PIQUANT_ELIXIR = HELPER.createItem("piquant_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.PIQUANT));
 
+	public static final RegistryObject<Item> TRITURATED_ELIXIR = HELPER.createItem("triturated_elixir", () -> new CommandElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.TRITURATED));
+
 	public static final RegistryObject<Item> BUCOLIC_ELIXIR = HELPER.createItem("bucolic_elixir", () -> new BucolicElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
@@ -49,6 +52,9 @@ public class FoolishAsteroidsItems {
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
 	public static final RegistryObject<Item> PERSPICACIOUS_ELIXIR = HELPER.createItem("perspicacious_elixir", () -> new PerspicaciousElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
+	public static final RegistryObject<Item> ATOMIZED_ELIXIR = HELPER.createItem("atomized_elixir", () -> new AtomizedElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
 
@@ -127,6 +133,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PARSIMONIOUS_ELIXIR = HELPER.createItem("parsimonious_elixir", () -> new ParsimoniousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
+	public static final RegistryObject<Item> TOUCHY_ELIXIR = HELPER.createItem("touchy_elixir", () -> new TouchyElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
 
 	static class CommandLists {
 		public static final List<String> BELLICOSE = new ArrayList<>(List.of(
@@ -169,9 +178,13 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:jump_height 2.0 "
 				));
 		public static final List<String> EVANESCENT = new ArrayList<>(List.of(
-				"/scale set pehkui:height 0.2 ",
-				"/scale set pehkui:width 0.2 ",
+				"/scale set pehkui:height 0.3 ",
+				"/scale set pehkui:width 0.3 ",
 				"/scale set pehkui:defense 0.5 "
+				));
+		public static final List<String> TRITURATED = new ArrayList<>(List.of(
+				"/scale set pehkui:height 0.1 ",
+				"/scale set pehkui:entity_reach 0.5 "
 				));
 		public static final List<String> IRKSOME = new ArrayList<>(List.of(
 				"/scale set pehkui:visibility 3.0 ",
