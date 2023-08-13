@@ -32,10 +32,12 @@
   "item.foolish_asteroids.garrulous_elixir": "Garrulous Elixir",
   "item.foolish_asteroids.indomitable_elixir": "Indomitable Elixir",
   "item.foolish_asteroids.loquacious_elixir": "Loquacious Elixir",
+  "item.foolish_asteroids.profound_elixir": "Profound Elixir",
   "item.foolish_asteroids.tenebrous_elixir": "Tenebrous Elixir",
   "item.foolish_asteroids.touchy_elixir": "Touchy Elixir",
   "item.foolish_asteroids.wretched_elixir": "Wretched Elixir",
   "item.foolish_asteroids.vainglorious_elixir": "Vainglorious Elixir",
+  "item.foolish_asteroids.seraphic_elixir": "Seraphic Elixir",
 
   "message.sagacious.attribute": "%s.",
   "message.loquacious.attribute": "%s",
@@ -81,5 +83,9 @@
   "message.freaky.freakless": "Nobody to get freaky with...",
 
   "message.perspicacious.glub": "You feel as though your leg has become more hollow.",
-  "message.perspicacious.blug": "You feel as if this tonic should be consumed in moderation."
+  "message.perspicacious.blug": "You feel as if this tonic should be consumed in moderation.",
+
+  "message.seraphic.command": "Flee to the hills, and do not look back.",
+  "message.seraphic.damage": "Do not look back, lest you be swept away.",
+  "death.attack.seraphic_damage": "%s was turned into a pillar of basalt"
 }

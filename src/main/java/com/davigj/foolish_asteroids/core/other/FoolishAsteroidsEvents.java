@@ -4,9 +4,11 @@ import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +17,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,11 +25,12 @@ import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -132,8 +134,10 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && event.player != null && !event.player.level.isClientSide) {
-            UUID playerId = event.player.getUUID();
+        Player player = event.player;
+        TrackedDataManager manager = TrackedDataManager.INSTANCE;
+        if (event.phase == TickEvent.Phase.START && player != null && !player.level.isClientSide) {
+            UUID playerId = player.getUUID();
             if (rainbowTimers.containsKey(playerId)) {
                 int timerTicks = rainbowTimers.get(playerId);
                 if (timerTicks > 0) {
@@ -141,35 +145,69 @@ public class FoolishAsteroidsEvents {
                     rainbowTimers.put(playerId, timerTicks);
                     if (timerTicks == 0) {
                         // Rainbow effect duration has reached zero, remove the rainbow effect
-                        RainbowUtil.setRainbowType(event.player, 0);
+                        RainbowUtil.setRainbowType(player, 0);
                         rainbowTimers.remove(playerId);
                     }
                 }
             }
+            if (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE) && player.tickCount % 20 == 0) {
+                Vec3 lookDirection = player.getLookAngle();
+                double horizontalAngle = Math.atan2(lookDirection.z, lookDirection.x);
+                double degree = Math.toDegrees(horizontalAngle);
+                degree = (degree + 360) % 360;
+                Boolean sinfulGaze = false;
+                switch(manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_DIR)) {
+                    case 0 -> {
+                        if (degree >= 180 && degree < 360) {
+                            sinfulGaze = true;
+                        }
+                    }
+                    case 1 -> {
+                        if (degree >= 270 || degree < 90) {
+                            sinfulGaze = true;
+                        }
+                    }
+                    case 2 -> {
+                        if (degree >= 0 || degree < 180) {
+                            sinfulGaze = true;
+                        }
+                    }
+                    case 3 -> {
+                        if (degree >= 90 || degree < 270) {
+                            sinfulGaze = true;
+                        }
+                    }
+                }
+                if (sinfulGaze) {
+                    player.hurt(FoolishAsteroidsDamageSources.SERAPHIC, 6.0f);
+                    TranslatableComponent message = new TranslatableComponent("message.seraphic.damage");
+                    player.displayClientMessage(message, true);
+                }
+
+            }
         }
-        if (event.phase == TickEvent.Phase.END && !event.player.level.isClientSide) {
-            ServerPlayer player = (ServerPlayer) event.player;
-            Long chatDisableTime = chatDisableMap.get(player);
-            Long oracleTime = oracleMap.get(player);
+        if (event.phase == TickEvent.Phase.END && !player.level.isClientSide) {
+            ServerPlayer serverPlayer = (ServerPlayer) event.player;
+            Long chatDisableTime = chatDisableMap.get(serverPlayer);
+            Long oracleTime = oracleMap.get(serverPlayer);
 
             // If the player's chat is disabled and the specified time has elapsed, re-enable chat
             if (chatDisableTime != null && System.currentTimeMillis() >= chatDisableTime) {
                 TranslatableComponent message = new TranslatableComponent("message.profound.chat_enabled");
-                player.displayClientMessage(message, true);
-                chatDisableMap.remove(player);
+                serverPlayer.displayClientMessage(message, true);
+                chatDisableMap.remove(serverPlayer);
             }
 
-            Long oracleMapTime = oracleMap.get(player);
+            Long oracleMapTime = oracleMap.get(serverPlayer);
             if (oracleTime != null && System.currentTimeMillis() >= oracleMapTime) {
                 TranslatableComponent message = new TranslatableComponent("message.hearsay.use_end");
-                player.displayClientMessage(message, true);
-                TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.HEARSAY_ACTIVE, false);
-                oracleMap.remove(player);
+                serverPlayer.displayClientMessage(message, true);
+                TrackedDataManager.INSTANCE.setValue(serverPlayer, FoolishAsteroidsMod.HEARSAY_ACTIVE, false);
+                oracleMap.remove(serverPlayer);
             }
         }
-        if (event.phase == TickEvent.Phase.START && event.player != null && event.player.level.isClientSide()) {
-            UUID playerId = event.player.getUUID();
-            Player player = event.player;
+        if (event.phase == TickEvent.Phase.START && player != null && player.level.isClientSide()) {
+            UUID playerId = player.getUUID();
             ScaleData atk = ScaleTypes.ATTACK.getScaleData(player);
             if (smokingPlayers.containsKey(playerId)) {
                 int remainingTicks = smokingPlayers.get(playerId);
@@ -214,12 +252,27 @@ public class FoolishAsteroidsEvents {
 
     }
 
+
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             smokingPlayers.remove(player.getUUID());
             rainbowTimers.remove(player.getUUID());
             oracleMap.remove(player.getUUID());
+        }
+        if (event.getSource().equals(FoolishAsteroidsDamageSources.SERAPHIC) && event.getEntity() instanceof Player player) {
+            BlockPos basaltPos = player.blockPosition();
+            Level world = player.level;
+
+            int towerHeight = Math.max(1, (int) (ScaleTypes.HEIGHT.getScaleData(player).getBaseScale() / .5f));
+            int i = 0;
+            while (i < towerHeight) {
+                 if (world.getBlockState(basaltPos).isAir()) {
+                     world.setBlockAndUpdate(basaltPos, Blocks.BASALT.defaultBlockState());
+                 }
+                basaltPos = basaltPos.above();
+                i++;
+            }
         }
     }
 
@@ -249,10 +302,13 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (TrackedDataManager.INSTANCE.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
-            TrackedDataManager.INSTANCE.setValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
+        TrackedDataManager manager = TrackedDataManager.INSTANCE;
+        if (manager.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
+            manager.setValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
             TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
             event.getPlayer().displayClientMessage(message, true);
+        } else if (manager.getValue(event.getPlayer(), FoolishAsteroidsMod.SERAPHIC_ACTIVE)) {
+            manager.setValue(event.getPlayer(), FoolishAsteroidsMod.SERAPHIC_ACTIVE, false);
         }
     }
 
