@@ -1,8 +1,8 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
+import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,9 +37,9 @@ public class TenebrousElixirItem extends ElixirItem {
             }
         } else {
             TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
-            entityLiving.hurt(DamageSource.OUT_OF_WORLD, 1.0f);
+            entityLiving.hurt(FoolishAsteroidsDamageSources.DARKNESS, 1.0f);
             ((Player) entityLiving).displayClientMessage(message, true);
         }
-        entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
+        entityLiving.hurt(FoolishAsteroidsDamageSources.DARKNESS, 0.05f);
     }
 }

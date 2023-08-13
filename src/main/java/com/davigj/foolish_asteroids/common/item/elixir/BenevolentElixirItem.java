@@ -1,8 +1,8 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
+import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -60,7 +60,7 @@ public class BenevolentElixirItem extends ElixirItem {
                 }
             }
         } else {
-            entityLiving.hurt(DamageSource.MAGIC, 1.0F);
+            entityLiving.hurt(FoolishAsteroidsDamageSources.BENEVOLENT, 1.0F);
         }
         TranslatableComponent message;
         if (noEntities) {

@@ -53,6 +53,7 @@
   "message.profound.chat_enabled": "You snap out of your trance, and may speak again.",
   "message.benevolent.user": "You feel a surge of empathy...",
   "message.benevolent.no_entities": "No one around in need of reaching out.",
+  "death.attack.benevolent_damage": "%s gave until there was nothing left to give",
   "message.parsimonious.user": "You feel a surge of antipathy...",
   "message.parsimonious.no_entities": "Nobody around to drain...",
 
