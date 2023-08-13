@@ -58,6 +58,7 @@ public class MycologicalElixirItem extends Item {
                     } else {
                         LOGGER.warning("Command instance is null.");
                     }
+                    player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100));
                 }
             }
             if (stack.isEmpty()) {

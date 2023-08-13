@@ -56,11 +56,11 @@ public class TenebrousElixirItem extends Item {
                     }
                 }
             } else {
-                entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
                 TranslatableComponent message = new TranslatableComponent("message.tenebrous.insufficient");
+                entityLiving.hurt(DamageSource.OUT_OF_WORLD, 1.0f);
                 ((Player) entityLiving).displayClientMessage(message, true);
             }
-
+            entityLiving.hurt(DamageSource.OUT_OF_WORLD, 0.05f);
 
             if (stack.isEmpty()) {
                 return new ItemStack(FoolishAsteroidsItems.FLASK.get());

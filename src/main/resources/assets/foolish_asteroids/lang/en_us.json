@@ -44,6 +44,7 @@
   "message.tenebrous.look_behind": "You feel a chill...",
   "message.tenebrous.insufficient": "You cannot conjure any more shadows at this time.",
   "message.tenebrous.user": "You feel a shadow seep out from your body...",
+  "death.attack.darkness_damage": "%s was consumed by shadows.",
   "message.profound.used": "Peace at last...",
   "message.profound.victim": "You suddenly feel too serene to speak.",
   "message.profound.chat_disabled": "You are currently beyond words.",
@@ -87,5 +88,5 @@
 
   "message.seraphic.command": "Flee to the hills, and do not look back.",
   "message.seraphic.damage": "Do not look back, lest you be swept away.",
-  "death.attack.seraphic_damage": "%s was turned into a pillar of basalt"
+  "death.attack.seraphic_damage": "%s did not heed the heavens, and was turned into a pillar of basalt"
 }

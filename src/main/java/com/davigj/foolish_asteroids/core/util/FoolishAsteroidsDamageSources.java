@@ -4,4 +4,5 @@ import net.minecraft.world.damagesource.DamageSource;
 
 public class FoolishAsteroidsDamageSources {
     public static final DamageSource SERAPHIC = new DamageSource("seraphic_damage").bypassArmor();
+    public static final DamageSource DARKNESS = new DamageSource("darkness_damage").bypassArmor();
 }

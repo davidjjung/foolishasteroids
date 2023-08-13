@@ -58,6 +58,7 @@ public class EstrangedElixirItem extends Item {
                     } else {
                         LOGGER.warning("Command instance is null.");
                     }
+                    player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60));
                 }
             }
             if (stack.isEmpty()) {
