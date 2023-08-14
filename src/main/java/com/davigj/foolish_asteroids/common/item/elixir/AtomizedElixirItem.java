@@ -1,43 +1,44 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
-import com.davigj.foolish_asteroids.common.util.ElixirConstants;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import vectorwing.farmersdelight.common.item.DrinkableItem;
 
-import java.util.logging.Logger;
+import java.util.Random;
 
 public class AtomizedElixirItem extends ElixirItem {
-
-    private static final Logger LOGGER = Logger.getLogger(AtomizedElixirItem.class.getName());
 
     public AtomizedElixirItem(Properties properties) {
         super(properties);
     }
 
-    public void affectConsumer(ItemStack stack, Level level, LivingEntity consumer) {
-    }
-
-    public InteractionResultHolder<ItemStack> use(Level p_42993_, Player p_42994_, InteractionHand p_42995_) {
-        return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);
-    }
-
-    public int getUseDuration(ItemStack p_43001_) {
-        return ElixirConstants.DRINK_TIME;
-    }
-
-    public UseAnim getUseAnimation(ItemStack p_42997_) {
-        return UseAnim.DRINK;
+    public void affectConsumer(ItemStack stack, Level level, LivingEntity entityLiving) {
+        Player player = (Player) entityLiving;
+        TrackedDataManager manager = TrackedDataManager.INSTANCE;
+        int electrons = manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS);
+        int stability = (int) ((player.experienceLevel * 0.3) + 2);
+        // 0 lvls -> 2 electrons, 10 lvls -> 5 electrons, 20 lvls -> 8 electrons, etc.
+        if (electrons < stability) {
+            manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, electrons + 1);
+        } else {
+            Random random = new Random();
+            TranslatableComponent message;
+            if (random.nextInt(10) < 3) {
+                manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, electrons + 1);
+                player.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 0));
+                message = new TranslatableComponent("message.atomized.risky");
+            } else {
+                player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
+                manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, true);
+                message = new TranslatableComponent("message.atomized.poisoned");
+            }
+            player.displayClientMessage(message, true);
+        }
     }
 }

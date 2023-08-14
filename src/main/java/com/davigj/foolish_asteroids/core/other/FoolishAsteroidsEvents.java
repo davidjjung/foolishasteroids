@@ -4,10 +4,12 @@ import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
+import com.teamabnormals.upgrade_aquatic.core.registry.UAParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,13 +19,17 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -31,11 +37,13 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import vectorwing.farmersdelight.common.registry.ModParticleTypes;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
@@ -156,7 +164,7 @@ public class FoolishAsteroidsEvents {
                 double degree = Math.toDegrees(horizontalAngle);
                 degree = (degree + 360) % 360;
                 Boolean sinfulGaze = false;
-                switch(manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_DIR)) {
+                switch (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_DIR)) {
                     case 0 -> {
                         if (degree >= 180 && degree < 360) {
                             sinfulGaze = true;
@@ -248,8 +256,52 @@ public class FoolishAsteroidsEvents {
                     smokingPlayers.remove(playerId);
                 }
             }
+            int rads = manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS);
+            if (rads > 0) {
+                Level level = player.level;
+                Random random = new Random();
+                double x = player.getX();
+                double y = player.getY() + player.getEyeHeight() - (ScaleTypes.HEIGHT.getScaleData(player).getBaseScale() / 2);
+                double z = player.getZ();
+                if (random.nextInt(40) <= rads && !player.isSpectator() && !player.isCreative()) {
+                    level.addParticle(FoolishAsteroidsParticleTypes.ELECTRON.get(), x, y, z,
+                            10, 3, 10);
+                }
+            }
         }
+    }
 
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        TrackedDataManager manager = TrackedDataManager.INSTANCE;
+        DamageSource source = event.getSource();
+        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
+            player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
+        }
+        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) > 0 && !source.isMagic()) {
+            double explosionX = player.getX();
+            double explosionY = player.getY() + player.getEyeHeight();
+            double explosionZ = player.getZ();
+            float explosionPower = 1.3f; // Adjust explosion power as needed
+            int electrons = manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS);
+            double explosionRadius = (0.25 * electrons) + 1; // Adjust the radius as needed
+
+            for (LivingEntity entity : player.level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(explosionRadius, 2.0D, explosionRadius))) {
+                // Apply explosion forces to entities within the radius
+                if (entity != player) {
+                    Vec3 pushVector = entity.position().subtract(explosionX, explosionY, explosionZ).normalize();
+                    double pushStrength = 0.6 + (0.05 * electrons); // Adjust the strength as needed
+                    entity.setOnGround(false);
+                    entity.push(pushVector.x * pushStrength, 0.3 + (electrons * 0.075)* (1.0D - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), pushVector.z * pushStrength);
+                }
+            }
+            player.level.explode(player, explosionX, explosionY, explosionZ, explosionPower, false, Explosion.BlockInteraction.NONE);
+            manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) - 1);
+            Random random = new Random();
+            if (random.nextInt(5) <= 2) {
+                manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
+            }
+        }
     }
 
 
@@ -267,9 +319,9 @@ public class FoolishAsteroidsEvents {
             int towerHeight = Math.max(1, (int) (ScaleTypes.HEIGHT.getScaleData(player).getBaseScale() / .5f));
             int i = 0;
             while (i < towerHeight) {
-                 if (world.getBlockState(basaltPos).isAir()) {
-                     world.setBlockAndUpdate(basaltPos, Blocks.BASALT.defaultBlockState());
-                 }
+                if (world.getBlockState(basaltPos).isAir()) {
+                    world.setBlockAndUpdate(basaltPos, Blocks.BASALT.defaultBlockState());
+                }
                 basaltPos = basaltPos.above();
                 i++;
             }
@@ -303,13 +355,16 @@ public class FoolishAsteroidsEvents {
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
-        if (manager.getValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
-            manager.setValue(event.getPlayer(), FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
+        Player player = event.getPlayer();
+        if (manager.getValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
+            manager.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
             TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
             event.getPlayer().displayClientMessage(message, true);
-        } else if (manager.getValue(event.getPlayer(), FoolishAsteroidsMod.SERAPHIC_ACTIVE)) {
-            manager.setValue(event.getPlayer(), FoolishAsteroidsMod.SERAPHIC_ACTIVE, false);
+        } else if (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE)) {
+            manager.setValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE, false);
         }
+        manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, 0);
+        manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
     }
 
     @SubscribeEvent

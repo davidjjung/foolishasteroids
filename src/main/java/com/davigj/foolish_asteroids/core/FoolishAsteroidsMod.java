@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core;
 
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.DataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
@@ -22,9 +23,11 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Integer> DIALOGUE_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
 	public static final TrackedData<Boolean> HEARSAY_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Boolean> SERAPHIC_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
+	public static final TrackedData<Boolean> RAD_POISONING = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> HIGHWAY_TO_HELL = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> ANTI_DRUNK = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> SERAPHIC_DIR = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> STORED_ELECTRONS = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -32,6 +35,7 @@ public class FoolishAsteroidsMod {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		REGISTRY_HELPER.register(bus);
+		FoolishAsteroidsParticleTypes.PARTICLE_TYPES.register(bus);
 
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
@@ -44,6 +48,8 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "anti_drunk"), ANTI_DRUNK);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "seraphic_active"), SERAPHIC_ACTIVE);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "seraphic_direction"), SERAPHIC_DIR);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "stored_electrons"), STORED_ELECTRONS);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "rad_poisoning"), RAD_POISONING);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

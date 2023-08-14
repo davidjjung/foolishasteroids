@@ -15,6 +15,7 @@
   "item.foolish_asteroids.triturated_elixir": "Triturated Elixir",
 
   "item.foolish_asteroids.claustrophilic_elixir": "Claustrophilic Elixir",
+  "item.foolish_asteroids.atomized": "Atomized Elixir",
   "item.foolish_asteroids.endemic_elixir": "Endemic Elixir",
   "item.foolish_asteroids.evanescent_elixir": "Evanescent Elixir",
   "item.foolish_asteroids.icarian_elixir": "Icarian Elixir",
@@ -90,5 +91,8 @@
 
   "message.seraphic.command": "Flee to the hills, and do not look back.",
   "message.seraphic.damage": "Do not look back, lest you be swept away.",
-  "death.attack.seraphic_damage": "%s did not heed the heavens, and was turned into a pillar of basalt"
+  "death.attack.seraphic_damage": "%s did not heed the heavens, and was turned into a pillar of basalt",
+
+  "message.atomized.risky": "You feel the need to let off some radioactive steam...",
+  "message.atomized.poisoned": "You feel unstable."
 }
