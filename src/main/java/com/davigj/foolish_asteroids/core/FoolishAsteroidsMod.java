@@ -24,6 +24,7 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Boolean> HEARSAY_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Boolean> SERAPHIC_ACTIVE = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Boolean> RAD_POISONING = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
+	public static final TrackedData<Boolean> AUTUMNAL = TrackedData.Builder.create(DataProcessors.BOOLEAN, () -> false).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> HIGHWAY_TO_HELL = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> ANTI_DRUNK = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> SERAPHIC_DIR = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
@@ -50,6 +51,7 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "seraphic_direction"), SERAPHIC_DIR);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "stored_electrons"), STORED_ELECTRONS);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "rad_poisoning"), RAD_POISONING);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "autumnal"), AUTUMNAL);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

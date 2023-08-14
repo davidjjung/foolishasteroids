@@ -24,17 +24,11 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> ESTRANGED_ELIXIR = HELPER.createItem("estranged_elixir", () -> new EstrangedElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.ESTRANGED));
 
-	public static final RegistryObject<Item> JEJUNE_ELIXIR = HELPER.createItem("jejune_elixir", () -> new CommandElixirItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.JEJUNE));
-
 	public static final RegistryObject<Item> MYCOLOGICAL_ELIXIR = HELPER.createItem("mycological_elixir", () -> new MycologicalElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.MYCOLOGICAL));
 
 	public static final RegistryObject<Item> QUADRATIC_ELIXIR = HELPER.createItem("quadratic_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.QUADRATIC));
-
-	public static final RegistryObject<Item> PIQUANT_ELIXIR = HELPER.createItem("piquant_elixir", () -> new CommandElixirItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.PIQUANT));
 
 	public static final RegistryObject<Item> TRITURATED_ELIXIR = HELPER.createItem("triturated_elixir", () -> new CommandElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get()), CommandLists.TRITURATED));
@@ -54,11 +48,14 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PERSPICACIOUS_ELIXIR = HELPER.createItem("perspicacious_elixir", () -> new PerspicaciousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
-	public static final RegistryObject<Item> ATOMIZED_ELIXIR = HELPER.createItem("atomized_elixir", () -> new AtomizedElixirItem(
+	public static final RegistryObject<Item> SUSURROUS_ELIXIR = HELPER.createItem("susurrous_elixir", () -> new SusurrousElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
 
 	// Awkward Elixirs
+	public static final RegistryObject<Item> ATOMIZED_ELIXIR = HELPER.createItem("atomized_elixir", () -> new AtomizedElixirItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
+
 	public static final RegistryObject<Item> CLAUSTROPHILIC_ELIXIR = HELPER.createItem("claustrophilic_elixir", () -> new ClaustrophilicElixirItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_BREWING).craftRemainder(FoolishAsteroidsItems.FLASK.get())));
 
@@ -146,10 +143,6 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:model_height 1.4 ",
 				"/scale set pehkui:model_width 0.8 "
 				));
-		public static final List<String> JEJUNE = new ArrayList<>(List.of(
-				"/scale set pehkui:step_height 2.0 ",
-				"/scale set pehkui:motion 0.75 "
-				));
 		public static final List<String> MYCOLOGICAL = new ArrayList<>(List.of(
 				"/scale set pehkui:width 1.2 ",
 				"/scale set pehkui:height 1.2 ",
@@ -161,12 +154,6 @@ public class FoolishAsteroidsItems {
 				"/scale set pehkui:held_item 1.4 ",
 				"/scale set pehkui:reach 0.6 ",
 				"/scale set pehkui:drops 1.4 "
-				));
-		public static final List<String> PIQUANT = new ArrayList<>(List.of(
-				"/scale set pehkui:height 0.7 ",
-				"/scale set pehkui:width 0.7 ",
-				"/scale set pehkui:held_item 0.4 ",
-				"/scale set pehkui:drops 0.4 "
 				));
 		public static final List<String> FRIABLE = new ArrayList<>(List.of(
 				"/scale set pehkui:height 0.4 ",

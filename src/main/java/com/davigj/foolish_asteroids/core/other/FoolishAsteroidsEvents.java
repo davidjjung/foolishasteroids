@@ -7,9 +7,9 @@ import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
-import com.teamabnormals.upgrade_aquatic.core.registry.UAParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,6 +31,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -213,6 +214,9 @@ public class FoolishAsteroidsEvents {
                 TrackedDataManager.INSTANCE.setValue(serverPlayer, FoolishAsteroidsMod.HEARSAY_ACTIVE, false);
                 oracleMap.remove(serverPlayer);
             }
+            if (player.tickCount % 20 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+                player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 0, false, false));
+            }
         }
         if (event.phase == TickEvent.Phase.START && player != null && player.level.isClientSide()) {
             UUID playerId = player.getUUID();
@@ -268,6 +272,22 @@ public class FoolishAsteroidsEvents {
                             10, 3, 10);
                 }
             }
+            if (player.tickCount % 5 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+                Random rand = new Random();
+                rand.nextInt(1);
+                double x = player.getX() - 0.5;
+                double y = player.getY();
+                double z = player.getZ() - 0.5;
+                Level level = player.level;
+                BlockPos pos = player.blockPosition();
+                int color = ((Biome)level.m_204166_(pos).m_203334_()).getFoliageColor();
+                double d0 = (double) ((float) (color >> 16 & 255) / 255.0F);
+                double d1 = (double) ((float) (color >> 8 & 255) / 255.0F);
+                double d2 = (double) ((float) (color & 255) / 255.0F);
+                double d3 = (double) ((float) x + rand.nextFloat());
+                double d6 = (double) ((float) z + rand.nextFloat());
+                level.addParticle((ParticleOptions) AutumnityParticleTypes.FALLING_MAPLE_LEAF.get(), d3, y + 0.025, d6, d0, d1, d2);
+            }
         }
     }
 
@@ -301,6 +321,10 @@ public class FoolishAsteroidsEvents {
             if (random.nextInt(5) <= 2) {
                 manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
             }
+        }
+        if (event.getEntity() instanceof Player player) {
+            // TODO: Play sound of magical wind dispelling
+            manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
         }
     }
 
@@ -365,6 +389,8 @@ public class FoolishAsteroidsEvents {
         }
         manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, 0);
         manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
+        manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
+        manager.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, 0);
     }
 
     @SubscribeEvent

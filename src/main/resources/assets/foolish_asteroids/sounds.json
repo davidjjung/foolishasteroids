@@ -34,5 +34,23 @@
         "stream": true
       }
     ]
+  },
+  "item.susurrous_elixir.wind_start": {
+    "category": "ambient",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/wind_start",
+        "stream": true
+      }
+    ]
+  },
+  "item.susurrous_elixir.wind_end": {
+    "category": "ambient",
+    "sounds": [
+      {
+        "name": "foolish_asteroids:item/wind_end",
+        "stream": true
+      }
+    ]
   }
 }

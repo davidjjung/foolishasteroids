@@ -11,5 +11,8 @@ public class FoolishAsteroidsSounds {
     public static final RegistryObject<SoundEvent> MUSHROOM = HELPER.createSoundEvent("item.mycological_elixir.mushroom");
     public static final RegistryObject<SoundEvent> WEIRD_MUSHROOM = HELPER.createSoundEvent("item.estranged_elixir.weird_mushroom");
     public static final RegistryObject<SoundEvent> HUSH = HELPER.createSoundEvent("item.profound_elixir.hush");
+    public static final RegistryObject<SoundEvent> WIND_START = HELPER.createSoundEvent("item.susurrous_elixir.wind_start");
+    public static final RegistryObject<SoundEvent> WIND_END = HELPER.createSoundEvent("item.susurrous_elixir.wind_end");
     public static final RegistryObject<SoundEvent> EARTHBOUND = HELPER.createSoundEvent("item.earthbound_elixir.earthbound");
+    // seraphic damage, tenebrous damage, benevolent, parsimonious, dang a lotta sounds gotta be made
 }
