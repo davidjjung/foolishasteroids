@@ -43,10 +43,8 @@ public class MorphMedalItem extends Item {
         CommandSourceStack commandSource = player.createCommandSourceStack();
         MinecraftServer server = commandSource.getServer();
         Commands commands = server.getCommands();
-        if (commands != null && !MorphUtilHelper.isPlayerMorphed(player)) {
+        if (commands != null) {
             commands.performCommand(commandSource, commandToExecute);
-        } else {
-            System.out.println("AAAAAAAAA");
         }
     }
 }
