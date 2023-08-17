@@ -1,10 +1,12 @@
 package com.davigj.foolish_asteroids.core.registry;
 
-import com.davigj.foolish_asteroids.common.item.MorphMedalItem;
+import com.davigj.foolish_asteroids.common.item.medal.BarnyardEmblemItem;
+import com.davigj.foolish_asteroids.common.item.medal.BlankMedallionItem;
+import com.davigj.foolish_asteroids.common.item.medal.FishyEmblemItem;
+import com.davigj.foolish_asteroids.common.item.medal.MorphMedalItem;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -154,18 +156,17 @@ public class FoolishAsteroidsItems {
 				));
 	}
 
+	public static final RegistryObject<Item> BLANK_MEDALLION = HELPER.createItem("blank_medallion", () -> new BlankMedallionItem(
+			new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
 	public static final RegistryObject<Item> COW_MEDAL = HELPER.createItem("cow_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:cow", 30));
 	public static final RegistryObject<Item> PIG_MEDAL = HELPER.createItem("pig_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:pig", 30));
 	public static final RegistryObject<Item> SHEEP_MEDAL = HELPER.createItem("sheep_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:sheep", 30));
-	public static final RegistryObject<Item> TAPIR_MEDAL = HELPER.createItem("tapir_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "environmental:tapir", 30));
 	public static final RegistryObject<Item> CHICKEN_MEDAL = HELPER.createItem("chicken_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:chicken", 30));
-	public static final RegistryObject<Item> HORSE_MEDAL = HELPER.createItem("horse_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:horse", 30));
 	public static final RegistryObject<Item> TURKEY_MEDAL = HELPER.createItem("turkey_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "autumnity:turkey", 30));
 	public static final RegistryObject<Item> SQUIRREL_MEDAL = HELPER.createItem("squirrel_medal", () -> new MorphMedalItem(
@@ -178,136 +179,88 @@ public class FoolishAsteroidsItems {
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "naturalist:butterfly", 120));
 	public static final RegistryObject<Item> CATERPILLAR_MEDAL = HELPER.createItem("caterpillar_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "naturalist:caterpillar", 30));
-	public static final RegistryObject<Item> CATFISH_MEDAL = HELPER.createItem("catfish_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:catfish", 60));
-	public static final RegistryObject<Item> PERCH_MEDAL = HELPER.createItem("perch_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "upgrade_aquatic:perch", 60));
-	public static final RegistryObject<Item> PIKE_MEDAL = HELPER.createItem("pike_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "upgrade_aquatic:perch", 60));
-	public static final RegistryObject<Item> COD_MEDAL = HELPER.createItem("cod_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:cod", 60));
-	public static final RegistryObject<Item> SALMON_MEDAL = HELPER.createItem("salmon_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:salmon", 60));
-	public static final RegistryObject<Item> FLYING_FISH_MEDAL = HELPER.createItem("flying_fish_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:flying_fish", 60));
-	public static final RegistryObject<Item> PUFFERFISH_MEDAL = HELPER.createItem("pufferfish_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:pufferfish", 60));
-	public static final RegistryObject<Item> GWIBLING = HELPER.createItem("gwibling_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "undergarden:gwibling", 60));
-	public static final RegistryObject<Item> COSMIC_COD_MEDAL = HELPER.createItem("cosmic_cod_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:cosmic_cod", 120));
 	public static final RegistryObject<Item> BLAZE_MEDAL = HELPER.createItem("blaze_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:blaze", 120));
 	public static final RegistryObject<Item> ENDERMAN_MEDAL = HELPER.createItem("enderman_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:enderman", 120));
 	public static final RegistryObject<Item> SKELETON_MEDAL = HELPER.createItem("skeleton_medal", () -> new MorphMedalItem(
-			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:skeleton", 120));
+			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:skeleton", 30));
 	public static final RegistryObject<Item> ZOMBIE_MEDAL = HELPER.createItem("zombie_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:zombie", 30));
 	public static final RegistryObject<Item> HUSK_MEDAL = HELPER.createItem("husk_medal", () -> new MorphMedalItem(
 			new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:husk", 30));
 	public static final RegistryObject<Item> GHAST_MEDAL = HELPER.createItem("ghast_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:ghast", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:ghast", 120));
 	public static final RegistryObject<Item> FROSTBITTEN_MEDAL = HELPER.createItem("frostbitten_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "rottencreatures:frostbitten", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "rottencreatures:frostbitten", 30));
 	public static final RegistryObject<Item> DROWNED_MEDAL = HELPER.createItem("drowned_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:drowned", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:drowned", 30));
 	public static final RegistryObject<Item> SUNBIRD_MEDAL = HELPER.createItem("sunbird_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:sunbird", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:sunbird", 180));
 	public static final RegistryObject<Item> HIPPO_MEDAL = HELPER.createItem("hippo_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:hippo", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:hippo", 30));
 	public static final RegistryObject<Item> VILLAGER_MEDAL = HELPER.createItem("villager_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:villager", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:villager", 30));
 	public static final RegistryObject<Item> WANDERING_TRADER_MEDAL = HELPER.createItem("wandering_trader_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wandering_trader", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wandering_trader", 30));
 	public static final RegistryObject<Item> STRIDER_MEDAL = HELPER.createItem("strider_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:strider", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:strider", 60));
 	public static final RegistryObject<Item> GAZELLE_MEDAL = HELPER.createItem("gazelle_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:gazelle", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:gazelle", 30));
 	public static final RegistryObject<Item> SEAL_MEDAL = HELPER.createItem("seal_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:seal", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:seal", 30));
 	public static final RegistryObject<Item> ARMOR_STAND_MEDAL = HELPER.createItem("armor_stand_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:armor_stand", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:armor_stand", 30));
 	public static final RegistryObject<Item> EASEL_MEDAL = HELPER.createItem("easel_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "zetter:easel_entity", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "zetter:easel_entity", 30));
 	public static final RegistryObject<Item> BOAT_MEDAL = HELPER.createItem("boat_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:boat", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:boat", 30));
 	public static final RegistryObject<Item> SLED_MEDAL = HELPER.createItem("sled_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "snowyspirit:sled", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "snowyspirit:sled", 30));
 	public static final RegistryObject<Item> MINECART_MEDAL = HELPER.createItem("minecart_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:minecart", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:minecart", 30));
 	public static final RegistryObject<Item> TARGET_DUMMY_MEDAL = HELPER.createItem("target_dummy_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "dummmmmmy:target_dummy", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "dummmmmmy:target_dummy", 30));
 	public static final RegistryObject<Item> MANNEQUIN_MEDAL = HELPER.createItem("mannequin_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "mannequins:mannequin", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "mannequins:mannequin", 30));
 	public static final RegistryObject<Item> STATUE_MEDAL = HELPER.createItem("statue_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "mannequins:statue", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "mannequins:statue", 30));
 	public static final RegistryObject<Item> WITHER_MEDAL = HELPER.createItem("wither_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wither", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wither", 180));
 	public static final RegistryObject<Item> SAND_BLOCK_MEDAL = HELPER.createItem("sand_block_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:falling_block", 0));
-	public static final RegistryObject<Item> SNOW_GOLEM_MEDAL = HELPER.createItem("snow_golem_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:snow_golem", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:falling_block", 30));
 	public static final RegistryObject<Item> TURTLE_MEDAL = HELPER.createItem("turtle_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:turtle", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:turtle", 30));
 	public static final RegistryObject<Item> TORTOISE_MEDAL = HELPER.createItem("tortoise_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "sullysmod:tortoise", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "sullysmod:tortoise", 30));
 	public static final RegistryObject<Item> TROPICAL_FISH_MEDAL = HELPER.createItem("tropical_fish_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:tropical_fish", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:tropical_fish", 60));
 	public static final RegistryObject<Item> TERRAPIN_MEDAL = HELPER.createItem("terrapin_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:terrapin", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "alexsmobs:terrapin", 30));
 	public static final RegistryObject<Item> GUARDIAN_MEDAL = HELPER.createItem("guardian_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:guardian", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:guardian", 60));
 	public static final RegistryObject<Item> ELDER_GUARDIAN_MEDAL = HELPER.createItem("elder_guardian_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:elder_guardian", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:elder_guardian", 120));
 	public static final RegistryObject<Item> SLIME_MEDAL = HELPER.createItem("slime_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:slime", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:slime", 30));
 	public static final RegistryObject<Item> MAGMA_CUBE_MEDAL = HELPER.createItem("magma_cube_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:magma_cube", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:magma_cube", 30));
 	public static final RegistryObject<Item> FOX_MEDAL = HELPER.createItem("fox_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:fox", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:fox", 30));
 	public static final RegistryObject<Item> CAT_MEDAL = HELPER.createItem("cat_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:cat", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:cat", 30));
 	public static final RegistryObject<Item> WOLF_MEDAL = HELPER.createItem("wolf_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wolf", 0));
-	public static final RegistryObject<Item> SHIBA_MEDAL = HELPER.createItem("shiba_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "quark:shiba", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:wolf", 30));
 	public static final RegistryObject<Item> PIGLIN_MEDAL = HELPER.createItem("piglin_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:piglin", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:piglin", 30));
 	public static final RegistryObject<Item> STONELING_MEDAL = HELPER.createItem("stoneling_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "quark:stoneling", 0));
-	public static final RegistryObject<Item> SCINTLING_MEDAL = HELPER.createItem("scintling_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "undergarden:scintling", 0));
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "quark:stoneling", 30));
 	public static final RegistryObject<Item> CREEPER_MEDAL = HELPER.createItem("creeper_medal", () ->
-			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:creeper", 0));
-//	public static final RegistryObject<Item> BAMBOO_CREEPER_MEDAL = HELPER.createItem("bamboo_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:bamboo_creeper", 0));
-//	public static final RegistryObject<Item> DESERT_CREEPER_MEDAL = HELPER.createItem("desert_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:desert_creeper", 0));
-//	public static final RegistryObject<Item> BADLANDS_CREEPER_MEDAL = HELPER.createItem("badlands_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:badlands_creeper", 0));
-//	public static final RegistryObject<Item> HILLS_CREEPER_MEDAL = HELPER.createItem("hills_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:hills_creeper", 0));
-//	public static final RegistryObject<Item> SAVANNAH_CREEPER_MEDAL = HELPER.createItem("savannah_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:savannah_creeper", 0));
-//	public static final RegistryObject<Item> MUSHROOM_CREEPER_MEDAL = HELPER.createItem("mushroom_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:mushroom_creeper", 0));
-//	public static final RegistryObject<Item> SWAMP_CREEPER_MEDAL = HELPER.createItem("swamp_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:swamp_creeper", 0));
-//	public static final RegistryObject<Item> DRIPSTONE_CREEPER_MEDAL = HELPER.createItem("dripstone_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:dripstone_creeper", 0));
-//	public static final RegistryObject<Item> DARK_OAK_CREEPER_MEDAL = HELPER.createItem("dark_oak_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:dark_oak_creeper", 0));
-//	public static final RegistryObject<Item> SPRUCE_CREEPER_MEDAL = HELPER.createItem("spruce_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:spruce_creeper", 0));
-//	public static final RegistryObject<Item> SNOWY_CREEPER_MEDAL = HELPER.createItem("snowy_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:snowy_creeper", 0));
-//	public static final RegistryObject<Item> BEACH_CREEPER_MEDAL = HELPER.createItem("beach_creeper_medal", () ->
-//			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "creeper_overhaul:beach_creeper", 0));
-
-
-
-
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:creeper", 60));
+	public static final RegistryObject<Item> BARNYARD_EMBLEM = HELPER.createItem("barnyard_emblem", () ->
+			new BarnyardEmblemItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> FISHY_EMBLEM = HELPER.createItem("fishy_emblem", () ->
+			new FishyEmblemItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
 
 }
