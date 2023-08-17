@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
-public class BarnyardEmblemItem extends Item {
+public class KeratinousEmblemItem extends Item {
 
 
-    public BarnyardEmblemItem(Properties properties) {
+    public KeratinousEmblemItem(Properties properties) {
         super(properties);
     }
 
@@ -38,28 +38,19 @@ public class BarnyardEmblemItem extends Item {
     }
 
     private void morph(Player player) {
-        String morphToBe = "minecraft:cow";
+        String morphToBe = "minecraft:turtle";
         switch (MorphUtilHelper.playerCurrentMorph(player)) {
-            case "entity.minecraft.cow" -> {
-                morphToBe = "minecraft:pig";
-            }
-            case "entity.minecraft.pig" -> {
-                morphToBe = "minecraft:chicken";
-            }
-            case "entity.minecraft.chicken" -> {
-                morphToBe = "minecraft:sheep";
-            }
-            case "entity.minecraft.sheep" -> {
-                morphToBe = "minecraft:cow";
-            }
+            case "entity.minecraft.turtle" -> morphToBe = "alexsmobs:terrapin";
+            case "entity.alexsmobs.terrapin" -> morphToBe = "sullysmod:tortoise";
+            case "entity.sullysmod.tortoise" -> morphToBe = "minecraft:turtle";
             default -> {
+                // Randomly select one of the four options
                 Random random = new Random();
-                int randomIndex = random.nextInt(4);
+                int randomIndex = random.nextInt(3);
                 switch (randomIndex) {
-                    case 0 -> morphToBe = "minecraft:pig";
-                    case 1 -> morphToBe = "minecraft:cow";
-                    case 2 -> morphToBe = "minecraft:sheep";
-                    case 3 -> morphToBe = "minecraft:chicken";
+                    case 0 -> morphToBe = "minecraft:turtle";
+                    case 1 -> morphToBe = "sullysmod:tortoise";
+                    case 2 -> morphToBe = "alexsmobs:terrapin";
                 }
             }
         }

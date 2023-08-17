@@ -14,20 +14,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class BarnyardEmblemItem extends Item {
+public class FreightEmblemItem extends Item {
 
 
-    public BarnyardEmblemItem(Properties properties) {
+    public FreightEmblemItem(Properties properties) {
         super(properties);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         // TODO: Coin flip sound
-        level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         player.getCooldowns().addCooldown(this, 10 * 20);
         player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLANK_MEDALLION.get(), 20 * 20);
         if (!level.isClientSide) {
@@ -38,28 +39,18 @@ public class BarnyardEmblemItem extends Item {
     }
 
     private void morph(Player player) {
-        String morphToBe = "minecraft:cow";
+        String morphToBe = "minecraft:minecart";
         switch (MorphUtilHelper.playerCurrentMorph(player)) {
-            case "entity.minecraft.cow" -> {
-                morphToBe = "minecraft:pig";
-            }
-            case "entity.minecraft.pig" -> {
-                morphToBe = "minecraft:chicken";
-            }
-            case "entity.minecraft.chicken" -> {
-                morphToBe = "minecraft:sheep";
-            }
-            case "entity.minecraft.sheep" -> {
-                morphToBe = "minecraft:cow";
-            }
+            case "entity.minecraft.minecart" -> morphToBe = "minecraft:boat";
+            case "entity.minecraft.boat" -> morphToBe = "snowyspirit:sled";
+            case "entity.snowyspirit.sled" -> morphToBe = "minecraft:minecart";
             default -> {
                 Random random = new Random();
-                int randomIndex = random.nextInt(4);
+                int randomIndex = random.nextInt(3);
                 switch (randomIndex) {
-                    case 0 -> morphToBe = "minecraft:pig";
-                    case 1 -> morphToBe = "minecraft:cow";
-                    case 2 -> morphToBe = "minecraft:sheep";
-                    case 3 -> morphToBe = "minecraft:chicken";
+                    case 0 -> morphToBe = "minecraft:minecart";
+                    case 1 -> morphToBe = "minecraft:boat";
+                    case 2 -> morphToBe = "snowyspirit:sled";
                 }
             }
         }
@@ -69,8 +60,6 @@ public class BarnyardEmblemItem extends Item {
         CommandSourceStack commandSource = player.createCommandSourceStack();
         MinecraftServer server = commandSource.getServer();
         Commands commands = server.getCommands();
-        if (commands != null) {
-            commands.performCommand(commandSource, commandToExecute);
-        }
+        commands.performCommand(commandSource, commandToExecute);
     }
 }

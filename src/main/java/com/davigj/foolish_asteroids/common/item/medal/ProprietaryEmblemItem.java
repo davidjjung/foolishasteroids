@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
-public class BarnyardEmblemItem extends Item {
+public class ProprietaryEmblemItem extends Item {
 
 
-    public BarnyardEmblemItem(Properties properties) {
+    public ProprietaryEmblemItem(Properties properties) {
         super(properties);
     }
 
@@ -38,28 +38,22 @@ public class BarnyardEmblemItem extends Item {
     }
 
     private void morph(Player player) {
-        String morphToBe = "minecraft:cow";
+        String morphToBe = "minecraft:armor_stand";
         switch (MorphUtilHelper.playerCurrentMorph(player)) {
-            case "entity.minecraft.cow" -> {
-                morphToBe = "minecraft:pig";
-            }
-            case "entity.minecraft.pig" -> {
-                morphToBe = "minecraft:chicken";
-            }
-            case "entity.minecraft.chicken" -> {
-                morphToBe = "minecraft:sheep";
-            }
-            case "entity.minecraft.sheep" -> {
-                morphToBe = "minecraft:cow";
-            }
+            case "entity.minecraft.armor_stand" -> morphToBe = "zetter:easel_entity";
+            case "entity.zetter.easel_entity" -> morphToBe = "dummmmmmy:target_dummy";
+            case "entity.dummmmmmy.target_dummy" -> morphToBe = "mannequins:mannequin";
+            case "entity.mannequins.mannequin" -> morphToBe = "mannequins:statue";
+            case "entity.mannequins.statue" -> morphToBe = "minecraft:armor_stand";
             default -> {
                 Random random = new Random();
-                int randomIndex = random.nextInt(4);
+                int randomIndex = random.nextInt(5);
                 switch (randomIndex) {
-                    case 0 -> morphToBe = "minecraft:pig";
-                    case 1 -> morphToBe = "minecraft:cow";
-                    case 2 -> morphToBe = "minecraft:sheep";
-                    case 3 -> morphToBe = "minecraft:chicken";
+                    case 0 -> morphToBe = "minecraft:armor_stand";
+                    case 1 -> morphToBe = "zetter:easel_entity";
+                    case 2 -> morphToBe = "dummmmmmy:target_dummy";
+                    case 3 -> morphToBe = "mannequins:mannequin";
+                    case 4 -> morphToBe = "mannequins:statue";
                 }
             }
         }

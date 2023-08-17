@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
-public class BarnyardEmblemItem extends Item {
+public class HuntedEmblemItem extends Item {
 
 
-    public BarnyardEmblemItem(Properties properties) {
+    public HuntedEmblemItem(Properties properties) {
         super(properties);
     }
 
@@ -28,7 +28,7 @@ public class BarnyardEmblemItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
         // TODO: Coin flip sound
         level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-        player.getCooldowns().addCooldown(this, 10 * 20);
+        player.getCooldowns().addCooldown(this, 20 * 20);
         player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLANK_MEDALLION.get(), 20 * 20);
         if (!level.isClientSide) {
             morph(player);
@@ -38,28 +38,28 @@ public class BarnyardEmblemItem extends Item {
     }
 
     private void morph(Player player) {
-        String morphToBe = "minecraft:cow";
+        String morphToBe = "environmental:deer";
         switch (MorphUtilHelper.playerCurrentMorph(player)) {
-            case "entity.minecraft.cow" -> {
-                morphToBe = "minecraft:pig";
+            case "entity.environmental.deer" -> {
+                morphToBe = "minecraft:rabbit";
             }
-            case "entity.minecraft.pig" -> {
-                morphToBe = "minecraft:chicken";
+            case "entity.minecraft.rabbit" -> {
+                morphToBe = "alexsmobs:gazelle";
             }
-            case "entity.minecraft.chicken" -> {
-                morphToBe = "minecraft:sheep";
+            case "entity.alexsmobs.gazelle" -> {
+                morphToBe = "ecologics:squirrel";
             }
-            case "entity.minecraft.sheep" -> {
-                morphToBe = "minecraft:cow";
+            case "entity.ecologics.squirrel" -> {
+                morphToBe = "environmental:deer";
             }
             default -> {
                 Random random = new Random();
                 int randomIndex = random.nextInt(4);
                 switch (randomIndex) {
-                    case 0 -> morphToBe = "minecraft:pig";
-                    case 1 -> morphToBe = "minecraft:cow";
-                    case 2 -> morphToBe = "minecraft:sheep";
-                    case 3 -> morphToBe = "minecraft:chicken";
+                    case 0 -> morphToBe = "minecraft:rabbit";
+                    case 1 -> morphToBe = "alexsmobs:gazelle";
+                    case 2 -> morphToBe = "environmental:deer";
+                    case 3 -> morphToBe = "ecologics:squirrel";
                 }
             }
         }
