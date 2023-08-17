@@ -89,7 +89,7 @@ public class WallflowerEmblemItem extends Item {
             case "beach" -> morphToBe = "creeperoverhaul:beach_creeper";
             case "dripstone" -> morphToBe = "creeperoverhaul:dripstone_creeper";
             case "jungle" -> morphToBe = "creeperoverhaul:jungle_creeper";
-            case "savanna" -> morphToBe = "creeperoverhaul:savanna_creeper";
+            case "savanna" -> morphToBe = "creeperoverhaul:savannah_creeper";
             case "spruce" -> morphToBe = "creeperoverhaul:spruce_creeper";
             case "snowy" -> morphToBe = "creeperoverhaul:snowy_creeper";
             case "hills" -> morphToBe = "creeperoverhaul:hills_creeper";
