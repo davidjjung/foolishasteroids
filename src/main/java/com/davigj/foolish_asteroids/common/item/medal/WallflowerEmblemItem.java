@@ -52,7 +52,7 @@ public class WallflowerEmblemItem extends Item {
             case "environmental:blossom_woods", "environmental:blossom_valley", "minecraft:bamboo_jungle",
                     "terralith:sakura_grove", "terralith:sakura_valley" -> "bamboo";
             case "minecraft:beach", "minecraft:gravel_beach", "minecraft:stony_shores" -> "beach";
-            case "minecraft:dripstone_caves" -> "dripstone";
+            case "minecraft:dripstone_caves", "terralith:stony_spires" -> "dripstone";
             case "terralith:andesite_caves", "terralith:granite_caves", "terralith:diorite_caves" -> "cave";
             case "minecraft:mushroom_fields", "terralith:fungal_caves" -> "mushroom";
             case "minecraft:badlands", "minecraft:wooded_badlands", "minecraft:eroded_badlands",
@@ -75,6 +75,10 @@ public class WallflowerEmblemItem extends Item {
                     "minecraft:jagged_peaks", "minecraft:snowy_taiga", "terralith:wintry_forest",
                     "terralith:wintry_lowlands", "terralith:alpine_grove", "terralith:frozen_cliffs", "terralith:glacial_chasm",
                     "terralith:snowy_maple_forest" -> "snowy";
+            case "minecraft:desert", "terralith:ancient_sands", "terralith:sandstone_canyon",
+                    "terralith:desert_oasis", "terralith:desert_spires", "atmospheric:dunes",
+                    "atmospheric:rocky_dunes", "atmospheric:petrified_dunes", "atmospheric:flourishing_dunes" -> "desert";
+            case "minecraft:dark_forest", "terralith:moonlight_grove", "terralith:moonlight_valley" -> "dark_oak";
             default -> Objects.requireNonNull(((Biome) player.getLevel().m_204166_(pos).m_203334_()).getRegistryName()).toString();
         };
 

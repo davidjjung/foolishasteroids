@@ -1,14 +1,13 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import virtuoel.pehkui.api.ScaleTypes;
 
-public class IcarianElixirItem extends ElixirItem {
+public class BoundlessElixirItem extends ElixirItem {
 
-    public IcarianElixirItem(Properties properties) {
+    public BoundlessElixirItem(Properties properties) {
         super(properties);
     }
 
