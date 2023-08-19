@@ -293,6 +293,7 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
+        // TODO: spawn a tiny angry spider when hitting a dark oak creeper :]
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
         DamageSource source = event.getSource();
         if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
