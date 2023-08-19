@@ -6,4 +6,5 @@ public class FoolishAsteroidsDamageSources {
     public static final DamageSource SERAPHIC = new DamageSource("seraphic_damage").bypassArmor();
     public static final DamageSource DARKNESS = new DamageSource("darkness_damage").bypassArmor();
     public static final DamageSource BENEVOLENT = new DamageSource("benevolent_damage").bypassArmor();
+    public static final DamageSource VIRULENT = new DamageSource("virulent_damage").bypassArmor();
 }

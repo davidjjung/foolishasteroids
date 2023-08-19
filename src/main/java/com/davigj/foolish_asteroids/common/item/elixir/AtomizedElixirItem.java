@@ -36,6 +36,7 @@ public class AtomizedElixirItem extends ElixirItem {
             } else {
                 player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
                 manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, true);
+                player.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0));
                 message = new TranslatableComponent("message.atomized.poisoned");
             }
             player.displayClientMessage(message, true);
