@@ -11,6 +11,7 @@ import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
+import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
 import de.budschie.bmorph.main.BMorphMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -33,6 +34,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -48,12 +50,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -446,5 +446,17 @@ public class FoolishAsteroidsEvents {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.KeyInputEvent event) {
         // Check if the pressed key is the one you're interested in
+    }
+
+    @SubscribeEvent
+    public static void onEntityDamaged(AttackEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity target = event.getTarget();
+
+        if (target instanceof BananaPeel bananaPeel) {
+            // Spawn the ItemEntity with the Banana Peel item
+            ItemEntity itemEntity = new ItemEntity(player.level, bananaPeel.getX(), bananaPeel.getY(), bananaPeel.getZ(), new ItemStack(FoolishAsteroidsItems.BANANA_PEEL.get()));
+            player.level.addFreshEntity(itemEntity);
+        }
     }
 }
