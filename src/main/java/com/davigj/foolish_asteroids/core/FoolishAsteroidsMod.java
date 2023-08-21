@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core;
 
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.DataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
@@ -37,6 +38,8 @@ public class FoolishAsteroidsMod {
 
 		REGISTRY_HELPER.register(bus);
 		FoolishAsteroidsParticleTypes.PARTICLE_TYPES.register(bus);
+		FoolishAsteroidsMobEffects.EFFECTS.register(bus);
+		FoolishAsteroidsMobEffects.POTIONS.register(bus);
 
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
@@ -56,7 +59,7 @@ public class FoolishAsteroidsMod {
 
 	private void commonSetup(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-
+			FoolishAsteroidsMobEffects.registerBrewingRecipes();
 		});
 	}
 

@@ -11,6 +11,7 @@ import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
+import de.budschie.bmorph.main.BMorphMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -439,5 +441,10 @@ public class FoolishAsteroidsEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onKeyInput(InputEvent.KeyInputEvent event) {
+        // Check if the pressed key is the one you're interested in
     }
 }
