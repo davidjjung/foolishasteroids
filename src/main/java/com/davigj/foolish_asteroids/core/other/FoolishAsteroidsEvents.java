@@ -29,12 +29,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -59,6 +59,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import tech.thatgravyboat.creeperoverhaul.Creepers;
+import tech.thatgravyboat.creeperoverhaul.common.entity.CreeperTypes;
 import vectorwing.farmersdelight.common.registry.ModParticleTypes;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
@@ -295,7 +297,7 @@ public class FoolishAsteroidsEvents {
                 double z = player.getZ() - 0.5;
                 Level level = player.level;
                 BlockPos pos = player.blockPosition();
-                int color = ((Biome)level.m_204166_(pos).m_203334_()).getFoliageColor();
+                int color = ((Biome) level.m_204166_(pos).m_203334_()).getFoliageColor();
                 double d0 = (double) ((float) (color >> 16 & 255) / 255.0F);
                 double d1 = (double) ((float) (color >> 8 & 255) / 255.0F);
                 double d2 = (double) ((float) (color & 255) / 255.0F);
@@ -308,7 +310,6 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        // TODO: spawn a tiny angry spider when hitting a dark oak creeper :]
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
         DamageSource source = event.getSource();
         if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
@@ -328,7 +329,7 @@ public class FoolishAsteroidsEvents {
                     Vec3 pushVector = entity.position().subtract(explosionX, explosionY, explosionZ).normalize();
                     double pushStrength = 0.6 + (0.05 * electrons); // Adjust the strength as needed
                     entity.setOnGround(false);
-                    entity.push(pushVector.x * pushStrength, 0.3 + (electrons * 0.075)* (1.0D - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), pushVector.z * pushStrength);
+                    entity.push(pushVector.x * pushStrength, 0.3 + (electrons * 0.075) * (1.0D - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), pushVector.z * pushStrength);
                 }
             }
             player.level.explode(player, explosionX, explosionY, explosionZ, explosionPower, false, Explosion.BlockInteraction.NONE);
@@ -341,6 +342,20 @@ public class FoolishAsteroidsEvents {
         if (event.getEntity() instanceof Player player) {
             // TODO: Play sound of magical wind dispelling
             manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
+        }
+        Random random = new Random();
+        if (event.getEntity().getType().toString().equals("entity.creeperoverhaul.dark_oak_creeper") && random.nextBoolean()) {
+            Spider spider = EntityType.SPIDER.create(event.getEntity().level);
+            float creeperSize = ScaleTypes.HEIGHT.getScaleData(event.getEntity()).getBaseScale();
+            Level world = event.getEntity().level;
+            if (!world.isClientSide) {
+                assert spider != null;
+                ((PathfinderMob) spider).targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(spider, Player.class, true));
+            }
+            ScaleTypes.BASE.getScaleData(spider).setScaleTickDelay(0);
+            ScaleTypes.BASE.getScaleData(spider).setScale(0.3f * creeperSize);
+            spider.setPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
+            event.getEntity().level.addFreshEntity(spider);
         }
     }
 
