@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core;
 
+import com.davigj.foolish_asteroids.core.other.FoolishAsteroidsCompat;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.DataProcessors;
@@ -59,6 +60,7 @@ public class FoolishAsteroidsMod {
 
 	private void commonSetup(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
+			FoolishAsteroidsCompat.registerCompat();
 			FoolishAsteroidsMobEffects.registerBrewingRecipes();
 		});
 	}
