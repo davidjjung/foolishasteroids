@@ -5,6 +5,7 @@ import com.davigj.foolish_asteroids.common.item.SunbirdFeatherItem;
 import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.teamabnormals.autumnity.core.registry.AutumnityItems;
 import com.teamabnormals.autumnity.core.registry.AutumnityMobEffects;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.world.effect.MobEffect;
@@ -252,7 +253,7 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
-			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
