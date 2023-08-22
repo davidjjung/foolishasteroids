@@ -238,6 +238,8 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> HUNTED_EMBLEM = HELPER.createItem("hunted_emblem", () ->
 			new HuntedEmblemItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
+	public static final RegistryObject<Item> COMET_MEDAL = HELPER.createItem("comet_medal", () ->
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> SUNBIRD_FEATHER = HELPER.createItem("sunbird_feather", () ->
 			new SunbirdFeatherItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
