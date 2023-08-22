@@ -5,7 +5,12 @@ import com.davigj.foolish_asteroids.common.item.SunbirdFeatherItem;
 import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.teamabnormals.autumnity.core.registry.AutumnityMobEffects;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -246,5 +251,16 @@ public class FoolishAsteroidsItems {
 			new SunbirdFeatherItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
 
+	public static class FoolishAsteroidsFoods {
+		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
+			return new MobEffectInstance((MobEffect) MobEffects.CONFUSION, 320, 0);
+		}, 1.0F).effect(() -> {
+			return new MobEffectInstance((MobEffect) MobEffects.POISON, 320, 0);
+		}, 1.0F).effect(() -> {
+			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 500, 2);
+		}, 1.0F).build();
+	}
 }
