@@ -235,25 +235,31 @@ public class FoolishAsteroidsEvents {
                 player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 0, false, false));
             }
         }
-        if (event.phase == TickEvent.Phase.START && player != null && player.level.isClientSide()) {
+        if (event.phase == TickEvent.Phase.START && player != null) {
             UUID playerId = player.getUUID();
             ScaleData atk = ScaleTypes.ATTACK.getScaleData(player);
             if (smokingPlayers.containsKey(playerId)) {
                 int remainingTicks = smokingPlayers.get(playerId);
                 if (remainingTicks > 0) {
-                    remainingTicks--;
-                    smokingPlayers.put(playerId, remainingTicks);
                     float atkVal = atk.getBaseScale();
+                    if (!player.level.isClientSide()) {
+                        remainingTicks--;
+                        smokingPlayers.put(playerId, remainingTicks);
+                        if (remainingTicks <= 400 && remainingTicks >= 201) {
+                            atk.setTargetScale(atkVal + 0.006f);
+                        } else if (remainingTicks < 200) {
+                            atk.setTargetScale(atkVal * 1.02f);
+                        } else {
+                            atk.setTargetScale(atkVal + 0.01f);
+                        }
+                    }
                     ParticleOptions particle;
                     if (remainingTicks <= 400 && remainingTicks >= 201) {
                         particle = ParticleTypes.POOF;
-                        atk.setTargetScale(atkVal + 0.006f);
                     } else if (remainingTicks < 200) {
-                        atk.setTargetScale(atkVal * 1.02f);
                         particle = ParticleTypes.CAMPFIRE_COSY_SMOKE;
                     } else {
                         particle = ParticleTypes.SMOKE;
-                        atk.setTargetScale(atkVal + 0.01f);
                     }
                     // Spawn campfire smoke particles
                     Level level = player.level;
@@ -261,10 +267,13 @@ public class FoolishAsteroidsEvents {
                     double x = player.getX();
                     double y = player.getY() + player.getEyeHeight();
                     double z = player.getZ();
-                    if (random.nextInt(10) >= 4 && !player.isSpectator() && !player.isCreative()) {
+                    if (random.nextInt(10) >= 4 && !player.isSpectator() && !player.isCreative() && player.level.isClientSide()) {
+                        if (random.nextInt(10) == 1) {
+                            player.playSound(SoundEvents.FURNACE_FIRE_CRACKLE, 1, 1);
+                        }
                         level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
                     }
-                    if (remainingTicks < 20) {
+                    if (remainingTicks < 10) {
                         player.setSecondsOnFire(8);
                         atk.setTargetScale(0.25f);
                     }
@@ -312,6 +321,11 @@ public class FoolishAsteroidsEvents {
     public static void onLivingHurt(LivingHurtEvent event) {
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
         DamageSource source = event.getSource();
+        if (source == DamageSource.ANVIL) {
+            float modelHeight = ScaleTypes.HEIGHT.getScaleData(event.getEntity()).getBaseScale();
+            ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setScaleTickDelay(4);
+            ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setTargetScale(modelHeight * 0.5f);
+        }
         if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
         }
