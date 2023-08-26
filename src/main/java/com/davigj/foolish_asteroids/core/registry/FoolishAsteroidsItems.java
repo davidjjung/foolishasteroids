@@ -1,6 +1,8 @@
 package com.davigj.foolish_asteroids.core.registry;
 
 import com.davigj.foolish_asteroids.common.item.BananaPeelItem;
+import com.davigj.foolish_asteroids.common.item.GiftOfGabItem;
+import com.davigj.foolish_asteroids.common.item.LightningBottleItem;
 import com.davigj.foolish_asteroids.common.item.SunbirdFeatherItem;
 import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
@@ -14,6 +16,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -226,6 +229,8 @@ public class FoolishAsteroidsItems {
 			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "quark:stoneling", 30));
 	public static final RegistryObject<Item> CREEPER_MEDAL = HELPER.createItem("creeper_medal", () ->
 			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "minecraft:creeper", 60));
+	public static final RegistryObject<Item> EASEL_MEDAL = HELPER.createItem("easel_medal", () ->
+			new MorphMedalItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC), "zetter:easel_entity", 60));
 
 	public static final RegistryObject<Item> BARNYARD_EMBLEM = HELPER.createItem("barnyard_emblem", () ->
 			new BarnyardEmblemItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
@@ -248,12 +253,18 @@ public class FoolishAsteroidsItems {
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> INCOMPLETE_BLANK_MEDALLION = HELPER.createItem("incomplete_blank_medallion", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> UNFINISHED_MORPH_MEDALLION = HELPER.createItem("unfinished_morph_medallion", () ->
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> SUNBIRD_FEATHER = HELPER.createItem("sunbird_feather", () ->
 			new SunbirdFeatherItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
+	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
+			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
+	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
+			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS)));
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {

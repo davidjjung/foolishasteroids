@@ -82,38 +82,51 @@ public class FoolishAsteroidsEvents {
 
     private static final Logger LOGGER = Logger.getLogger(FoolishAsteroidsEvents.class.getName());
 
+    private static String updateSenderID(ItemStack itemStack, String currentSenderID) {
+        CompoundTag tag = itemStack.getTag();
+        if (tag != null && tag.contains("display", 10)) {
+            CompoundTag displayTag = tag.getCompound("display");
+            if (displayTag.contains("Name", 8)) {
+                String nameJson = displayTag.getString("Name");
+                try {
+                    Component nameComponent = Component.Serializer.fromJson(nameJson);
+                    if (nameComponent instanceof TextComponent) {
+                        return "<" + ((TextComponent) nameComponent).getText() + "> ";
+                    }
+                } catch (Exception e) {
+                    // Handle deserialization error
+                }
+            }
+        }
+        return currentSenderID; // If no valid name found, return the current senderID
+    }
+
+
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
-        String senderID;
+        // ... Inside your event handler
+
+        String senderID = "<" + event.getUsername() + "> ";
         String trueSenderID = "<" + event.getUsername() + "> ";
 
-        ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
-        if (!helmet.isEmpty() && helmet.getItem() == EnvironmentalItems.THIEF_HOOD.get()) {
-            CompoundTag helmetTag = helmet.getTag();
-            if (helmetTag != null && helmetTag.contains("display", 10)) {
-                CompoundTag displayTag = helmetTag.getCompound("display");
-                if (displayTag.contains("Name", 8)) {
-                    String nameJson = displayTag.getString("Name");
-                    try {
-                        Component nameComponent = Component.Serializer.fromJson(nameJson);
-                        if (nameComponent instanceof TextComponent) {
-                            senderID = "<" + ((TextComponent) nameComponent).getText() + "> ";
-                        } else {
-                            senderID = "<Anonymous> ";
-                        }
-                    } catch (Exception e) {
-                        senderID = "<Anonymous> ";
-                    }
-                } else {
-                    senderID = "<Anonymous> ";
-                }
+        boolean gab = false;
+        ItemStack handItem = player.getMainHandItem();
+        ItemStack offHandItem = player.getOffhandItem();
+        if (handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())
+                || offHandItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())) {
+            gab = true;
+        }
+        if (gab) {
+            if (handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())) {
+                senderID = updateSenderID(handItem, senderID);
             } else {
-                senderID = "<Anonymous> ";
+                senderID = updateSenderID(offHandItem, senderID);
             }
         } else {
             senderID = "<" + event.getUsername() + "> ";
         }
+
 
         TextComponent original = (TextComponent) new TextComponent(senderID).append(event.getMessage());
         TranslatableComponent modified = new TranslatableComponent(HearsayUtil.getDialogueLine(player).getKey(), senderID);
@@ -154,8 +167,8 @@ public class FoolishAsteroidsEvents {
                 }
             }
         }
-        // anywho since we're hijacking this junt the original message has been disemboweled
         event.setCanceled(true);
+        // TODO: Send a message that is ONLY visible in server logs, using trueSenderID with the original contents of the message.
     }
 
     @SubscribeEvent

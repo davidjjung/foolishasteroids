@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.core.registry;
 
+import architectspalette.content.blocks.BoardBlock;
 import com.teamabnormals.blueprint.core.util.registry.BlockSubRegistryHelper;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,4 +14,5 @@ public class FoolishAsteroidsBlocks {
 	public static final BlockSubRegistryHelper HELPER = FoolishAsteroidsMod.REGISTRY_HELPER.getBlockSubHelper();
 
 //	public static final RegistryObject<Block> TEMPLATE_BLOCK = HELPER.createBlock("template_block", () -> new Block(Block.Properties.copy(Blocks.STONE)), CreativeModeTab.TAB_BUILDING_BLOCKS);
+    public static final RegistryObject<Block> WILLOW_BOARDS = HELPER.createBlock("willow_boards", () -> new Block(Block.Properties.copy(Blocks.OAK_PLANKS)), CreativeModeTab.TAB_BUILDING_BLOCKS);
 }

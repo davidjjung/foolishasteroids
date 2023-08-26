@@ -40,20 +40,18 @@ public class ProprietaryEmblemItem extends Item {
     private void morph(Player player) {
         String morphToBe = "minecraft:armor_stand";
         switch (MorphUtilHelper.playerCurrentMorph(player)) {
-            case "entity.minecraft.armor_stand" -> morphToBe = "zetter:easel_entity";
-            case "entity.zetter.easel_entity" -> morphToBe = "dummmmmmy:target_dummy";
+            case "entity.minecraft.armor_stand" -> morphToBe = "dummmmmmy.target_dummy";
             case "entity.dummmmmmy.target_dummy" -> morphToBe = "mannequins:mannequin";
             case "entity.mannequins.mannequin" -> morphToBe = "mannequins:statue";
             case "entity.mannequins.statue" -> morphToBe = "minecraft:armor_stand";
             default -> {
                 Random random = new Random();
-                int randomIndex = random.nextInt(5);
+                int randomIndex = random.nextInt(4);
                 switch (randomIndex) {
                     case 0 -> morphToBe = "minecraft:armor_stand";
-                    case 1 -> morphToBe = "zetter:easel_entity";
-                    case 2 -> morphToBe = "dummmmmmy:target_dummy";
-                    case 3 -> morphToBe = "mannequins:mannequin";
-                    case 4 -> morphToBe = "mannequins:statue";
+                    case 1 -> morphToBe = "dummmmmmy:target_dummy";
+                    case 2 -> morphToBe = "mannequins:mannequin";
+                    case 3 -> morphToBe = "mannequins:statue";
                 }
             }
         }

@@ -95,7 +95,7 @@
   "message.seraphic.damage": "Do not look back, lest you be swept away.",
   "death.attack.seraphic_damage": "%s did not heed the heavens and was turned into a pillar of basalt",
 
-  "death.attack.virulent_damage": "%s did not follow lab safety guidelines",
+  "death.attack.virulent_damage": "%s ignored lab safety guidelines",
 
   "message.atomized.risky": "You feel the need to let off some radioactive steam...",
   "message.atomized.poisoned": "You feel unstable.",
@@ -144,5 +144,12 @@
   "item.foolish_asteroids.proprietary_emblem": "Proprietary Emblem",
   "item.foolish_asteroids.keratinous_emblem": "Keratinous Emblem",
   "item.foolish_asteroids.infectious_emblem": "Infectious Emblem",
-  "item.foolish_asteroids.hunted_emblem": "Hunted Emblem"
+  "item.foolish_asteroids.hunted_emblem": "Hunted Emblem",
+
+  "item.foolish_asteroids.sunbird_feather": "Sunbird Feather",
+  "item.foolish_asteroids.incomplete_blank_medallion": "Incomplete Blank Medallion",
+  "item.foolish_asteroids.unfinished_morph_medallion": "Unfinished Morph Medallion",
+  "item.foolish_asteroids.banana_peel": "Banana Peel",
+  "item.foolish_asteroids.zombie_brain": "Zombie Brain",
+  "item.foolish_asteroids.comet_medal": "Comet Medal"
 }
