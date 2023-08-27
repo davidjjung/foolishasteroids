@@ -27,7 +27,6 @@ public class IndomitableElixirItem extends ElixirItem {
     public void affectConsumer(ItemStack stack, Level level, LivingEntity entityLiving) {
         Player player = (Player)entityLiving;
         // Be invincible for eight seconds, have Speed II for eight seconds
-        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, RAINBOW_DURATION, 4));
         player.addEffect(new MobEffectInstance(UAMobEffects.REPELLENCE.get(), RAINBOW_DURATION, 4));
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, RAINBOW_DURATION, 1));
 

@@ -371,9 +371,12 @@ public class FoolishAsteroidsEvents {
                 manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
             }
         }
-        if (event.getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
             // TODO: Play sound of magical wind dispelling
             manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
+        }
+        if (event.getEntity() instanceof Player player && rainbowTimers.containsKey(player.getUUID())) {
+            event.setCanceled(true);
         }
         Random random = new Random();
         if (event.getEntity().getType().toString().equals("entity.creeperoverhaul.dark_oak_creeper") && random.nextBoolean()) {
