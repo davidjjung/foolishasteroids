@@ -1,12 +1,10 @@
 package com.davigj.foolish_asteroids.core.registry;
 
-import com.davigj.foolish_asteroids.common.item.BananaPeelItem;
-import com.davigj.foolish_asteroids.common.item.GiftOfGabItem;
-import com.davigj.foolish_asteroids.common.item.LightningBottleItem;
-import com.davigj.foolish_asteroids.common.item.SunbirdFeatherItem;
+import com.davigj.foolish_asteroids.common.item.*;
 import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.github.alexthe666.alexsmobs.entity.EntitySquidGrapple;
 import com.teamabnormals.autumnity.core.registry.AutumnityItems;
 import com.teamabnormals.autumnity.core.registry.AutumnityMobEffects;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
@@ -14,9 +12,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -265,6 +261,9 @@ public class FoolishAsteroidsItems {
 			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
 	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
 			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(32)));
+	public static final RegistryObject<Item> CUTGLASS = HELPER.createItem("cutglass", () ->
+			new CutglassItem(Tiers.STONE, 5, -2.4f, new Item.Properties().durability(32)
+					.tab(CreativeModeTab.TAB_MISC)));
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {

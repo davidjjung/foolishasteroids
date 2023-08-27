@@ -49,7 +49,6 @@ public class LightningBottleItem extends Item {
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {
             stack.shrink(1);
-
             if (stack.isEmpty()) {
                 player.setItemInHand(context.getHand(), new ItemStack(Items.GLASS_BOTTLE));
             } else {

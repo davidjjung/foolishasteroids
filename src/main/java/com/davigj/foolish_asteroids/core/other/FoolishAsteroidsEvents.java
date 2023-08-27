@@ -13,6 +13,8 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataMana
 import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
 import de.budschie.bmorph.main.BMorphMod;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,12 +22,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -45,6 +50,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -57,6 +63,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import tech.thatgravyboat.creeperoverhaul.Creepers;
@@ -339,15 +346,21 @@ public class FoolishAsteroidsEvents {
     public static void onLivingHurt(LivingHurtEvent event) {
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
         DamageSource source = event.getSource();
+        boolean playerVictim = false;
+        Player player = null;
+        if (event.getEntity() instanceof Player) {
+            playerVictim = true;
+            player = (Player) event.getEntity();
+        }
         if (source == DamageSource.ANVIL) {
             float modelHeight = ScaleTypes.HEIGHT.getScaleData(event.getEntity()).getBaseScale();
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setScaleTickDelay(4);
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setTargetScale(modelHeight * 0.5f);
         }
-        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
+        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
         }
-        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) > 0 && !source.isMagic()) {
+        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) > 0 && !source.isMagic()) {
             double explosionX = player.getX();
             double explosionY = player.getY() + player.getEyeHeight();
             double explosionZ = player.getZ();
@@ -371,11 +384,28 @@ public class FoolishAsteroidsEvents {
                 manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
             }
         }
-        if (event.getEntity() instanceof Player player && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
             // TODO: Play sound of magical wind dispelling
             manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
         }
-        if (event.getEntity() instanceof Player player && rainbowTimers.containsKey(player.getUUID())) {
+        if (playerVictim && event.getSource().equals(DamageSource.LIGHTNING_BOLT)) {
+            // Check if the player is holding a glass bottle in either hand
+            ItemStack mainHandItem = player.getMainHandItem();
+            ItemStack offHandItem = player.getOffhandItem();
+
+            if (mainHandItem.is(Items.GLASS_BOTTLE) || offHandItem.is(Items.GLASS_BOTTLE)) {
+                // Turn the glass bottle into a lightning bottle
+                ItemStack lightningBottle = new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()); // Replace with your lightning bottle item
+                if (mainHandItem.is(Items.GLASS_BOTTLE)) {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, lightningBottle);
+                } else {
+                    player.setItemInHand(InteractionHand.OFF_HAND, lightningBottle);
+                }
+                // Consume the lightning bolt damage
+                event.setCanceled(true);
+            }
+        }
+        if (playerVictim && rainbowTimers.containsKey(player.getUUID())) {
             event.setCanceled(true);
         }
         Random random = new Random();
@@ -507,6 +537,68 @@ public class FoolishAsteroidsEvents {
             // Spawn the ItemEntity with the Banana Peel item
             ItemEntity itemEntity = new ItemEntity(player.level, bananaPeel.getX(), bananaPeel.getY(), bananaPeel.getZ(), new ItemStack(FoolishAsteroidsItems.BANANA_PEEL.get()));
             player.level.addFreshEntity(itemEntity);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getPlayer();
+        String commandToExecute = "/gamerule doMorphDrops false";
+        CommandSourceStack commandSource = player.createCommandSourceStack();
+        commandSource.getServer().getCommands().performCommand(commandSource, commandToExecute);
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        Player player = event.getPlayer();
+        InteractionHand hand = event.getHand();
+        ItemStack heldItem = player.getItemInHand(hand);
+        BlockState clickedBlockState = player.level.getBlockState(event.getPos());
+
+        // Check if the player is holding a glass bottle and the block is grass
+        if (heldItem.getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == Blocks.GRASS_BLOCK) {
+            if (!player.isCreative()) {
+                heldItem.shrink(1);  // Decrease the glass bottle stack size
+            }
+            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            // Replace the grass block with a bottle of lightning
+            if (!player.level.isClientSide()) {
+                player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                    if (stack.isEmpty()) {
+                        player.setItemInHand(player.getUsedItemHand(), new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
+                    } else {
+                        if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+                        }
+                    }
+                }
+            }
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+        }
+        if (player.getOffhandItem().getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == Blocks.GRASS_BLOCK) {
+            if (!player.isCreative()) {
+                heldItem.shrink(1);  // Decrease the glass bottle stack size
+            }
+            ItemStack offhandStack = player.getOffhandItem();
+            if (offhandStack.getItem() == Items.GLASS_BOTTLE) {
+                if (!player.isCreative()) {
+                    player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
+                    offhandStack.shrink(1);
+                    if (offhandStack.isEmpty()) {
+                        player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
+                    } else {
+                        if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+                        }
+                    }
+                }
+            }
+
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
         }
     }
 }
