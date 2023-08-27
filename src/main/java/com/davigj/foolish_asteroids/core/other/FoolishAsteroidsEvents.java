@@ -105,8 +105,6 @@ public class FoolishAsteroidsEvents {
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
-        // ... Inside your event handler
-
         String senderID = "<" + event.getUsername() + "> ";
         String trueSenderID = "<" + event.getUsername() + "> ";
 
@@ -123,10 +121,17 @@ public class FoolishAsteroidsEvents {
             } else {
                 senderID = updateSenderID(offHandItem, senderID);
             }
+            ItemStack usedItem = handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get()) ? handItem : offHandItem;
+            usedItem.hurtAndBreak(1, player, (entity) -> {
+                entity.broadcastBreakEvent(handItem.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
+            });
+            if (usedItem.isEmpty()) {
+                // If the item is depleted, remove it
+                player.getInventory().removeItem(usedItem);
+            }
         } else {
             senderID = "<" + event.getUsername() + "> ";
         }
-
 
         TextComponent original = (TextComponent) new TextComponent(senderID).append(event.getMessage());
         TranslatableComponent modified = new TranslatableComponent(HearsayUtil.getDialogueLine(player).getKey(), senderID);

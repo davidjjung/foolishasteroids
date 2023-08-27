@@ -264,7 +264,7 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
 			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
 	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
-			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS)));
+			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(32)));
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
