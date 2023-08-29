@@ -66,6 +66,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.orcinus.galosphere.init.GBlocks;
 import tech.thatgravyboat.creeperoverhaul.Creepers;
 import tech.thatgravyboat.creeperoverhaul.common.entity.CreeperTypes;
 import vectorwing.farmersdelight.common.registry.ModParticleTypes;
@@ -556,49 +557,46 @@ public class FoolishAsteroidsEvents {
         BlockState clickedBlockState = player.level.getBlockState(event.getPos());
 
         // Check if the player is holding a glass bottle and the block is grass
-        if (heldItem.getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == Blocks.GRASS_BLOCK) {
-            if (!player.isCreative()) {
-                heldItem.shrink(1);  // Decrease the glass bottle stack size
-            }
-            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            // Replace the grass block with a bottle of lightning
-            if (!player.level.isClientSide()) {
-                player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                    if (stack.isEmpty()) {
-                        player.setItemInHand(player.getUsedItemHand(), new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
-                    } else {
-                        if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
-                            player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+        if (!player.level.isClientSide() && heldItem.getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == GBlocks.CHARGED_LUMIERE_BLOCK.get()) {
+            if (hand == InteractionHand.MAIN_HAND || (hand == InteractionHand.OFF_HAND && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.GLASS_BOTTLE)) {
+                if (!player.isCreative()) {
+                    player.getMainHandItem().shrink(1);  // Decrease the glass bottle stack size
+                    if (!player.getAbilities().instabuild) {
+                        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+                        stack.shrink(1);
+                        if (stack.isEmpty()) {
+                            player.setItemInHand(player.getUsedItemHand(), new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
+                        } else {
+                            if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                                player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+                            }
                         }
                     }
                 }
-            }
-            event.setCancellationResult(InteractionResult.SUCCESS);
-            event.setCanceled(true);
-        }
-        if (player.getOffhandItem().getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == Blocks.GRASS_BLOCK) {
-            if (!player.isCreative()) {
-                heldItem.shrink(1);  // Decrease the glass bottle stack size
-            }
-            ItemStack offhandStack = player.getOffhandItem();
-            if (offhandStack.getItem() == Items.GLASS_BOTTLE) {
+            } else if (hand == InteractionHand.OFF_HAND && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() != Items.GLASS_BOTTLE) {
                 if (!player.isCreative()) {
-                    player.level.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState());
-                    offhandStack.shrink(1);
-                    if (offhandStack.isEmpty()) {
-                        player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
-                    } else {
-                        if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
-                            player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+                    player.getOffhandItem().shrink(1);  // Decrease the glass bottle stack size
+                    if (!player.getAbilities().instabuild) {
+                        ItemStack stack = player.getItemInHand(InteractionHand.OFF_HAND);
+                        stack.shrink(1);
+                        if (stack.isEmpty()) {
+                            player.setItemInHand(player.getUsedItemHand(), new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()));
+                        } else {
+                            if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                                player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
+                            }
                         }
                     }
                 }
             }
 
+            // Replace the grass block with a bottle of lightning
+            player.level.setBlockAndUpdate(event.getPos(), GBlocks.LUMIERE_BLOCK.get().defaultBlockState());
+
+
             event.setCancellationResult(InteractionResult.SUCCESS);
             event.setCanceled(true);
+
         }
     }
 }
