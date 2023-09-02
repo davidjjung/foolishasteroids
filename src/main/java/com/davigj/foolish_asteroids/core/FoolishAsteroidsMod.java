@@ -31,6 +31,7 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Integer> ANTI_DRUNK = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> SERAPHIC_DIR = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> STORED_ELECTRONS = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> BLUSTER_RECHARGE = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -56,6 +57,7 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "stored_electrons"), STORED_ELECTRONS);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "rad_poisoning"), RAD_POISONING);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "autumnal"), AUTUMNAL);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bluster_recharge"), BLUSTER_RECHARGE);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

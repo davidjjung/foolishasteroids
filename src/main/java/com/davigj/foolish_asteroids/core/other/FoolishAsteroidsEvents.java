@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.core.other;
 
 import com.brewinandchewin.core.registry.BCEffects;
+import com.davigj.foolish_asteroids.common.item.BlusterBottleItem;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
@@ -10,11 +11,8 @@ import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
-import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
-import de.budschie.bmorph.main.BMorphMod;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,43 +20,39 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -67,9 +61,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
-import tech.thatgravyboat.creeperoverhaul.Creepers;
-import tech.thatgravyboat.creeperoverhaul.common.entity.CreeperTypes;
-import vectorwing.farmersdelight.common.registry.ModParticleTypes;
+import vectorwing.farmersdelight.common.item.ConsumableItem;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
@@ -89,6 +81,32 @@ import static com.davigj.foolish_asteroids.common.util.HearsayUtil.conversations
 public class FoolishAsteroidsEvents {
 
     private static final Logger LOGGER = Logger.getLogger(FoolishAsteroidsEvents.class.getName());
+    static TrackedDataManager manager = TrackedDataManager.INSTANCE;
+
+    @SubscribeEvent
+    public static void playerInteractEntity(PlayerInteractEvent.EntityInteract event) {
+        // TODO: try the tick delay thingy
+        Player player = event.getPlayer();
+        if (event.getTarget() instanceof Ghast ghast && manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE) == 0
+                && event.getPlayer() != null && !player.getLevel().isClientSide()) {
+            InteractionHand hand = event.getHand();
+            ItemStack stack = player.getItemInHand(hand);
+            Item item = stack.getItem();
+            Level level = player.getLevel();
+            if (stack.is(Items.GLASS_BOTTLE)) {
+                stack.shrink(1);
+                level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                if (stack.isEmpty()) {
+                    player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLUSTER_BOTTLE.get(), 1);
+                    player.setItemInHand(hand, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
+                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
+                    player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+                }
+                player.awardStat(Stats.ITEM_USED.get(item));
+            }
+            manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, 10);
+        }
+    }
 
     private static String updateSenderID(ItemStack itemStack, String currentSenderID) {
         CompoundTag tag = itemStack.getTag();
@@ -187,7 +205,6 @@ public class FoolishAsteroidsEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        TrackedDataManager manager = TrackedDataManager.INSTANCE;
         if (event.phase == TickEvent.Phase.START && player != null && !player.level.isClientSide) {
             UUID playerId = player.getUUID();
             if (rainbowTimers.containsKey(playerId)) {
@@ -345,7 +362,6 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        TrackedDataManager manager = TrackedDataManager.INSTANCE;
         DamageSource source = event.getSource();
         boolean playerVictim = false;
         Player player = null;
@@ -470,12 +486,17 @@ public class FoolishAsteroidsEvents {
                 }
             }
         }
+        if (entity instanceof Ghast ghast && entity.tickCount % 20 == 0) {
+            int blusterTimer = manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE);
+            if (blusterTimer != 0) {
+                manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, blusterTimer - 1);
+            }
+        }
     }
 
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        TrackedDataManager manager = TrackedDataManager.INSTANCE;
         Player player = event.getPlayer();
         if (manager.getValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
             manager.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
@@ -555,8 +576,6 @@ public class FoolishAsteroidsEvents {
         InteractionHand hand = event.getHand();
         ItemStack heldItem = player.getItemInHand(hand);
         BlockState clickedBlockState = player.level.getBlockState(event.getPos());
-
-        // Check if the player is holding a glass bottle and the block is grass
         if (!player.level.isClientSide() && heldItem.getItem() == Items.GLASS_BOTTLE && clickedBlockState.getBlock() == GBlocks.CHARGED_LUMIERE_BLOCK.get()) {
             if (hand == InteractionHand.MAIN_HAND || (hand == InteractionHand.OFF_HAND && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.GLASS_BOTTLE)) {
                 if (!player.isCreative()) {
@@ -572,6 +591,8 @@ public class FoolishAsteroidsEvents {
                             }
                         }
                     }
+                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                    player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
                 }
             } else if (hand == InteractionHand.OFF_HAND && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() != Items.GLASS_BOTTLE) {
                 if (!player.isCreative()) {
@@ -587,6 +608,8 @@ public class FoolishAsteroidsEvents {
                             }
                         }
                     }
+                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()))) {
+                    player.drop(new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()), false);
                 }
             }
 
