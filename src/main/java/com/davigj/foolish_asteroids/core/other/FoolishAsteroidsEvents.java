@@ -88,31 +88,17 @@ public class FoolishAsteroidsEvents {
 
     @SubscribeEvent
     public static void playerInteractEntity(PlayerInteractEvent.EntityInteract event) {
-        // TODO: try the tick delay thingy
         Player player = event.getPlayer();
-        if (event.getTarget() instanceof Ghast ghast && manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE) == 0
-                && event.getPlayer() != null && !player.getLevel().isClientSide()) {
+        if (player.getItemInHand(event.getHand()).getItem() == Items.GLASS_BOTTLE && event.getTarget() instanceof Ghast ghast
+                && manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE) == 0 && event.getPlayer() != null && !player.getLevel().isClientSide()) {
             InteractionHand hand = event.getHand();
-            ItemStack stack = player.getItemInHand(hand);
-            Item item = stack.getItem();
-            Level level = player.getLevel();
-//            if (stack.is(Items.GLASS_BOTTLE)) {
-//                stack.shrink(1);
-//                level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
-//                if (stack.isEmpty()) {
-//                    player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLUSTER_BOTTLE.get(), 1);
-//                    player.setItemInHand(hand, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
-//                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
-//                    player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
-//                }
-//                player.awardStat(Stats.ITEM_USED.get(item));
-//            }
             manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, 10);
             if (hand == InteractionHand.MAIN_HAND) {
                 manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 4);
             } else {
                 manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 2);
             }
+            System.out.println(hand);
         }
     }
 
