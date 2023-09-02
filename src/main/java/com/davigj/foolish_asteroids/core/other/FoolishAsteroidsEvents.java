@@ -12,6 +12,7 @@ import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
+import net.mehvahdjukaar.supplementaries.common.block.blocks.BubbleBlock;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -56,6 +57,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -82,6 +84,7 @@ public class FoolishAsteroidsEvents {
 
     private static final Logger LOGGER = Logger.getLogger(FoolishAsteroidsEvents.class.getName());
     static TrackedDataManager manager = TrackedDataManager.INSTANCE;
+    // TODO: regeneration on apples, coconut husks, walnuts. rain staff on banana fronds
 
     @SubscribeEvent
     public static void playerInteractEntity(PlayerInteractEvent.EntityInteract event) {
@@ -93,18 +96,23 @@ public class FoolishAsteroidsEvents {
             ItemStack stack = player.getItemInHand(hand);
             Item item = stack.getItem();
             Level level = player.getLevel();
-            if (stack.is(Items.GLASS_BOTTLE)) {
-                stack.shrink(1);
-                level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
-                if (stack.isEmpty()) {
-                    player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLUSTER_BOTTLE.get(), 1);
-                    player.setItemInHand(hand, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
-                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
-                    player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
-                }
-                player.awardStat(Stats.ITEM_USED.get(item));
-            }
+//            if (stack.is(Items.GLASS_BOTTLE)) {
+//                stack.shrink(1);
+//                level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
+//                if (stack.isEmpty()) {
+//                    player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLUSTER_BOTTLE.get(), 1);
+//                    player.setItemInHand(hand, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
+//                } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
+//                    player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+//                }
+//                player.awardStat(Stats.ITEM_USED.get(item));
+//            }
             manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, 10);
+            if (hand == InteractionHand.MAIN_HAND) {
+                manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 4);
+            } else {
+                manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 2);
+            }
         }
     }
 
@@ -277,6 +285,40 @@ public class FoolishAsteroidsEvents {
             if (player.tickCount % 20 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
                 player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 0, false, false));
             }
+            int blusterHarvest = manager.getValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST);
+            ItemStack stack;
+            switch (blusterHarvest) {
+                case 4, 2 -> manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, blusterHarvest - 1);
+                case 3 ->  {
+                    stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+                    Level level = player.getLevel();
+                    if (stack.is(Items.GLASS_BOTTLE)) {
+                        stack.shrink(1);
+                        level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        if (stack.isEmpty()) {
+                            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
+                        } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+                        }
+                    }
+                    manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 0);
+                }
+                case 1 -> {
+                    stack = player.getItemInHand(InteractionHand.OFF_HAND);
+                    Level level = player.getLevel();
+                    if (stack.is(Items.GLASS_BOTTLE)) {
+                        stack.shrink(1);
+                        level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        if (stack.isEmpty()) {
+                            player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
+                        } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+                        }
+                    }
+                    manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 0);
+                }
+                default -> { break; }
+            }
         }
         if (event.phase == TickEvent.Phase.START && player != null) {
             UUID playerId = player.getUUID();
@@ -356,6 +398,12 @@ public class FoolishAsteroidsEvents {
                 double d3 = (double) ((float) x + rand.nextFloat());
                 double d6 = (double) ((float) z + rand.nextFloat());
                 level.addParticle((ParticleOptions) AutumnityParticleTypes.FALLING_MAPLE_LEAF.get(), d3, y + 0.025, d6, d0, d1, d2);
+            }
+            int bluster = manager.getValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST);
+            if (bluster == 3) {
+                player.swing(InteractionHand.MAIN_HAND);
+            } else if (bluster == 1) {
+                player.swing(InteractionHand.OFF_HAND);
             }
         }
     }
