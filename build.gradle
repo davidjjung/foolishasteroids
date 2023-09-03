@@ -93,6 +93,7 @@ dependencies {
     implementation fg.deobf("curse.maven:neapolitan-382016:3881528")
     implementation fg.deobf("curse.maven:architects-palette-433862:4498246")
     implementation fg.deobf("curse.maven:galosphere-631098:4398234")
+    implementation fg.deobf("curse.maven:naturalist-627986:3930806")
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}")

@@ -94,7 +94,7 @@
   "message.seraphic.command": "Flee to the hills, and do not look back.",
   "message.seraphic.refusal": "Your path is already set.",
   "message.seraphic.damage": "Do not look back, lest you be swept away.",
-  "death.attack.seraphic_damage": "%s did not heed the heavens and was turned into a pillar of basalt",
+  "death.attack.seraphic_damage": "%s was turned into a pillar of basalt",
 
   "death.attack.virulent_damage": "%s ignored lab safety guidelines",
 
