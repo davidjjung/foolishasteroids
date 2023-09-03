@@ -20,7 +20,6 @@ public class SeraphicElixirItem extends ElixirItem {
         double horizontalAngle = Math.atan2(lookDirection.z, lookDirection.x);
         double degree = Math.toDegrees(horizontalAngle);
         degree = (degree + 360) % 360;
-
         if (degree >= 45 && degree < 135) {
             TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.SERAPHIC_DIR, 0);
             return Direction.SOUTH;
@@ -42,9 +41,12 @@ public class SeraphicElixirItem extends ElixirItem {
             ScaleTypes.MOTION.getScaleData(player).setTargetScale(3.5f);
             Vec3 lookDirection = player.getLookAngle();
             // Calculate the direction based on the look direction
-            Direction direction = getDirectionFromLookDirection(lookDirection, player);
+            getDirectionFromLookDirection(lookDirection, player);
             TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE, true);
             TranslatableComponent message = new TranslatableComponent("message.seraphic.command");
+            player.displayClientMessage(message, true);
+        } else {
+            TranslatableComponent message = new TranslatableComponent("message.seraphic.refusal");
             player.displayClientMessage(message, true);
         }
     }

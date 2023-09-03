@@ -21,6 +21,7 @@ public class FoolishAsteroidsCompat {
 
     private static void registerCompostables() {
         DataUtil.registerCompostable(FoolishAsteroidsItems.BANANA_PEEL.get(), 0.6F);
+        DataUtil.registerCompostable(FoolishAsteroidsItems.ZOMBIE_BRAIN.get(), 0.4F);
     }
 
     private static void registerFlammables() {

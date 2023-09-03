@@ -225,27 +225,19 @@ public class FoolishAsteroidsEvents {
                 double horizontalAngle = Math.atan2(lookDirection.z, lookDirection.x);
                 double degree = Math.toDegrees(horizontalAngle);
                 degree = (degree + 360) % 360;
-                Boolean sinfulGaze = false;
+                boolean sinfulGaze = false;
                 switch (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_DIR)) {
                     case 0 -> {
-                        if (degree >= 180 && degree < 360) {
-                            sinfulGaze = true;
-                        }
+                        if (degree >= 180 && degree < 360) sinfulGaze = true;
                     }
                     case 1 -> {
-                        if (degree >= 270 || degree < 90) {
-                            sinfulGaze = true;
-                        }
+                        if (degree >= 270 || degree < 90) sinfulGaze = true;
                     }
                     case 2 -> {
-                        if (degree >= 0 || degree < 180) {
-                            sinfulGaze = true;
-                        }
+                        if (degree >= 0 && degree < 180) sinfulGaze = true;
                     }
                     case 3 -> {
-                        if (degree >= 90 || degree < 270) {
-                            sinfulGaze = true;
-                        }
+                        if (degree >= 90 && degree < 270) sinfulGaze = true;
                     }
                 }
                 if (sinfulGaze) {

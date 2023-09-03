@@ -17,6 +17,7 @@ import net.minecraft.world.entity.projectile.ThrownEnderpearl;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class DisplacementEffect extends MobEffect {
     public DisplacementEffect() {
@@ -43,7 +44,7 @@ public class DisplacementEffect extends MobEffect {
 
             if (livingEntity instanceof Player) {
                 event = net.minecraftforge.event.ForgeEventFactory.onEnderPearlLand(
-                        livingEntity.getServer().getPlayerList().getPlayer(livingEntity.getUUID()), d3, d4, d5, new ThrownEnderpearl(world, livingEntity), 0);
+                        Objects.requireNonNull(livingEntity.getServer()).getPlayerList().getPlayer(livingEntity.getUUID()), d3, d4, d5, new ThrownEnderpearl(world, livingEntity), 0);
                 if (!event.isCanceled()) {
                     livingEntity.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true);
                     net.minecraftforge.event.ForgeEventFactory.onEnderPearlLand(livingEntity.getServer().getPlayerList().getPlayer(livingEntity.getUUID()), d3, d4, d5, new ThrownEnderpearl(world, livingEntity), 0);
