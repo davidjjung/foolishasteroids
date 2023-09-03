@@ -37,6 +37,6 @@ public class FoolishAsteroidsMobEffects {
         DataUtil.addMix(Potions.AWKWARD, FoolishAsteroidsItems.BANANA_PEEL.get(), SLIPPING_NORMAL.get());
         DataUtil.addMix(SLIPPING_NORMAL.get(), Items.REDSTONE, SLIPPING_LONG.get());
         DataUtil.addMix(ALOFT_NORMAL.get(), Items.REDSTONE, ALOFT_LONG.get());
-        DataUtil.addMix(DISPLACEMENT_STRONG.get(), Items.GLOWSTONE, DISPLACEMENT_STRONG.get());
+        DataUtil.addMix(DISPLACEMENT_NORMAL.get(), Items.GLOWSTONE, DISPLACEMENT_STRONG.get());
     }
 }

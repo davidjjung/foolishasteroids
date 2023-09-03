@@ -2,8 +2,6 @@ package com.davigj.foolish_asteroids.common.item;
 
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -11,7 +9,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
 public class BubbleBootsItem extends ArmorItem {
     public BubbleBootsItem (ArmorMaterial materialIn, EquipmentSlot slot, Item.Properties builder) {
@@ -24,7 +21,6 @@ public class BubbleBootsItem extends ArmorItem {
         if (world.getBlockState(bubblePos).isAir() && player.tickCount % 5 == 0 && currentDamage < 250) {
             world.setBlockAndUpdate(bubblePos, ModRegistry.BUBBLE_BLOCK.get().defaultBlockState());
             stack.setDamageValue(currentDamage + 1);
-            System.out.println(currentDamage);
         } else if (world.getBlockState(bubblePos).is(ModRegistry.SOAP_BLOCK.get())) {
             stack.setDamageValue(0);
         }
@@ -44,6 +40,4 @@ public class BubbleBootsItem extends ArmorItem {
     public int getBarColor(ItemStack stack) {
         return 15246564;
     }
-
-    // Implement any additional methods or overrides here
 }
