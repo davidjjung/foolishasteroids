@@ -81,10 +81,10 @@ import static com.davigj.foolish_asteroids.common.util.HearsayUtil.conversations
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class FoolishAsteroidsEvents {
+    // TODO: seraphic elixirs are acting up again
 
     private static final Logger LOGGER = Logger.getLogger(FoolishAsteroidsEvents.class.getName());
     static TrackedDataManager manager = TrackedDataManager.INSTANCE;
-    // TODO: regeneration on apples, coconut husks, walnuts. rain staff on banana fronds
 
     @SubscribeEvent
     public static void playerInteractEntity(PlayerInteractEvent.EntityInteract event) {

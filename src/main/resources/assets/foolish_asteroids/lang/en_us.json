@@ -152,7 +152,10 @@
   "item.foolish_asteroids.banana_peel": "Banana Peel",
   "item.foolish_asteroids.zombie_brain": "Zombie Brain",
   "item.foolish_asteroids.comet_medal": "Comet Medal",
-  
+
+  "effect.foolish_asteroids.displacement": "Displacement",
+  "effect.foolish_asteroids.aloft": "Aloft",
+
   "item.minecraft.potion.effect.slipping": "Potion of Slipping",
   "item.minecraft.potion.effect.slipping_long": "Potion of Slipping",
   "item.minecraft.splash_potion.effect.slipping": "Splash Potion of Slipping",
