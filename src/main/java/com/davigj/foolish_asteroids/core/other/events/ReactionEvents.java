@@ -111,7 +111,7 @@ public class ReactionEvents {
                 event.setCanceled(true);
             }
         }
-        if (playerVictim && rainbowTimers.containsKey(player.getUUID())) {
+        if (playerVictim && source != DamageSource.LAVA && source != DamageSource.OUT_OF_WORLD && rainbowTimers.containsKey(player.getUUID())) {
             event.setCanceled(true);
         }
         Random random = new Random();

@@ -9,6 +9,7 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataMana
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -61,6 +62,7 @@ public class PlayerActionEvents {
         Player player = event.getPlayer();
         if (player.getItemInHand(event.getHand()).getItem() == Items.GLASS_BOTTLE && event.getTarget() instanceof Ghast ghast
                 && manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE) == 0 && event.getPlayer() != null && !player.getLevel().isClientSide()) {
+            player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 0.8F, 0.6F);
             InteractionHand hand = event.getHand();
             manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, 10);
             if (hand == InteractionHand.MAIN_HAND) {
@@ -105,13 +107,16 @@ public class PlayerActionEvents {
                 if (tongues > 0 && angerTime > 0) {
                     player.getCooldowns().addCooldown(Items.SHEARS, 3 * 20);
                     manager.setValue(enderman, FoolishAsteroidsMod.TONGUES, tongues - 1);
+                    enderman.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
                     ItemEntity itemEntity = new ItemEntity(player.level, enderman.getX(), enderman.getEyeY(), enderman.getZ(),
                             new ItemStack(FoolishAsteroidsItems.SEVERED_TONGUE.get()));
                     player.level.addFreshEntity(itemEntity);
                     ScaleTypes.ATTACK.getScaleData(enderman).setTargetScale(1.5F);
                     enderman.setTarget(player);
+                    // TODO: teleport the player to another random location
                 }
                 if (tongues == 1) {
+                    enderman.playSound(SoundEvents.ENDERMAN_DEATH, 1.0F, 0.4F);
                     enderman.setSilent(true);
                 }
             }
