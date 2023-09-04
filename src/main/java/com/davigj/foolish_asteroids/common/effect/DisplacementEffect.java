@@ -38,15 +38,15 @@ public class DisplacementEffect extends MobEffect {
             double d3 = livingEntity.getX() + (livingEntity.getRandom().nextDouble() - 0.5D) * 24.0D * (amplifier + 1);
             double d4 = Mth.clamp(livingEntity.getY() + (double) (livingEntity.getRandom().nextInt(16) - 8), (double) world.getMinBuildHeight(), (double) (world.getMinBuildHeight() + ((ServerLevel) world).getLogicalHeight() - 1));
             double d5 = livingEntity.getZ() + (livingEntity.getRandom().nextDouble() - 0.5D) * 24.0D * (amplifier + 1);
+            if (livingEntity.isPassenger()) {
+                livingEntity.stopRiding();
+            }
 
             net.minecraftforge.event.entity.EntityTeleportEvent event = net.minecraftforge.event.ForgeEventFactory.onChorusFruitTeleport(
                     livingEntity, d3, d4, d5);
 
             if (livingEntity instanceof Player) {
-                event = net.minecraftforge.event.ForgeEventFactory.onEnderPearlLand(
-                        Objects.requireNonNull(livingEntity.getServer()).getPlayerList().getPlayer(livingEntity.getUUID()), d3, d4, d5, new ThrownEnderpearl(world, livingEntity), 0);
-                if (!event.isCanceled()) {
-                    livingEntity.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true);
+                if (!event.isCanceled() && livingEntity.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true)) {
                     net.minecraftforge.event.ForgeEventFactory.onEnderPearlLand(livingEntity.getServer().getPlayerList().getPlayer(livingEntity.getUUID()), d3, d4, d5, new ThrownEnderpearl(world, livingEntity), 0);
                     SoundEvent soundevent = SoundEvents.CHORUS_FRUIT_TELEPORT;
                     world.playSound((Player) null, d0, d1, d2, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
