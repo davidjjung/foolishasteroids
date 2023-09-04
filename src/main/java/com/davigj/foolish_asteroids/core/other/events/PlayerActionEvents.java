@@ -3,18 +3,28 @@ package com.davigj.foolish_asteroids.core.other.events;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
+import com.mojang.math.Vector3d;
+import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.util.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -23,8 +33,11 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
+import org.lwjgl.opengl.GL11;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class PlayerActionEvents {
@@ -54,6 +67,53 @@ public class PlayerActionEvents {
                 manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 4);
             } else {
                 manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 2);
+            }
+        }
+        if (player.getItemInHand(event.getHand()).getItem() == Items.SHEARS && event.getTarget() instanceof EnderMan enderman) {
+            float playerYaw = player.getYRot();
+            float playerPitch = player.getXRot();
+
+            // Calculate the player's viewing direction vector and normalize it
+            double playerViewX = -Math.sin(Math.toRadians(playerYaw)) * Math.cos(Math.toRadians(playerPitch));
+            double playerViewY = -Math.sin(Math.toRadians(playerPitch));
+            double playerViewZ = Math.cos(Math.toRadians(playerYaw)) * Math.cos(Math.toRadians(playerPitch));
+
+            double playerViewLength = Math.sqrt(playerViewX * playerViewX + playerViewY * playerViewY + playerViewZ * playerViewZ);
+            playerViewX /= playerViewLength;
+            playerViewY /= playerViewLength;
+            playerViewZ /= playerViewLength;
+
+            // Calculate the vector from the player's position to the Enderman's head and normalize it
+            double headX = enderman.getX();
+            double headY = enderman.getEyeY(); // Adjust this to the exact height of the Enderman's head
+            double headZ = enderman.getZ();
+            double toHeadX = headX - player.getX();
+            double toHeadY = headY - (player.getY() + player.getEyeHeight()); // Adjust this to the player's eye height
+            double toHeadZ = headZ - player.getZ();
+
+            double toHeadLength = Math.sqrt(toHeadX * toHeadX + toHeadY * toHeadY + toHeadZ * toHeadZ);
+            toHeadX /= toHeadLength;
+            toHeadY /= toHeadLength;
+            toHeadZ /= toHeadLength;
+
+            // Calculate the dot product of the two normalized vectors
+            double dotProduct = toHeadX * playerViewX + toHeadY * playerViewY + toHeadZ * playerViewZ;
+
+            if (dotProduct > 0.993) {
+                int tongues = manager.getValue(enderman, FoolishAsteroidsMod.TONGUES);
+                int angerTime = enderman.getPersistentData().getInt("AngerTime");
+                if (tongues > 0 && angerTime > 0) {
+                    player.getCooldowns().addCooldown(Items.SHEARS, 3 * 20);
+                    manager.setValue(enderman, FoolishAsteroidsMod.TONGUES, tongues - 1);
+                    ItemEntity itemEntity = new ItemEntity(player.level, enderman.getX(), enderman.getEyeY(), enderman.getZ(),
+                            new ItemStack(FoolishAsteroidsItems.SEVERED_TONGUE.get()));
+                    player.level.addFreshEntity(itemEntity);
+                    ScaleTypes.ATTACK.getScaleData(enderman).setTargetScale(1.5F);
+                    enderman.setTarget(player);
+                }
+                if (tongues == 1) {
+                    enderman.setSilent(true);
+                }
             }
         }
     }

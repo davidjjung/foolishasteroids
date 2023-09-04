@@ -20,6 +20,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;

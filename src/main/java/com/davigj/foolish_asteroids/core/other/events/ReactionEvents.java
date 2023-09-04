@@ -25,6 +25,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
@@ -224,5 +225,4 @@ public class ReactionEvents {
         CommandSourceStack commandSource = player.createCommandSourceStack();
         commandSource.getServer().getCommands().performCommand(commandSource, commandToExecute);
     }
-
 }
