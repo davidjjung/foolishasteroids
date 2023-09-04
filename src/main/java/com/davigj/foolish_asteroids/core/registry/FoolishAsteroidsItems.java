@@ -255,6 +255,31 @@ public class FoolishAsteroidsItems {
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> UNFINISHED_MORPH_MEDALLION = HELPER.createItem("unfinished_morph_medallion", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
+	// weapons and armor
+	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
+		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+	public static final RegistryObject<Item> PAPER_SABER = HELPER.createItem("paper_saber", () ->
+			new PaperSwordItem(Tiers.WOOD, 0, -1.8f, new Item.Properties().durability(32)
+					.tab(CreativeModeTab.TAB_COMBAT)));
+	public static final RegistryObject<Item> STICKY_HAND = HELPER.createItem("sticky_hand", () ->
+			new StickyHandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(64)));
+
+	// tools
+	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
+			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(59)));
+	public static final RegistryObject<Item> GLASS_CHISEL = HELPER.createItem("glass_chisel", () ->
+			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
+
+	// utility resources
+	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
+			new PanaceaItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.PANACEA)));
+	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
+			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
+	public static final RegistryObject<Item> BLUSTER_BOTTLE = HELPER.createItem("bluster_bottle", () ->
+			new BlusterBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION).craftRemainder(Items.GLASS_BOTTLE)));
+
+	// crafting and brewing intermediaries
 	public static final RegistryObject<Item> SUNBIRD_FEATHER = HELPER.createItem("sunbird_feather", () ->
 			new SunbirdFeatherItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
 	public static final RegistryObject<Item> SEVERED_TONGUE = HELPER.createItem("severed_tongue", () ->
@@ -265,22 +290,6 @@ public class FoolishAsteroidsItems {
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
-	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
-			new PanaceaItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.PANACEA)));
-	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
-			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
-	public static final RegistryObject<Item> BLUSTER_BOTTLE = HELPER.createItem("bluster_bottle", () ->
-			new BlusterBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION).craftRemainder(Items.GLASS_BOTTLE)));
-	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
-		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
-	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
-			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(59)));
-	public static final RegistryObject<Item> GLASS_CHISEL = HELPER.createItem("glass_chisel", () ->
-			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
-	public static final RegistryObject<Item> CUTGLASS = HELPER.createItem("cutglass", () ->
-			new CutglassItem(Tiers.STONE, 4, -2.4f, new Item.Properties().durability(32)
-					.tab(CreativeModeTab.TAB_COMBAT)));
-
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
