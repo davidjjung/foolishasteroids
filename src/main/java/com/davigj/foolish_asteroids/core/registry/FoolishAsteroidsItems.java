@@ -258,7 +258,7 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> SUNBIRD_FEATHER = HELPER.createItem("sunbird_feather", () ->
 			new SunbirdFeatherItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
 	public static final RegistryObject<Item> SEVERED_TONGUE = HELPER.createItem("severed_tongue", () ->
-			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
+			new SeveredTongueItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.SEVERED_TONGUE)));
 	public static final RegistryObject<Item> SILVER_TONGUE = HELPER.createItem("silver_tongue", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
@@ -289,5 +289,7 @@ public class FoolishAsteroidsItems {
 			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 500, 2);
 		}, 1.0F).build();
 		public static final FoodProperties PANACEA = (new FoodProperties.Builder()).nutrition(0).saturationMod(0F).alwaysEat().build();
+		public static final FoodProperties SEVERED_TONGUE = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.2F).effect(() -> {
+			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 180, 0);}, 1.0F).build();
 	}
 }

@@ -9,9 +9,13 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataMana
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,9 +24,11 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
+import net.minecraft.world.entity.projectile.ThrownEnderpearl;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.util.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -103,21 +109,42 @@ public class PlayerActionEvents {
 
             if (dotProduct > 0.993) {
                 int tongues = manager.getValue(enderman, FoolishAsteroidsMod.TONGUES);
-                int angerTime = enderman.getPersistentData().getInt("AngerTime");
-                if (tongues > 0 && angerTime > 0) {
+                if (tongues > 0) {
                     player.getCooldowns().addCooldown(Items.SHEARS, 3 * 20);
                     manager.setValue(enderman, FoolishAsteroidsMod.TONGUES, tongues - 1);
                     enderman.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
                     ItemEntity itemEntity = new ItemEntity(player.level, enderman.getX(), enderman.getEyeY(), enderman.getZ(),
                             new ItemStack(FoolishAsteroidsItems.SEVERED_TONGUE.get()));
                     player.level.addFreshEntity(itemEntity);
-                    ScaleTypes.ATTACK.getScaleData(enderman).setTargetScale(1.5F);
-                    enderman.setTarget(player);
-                    // TODO: teleport the player to another random location
+                    enderman.hurt(DamageSource.GENERIC, 4.0F);
+                    ScaleTypes.ATTACK.getScaleData(enderman).setTargetScale(1.2F);
+                    enderman.setPersistentAngerTarget(player.getUUID());
+                    // TODO: Visual/audio cues
+                    if (!player.getLevel().isClientSide) {
+                        teleport(player.getX(), player.getY(), player.getZ(), player);
+                    }
                 }
                 if (tongues == 1) {
                     enderman.playSound(SoundEvents.ENDERMAN_DEATH, 1.0F, 0.4F);
                     enderman.setSilent(true);
+                }
+            }
+        }
+    }
+
+    static void teleport(double x, double y, double z, LivingEntity livingEntity) {
+        Level world = livingEntity.getLevel();
+
+        for (int i = 0; i < 16; i++) {
+            double d3 = livingEntity.getX() + (livingEntity.getRandom().nextDouble() - 0.5D) * 6.0D;
+            double d4 = Mth.clamp(livingEntity.getY() + (double) (livingEntity.getRandom().nextInt(16) - 8), (double) world.getMinBuildHeight(), (double) (world.getMinBuildHeight() + ((ServerLevel) world).getLogicalHeight() - 1));
+            double d5 = livingEntity.getZ() + (livingEntity.getRandom().nextDouble() - 0.5D) * 6.0D;
+            if (livingEntity instanceof Player) {
+                if (livingEntity.randomTeleport(d3, d4, d5, true)) {
+                    SoundEvent soundevent = SoundEvents.CHORUS_FRUIT_TELEPORT;
+                    world.playSound((Player) null, x, y, z, soundevent, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    livingEntity.playSound(soundevent, 1.0F, 1.0F);
+                    break; // Exit the loop if teleportation is successful
                 }
             }
         }
@@ -182,5 +209,9 @@ public class PlayerActionEvents {
 
     @SubscribeEvent
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
     }
 }
