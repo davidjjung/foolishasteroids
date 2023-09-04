@@ -274,7 +274,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
 		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
-			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(32)));
+			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(59)));
+	public static final RegistryObject<Item> GLASS_CHISEL = HELPER.createItem("glass_chisel", () ->
+			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
 	public static final RegistryObject<Item> CUTGLASS = HELPER.createItem("cutglass", () ->
 			new CutglassItem(Tiers.STONE, 4, -2.4f, new Item.Properties().durability(32)
 					.tab(CreativeModeTab.TAB_COMBAT)));

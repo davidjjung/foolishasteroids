@@ -44,7 +44,6 @@ public class ChatEvents {
         return currentSenderID; // If no valid name found, return the current senderID
     }
 
-
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent event) {
         ServerPlayer player = event.getPlayer();
