@@ -33,6 +33,7 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Integer> STORED_ELECTRONS = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> BLUSTER_RECHARGE = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> BLUSTER_HARVEST = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> TONGUES = TrackedData.Builder.create(DataProcessors.INT, () -> 2).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -60,6 +61,7 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "autumnal"), AUTUMNAL);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bluster_recharge"), BLUSTER_RECHARGE);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bluster_harvest"), BLUSTER_HARVEST);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "tongues"), TONGUES);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

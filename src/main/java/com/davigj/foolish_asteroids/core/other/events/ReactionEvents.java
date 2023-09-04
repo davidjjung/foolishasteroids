@@ -60,6 +60,7 @@ public class ReactionEvents {
             float modelHeight = ScaleTypes.HEIGHT.getScaleData(event.getEntity()).getBaseScale();
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setScaleTickDelay(4);
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setTargetScale(modelHeight * 0.5f);
+            ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setScaleTickDelay(20);
         }
         if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
@@ -123,6 +124,7 @@ public class ReactionEvents {
             }
             ScaleTypes.BASE.getScaleData(spider).setScaleTickDelay(0);
             ScaleTypes.BASE.getScaleData(spider).setScale(0.3f * creeperSize);
+            ScaleTypes.BASE.getScaleData(spider).setScaleTickDelay(20);
             assert spider != null;
             spider.setPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
             event.getEntity().level.addFreshEntity(spider);

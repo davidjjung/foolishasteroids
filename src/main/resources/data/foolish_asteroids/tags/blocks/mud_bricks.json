@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "environmental:mud_bricks",
+    "wildbackport:mud_bricks"
+  ],
+
+  "optional": [
+  ]
+}

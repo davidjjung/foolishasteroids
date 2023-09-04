@@ -265,6 +265,8 @@ public class FoolishAsteroidsItems {
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
+	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
+			new PanaceaItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.PANACEA)));
 	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
 			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
 	public static final RegistryObject<Item> BLUSTER_BOTTLE = HELPER.createItem("bluster_bottle", () ->
@@ -286,5 +288,6 @@ public class FoolishAsteroidsItems {
 		}, 1.0F).effect(() -> {
 			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 500, 2);
 		}, 1.0F).build();
+		public static final FoodProperties PANACEA = (new FoodProperties.Builder()).nutrition(0).saturationMod(0F).alwaysEat().build();
 	}
 }

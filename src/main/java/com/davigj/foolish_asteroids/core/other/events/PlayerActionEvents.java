@@ -2,11 +2,14 @@ package com.davigj.foolish_asteroids.core.other.events;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,10 +17,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
+
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class PlayerActionEvents {
@@ -106,6 +113,9 @@ public class PlayerActionEvents {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.KeyInputEvent event) {
-        // Check if the pressed key is the one you're interested in
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
     }
 }

@@ -2,6 +2,7 @@ package com.davigj.foolish_asteroids.core.registry;
 
 import com.davigj.foolish_asteroids.common.effect.AloftEffect;
 import com.davigj.foolish_asteroids.common.effect.DisplacementEffect;
+import com.davigj.foolish_asteroids.common.effect.FingerlessEffect;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.DataUtil;
 import com.teamabnormals.neapolitan.common.effect.SlippingMobEffect;
@@ -23,6 +24,7 @@ public class FoolishAsteroidsMobEffects {
 
     public static final RegistryObject<MobEffect> ALOFT = EFFECTS.register("aloft", AloftEffect::new);
     public static final RegistryObject<MobEffect> DISPLACEMENT = EFFECTS.register("displacement", DisplacementEffect::new);
+    public static final RegistryObject<MobEffect> FINGERLESS = EFFECTS.register("fingerless", FingerlessEffect::new);
 
     public static final RegistryObject<Potion> ALOFT_NORMAL = POTIONS.register("aloft", () -> new Potion(new MobEffectInstance(ALOFT.get(), 200)));
     public static final RegistryObject<Potion> ALOFT_LONG = POTIONS.register("aloft_long", () -> new Potion(new MobEffectInstance(ALOFT.get(), 400)));
