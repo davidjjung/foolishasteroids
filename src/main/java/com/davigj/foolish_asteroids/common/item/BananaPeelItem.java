@@ -66,7 +66,6 @@ public class BananaPeelItem extends BananaBunchItem {
             bananapeel.setDeltaMovement((new Vec3((double)f, (double)f1, (double)f2)).add(vector3d.x, player.isOnGround() ? 0.0 : vector3d.y, vector3d.z));
             world.addFreshEntity(bananapeel);
         }
-
     }
 
     private void handleOpening(Level world, Player player, InteractionHand hand, ItemStack stack) {
