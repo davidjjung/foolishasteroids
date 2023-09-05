@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
@@ -66,7 +67,6 @@ public class StickyHandItem extends Item {
 
             // Find the entity in range
             List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
-            Entity itemEntity = null;
             if (!level.isClientSide) {
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
@@ -74,8 +74,14 @@ public class StickyHandItem extends Item {
                         ItemStack mainHandItem = ((LivingEntity) targetEntity).getMainHandItem();
                         if (!mainHandItem.isEmpty()) {
                             // Drop the mainhand item as an item entity
-                            assert mainHandItem.getEntityRepresentation() != null;
-                            itemEntity = targetEntity.spawnAtLocation(mainHandItem);
+                            Vec3 itemVector = targetEntity.getLookAngle();
+                            Vec3 itemVelocity = itemVector.scale(0.2);
+                            ItemEntity itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), mainHandItem);
+                            itemEntity.setDefaultPickUpDelay();
+                            itemEntity.setNoGravity(true);
+                            double initialVelocityY = 0.11; // Adjust as needed
+                            itemEntity.setDeltaMovement(itemVelocity.x, initialVelocityY, itemVelocity.z);
+                            level.addFreshEntity(itemEntity);
                             ((LivingEntity) targetEntity).setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                         }
                         break;
@@ -96,12 +102,6 @@ public class StickyHandItem extends Item {
                         break;
                     }
                 }
-            }
-            if (itemEntity != null) {
-                itemEntity.setOnGround(false);
-                itemEntity.setNoGravity(true);
-                double initialVelocityY = 0.12; // Adjust as needed
-                itemEntity.setDeltaMovement(0, initialVelocityY, 0);
             }
         }
 
