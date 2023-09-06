@@ -4,10 +4,14 @@ import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import com.teamabnormals.environmental.common.entity.animal.deer.AbstractDeer;
+import com.teamabnormals.environmental.common.entity.animal.deer.Deer;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -159,6 +163,13 @@ public class ReactionEvents {
                 }
                 basaltPos = basaltPos.above();
                 i++;
+            }
+        }
+        if (event.getEntity() instanceof Deer deer && !deer.getLevel().isClientSide) {
+            if (deer.hasAntlers()) {
+                ItemStack antlerItem = new ItemStack(NaturalistItems.ANTLER.get());
+                deer.spawnAtLocation(antlerItem);
+                // TODO: make an extra antler spawn with looting. though perhaps i should be adding this to the mob's loot table whoops
             }
         }
     }
