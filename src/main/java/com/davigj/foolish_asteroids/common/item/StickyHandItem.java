@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ import java.util.Random;
 
 public class StickyHandItem extends Item {
     private static final String NBT_CHARGE = "Charge";
-    private static final int MAX_CHARGE = 20; // Adjust as needed
+    private static final int MAX_CHARGE = 30; // Adjust as needed
 
     public StickyHandItem(Properties p_41383_) {
         super(p_41383_);
@@ -49,10 +50,23 @@ public class StickyHandItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseTicks) {
+        CompoundTag tag = stack.getOrCreateTag();
         if (!level.isClientSide) {
-            CompoundTag tag = stack.getOrCreateTag();
             int charge = tag.getInt(NBT_CHARGE) + 1;
             tag.putInt(NBT_CHARGE, charge);
+        } else {
+            if (tag.getInt(NBT_CHARGE) == MAX_CHARGE) {
+                // TODO: fleshy streeeetching sound
+                level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_HURT, SoundSource.NEUTRAL, 1.0F, 3.0F);
+                Random random = new Random();
+                Vec3 lookVector = entity.getLookAngle();
+                Vec3 itemVelocity = lookVector.scale(0.3);
+                for (int i = 0; i < 3; i++) {
+                    level.addParticle(ParticleTypes.END_ROD, entity.getX() + itemVelocity.x + (0.5 * (random.nextDouble() - 0.5)),
+                            (entity.getEyeHeight() * 0.65) + entity.getY() + random.nextDouble(),
+                            entity.getZ() + itemVelocity.z + (0.5 * (random.nextDouble() - 0.5)), 0, 0, 0);
+                }
+            }
         }
     }
 
@@ -61,9 +75,11 @@ public class StickyHandItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         int charge = tag.getInt(NBT_CHARGE);
         if (charge >= MAX_CHARGE) {
+            stack.hurtAndBreak(1, entity, (temp) -> {
+                temp.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
+            });
             float reachDistance = 2.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
             Vec3 lookVector = entity.getLookAngle();
-            Vec3 startVec = entity.getEyePosition(1.0F);
 
             // Find the entity in range
             List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
@@ -88,11 +104,11 @@ public class StickyHandItem extends Item {
                     }
                 }
             } else {
+                level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.0F, 2.0F);
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
                         ItemStack mainHandItem = ((LivingEntity) targetEntity).getMainHandItem();
                         if (!mainHandItem.isEmpty()) {
-                            level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.0F, 2.0F);
                             Random random = new Random();
                             for (int i = 0; i < 4; i++) {
                                 level.addParticle(ParticleTypes.END_ROD, targetEntity.getX() + random.nextDouble() - 0.5,
@@ -111,7 +127,6 @@ public class StickyHandItem extends Item {
             stack.getTag().remove(NBT_CHARGE);
         }
     }
-
 
     // /summon fox ~ ~1 ~ {HandItems:[{Count:1,id:diamond}], NoAI:true}
 

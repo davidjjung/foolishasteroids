@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -77,7 +78,7 @@ public class PlayerActionEvents {
                 manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 2);
             }
         }
-        if (player.getItemInHand(event.getHand()).getItem() == Items.SHEARS && event.getTarget() instanceof EnderMan enderman) {
+        if (player.getItemInHand(event.getHand()).m_204117_(Tags.Items.SHEARS) && event.getTarget() instanceof EnderMan enderman) {
             float playerYaw = player.getYRot();
             float playerPitch = player.getXRot();
 

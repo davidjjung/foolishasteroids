@@ -270,6 +270,8 @@ public class FoolishAsteroidsItems {
 			new GiftOfGabItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(59)));
 	public static final RegistryObject<Item> GLASS_CHISEL = HELPER.createItem("glass_chisel", () ->
 			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
+	public static final RegistryObject<Item> ARTISANAL_SHEARS = HELPER.createItem("artisanal_shears", () ->
+			new ShearsItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(1024)));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
