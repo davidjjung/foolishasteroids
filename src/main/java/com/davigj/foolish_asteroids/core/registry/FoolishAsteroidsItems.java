@@ -271,15 +271,15 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> GLASS_CHISEL = HELPER.createItem("glass_chisel", () ->
 			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
 	public static final RegistryObject<Item> ARTISANAL_SHEARS = HELPER.createItem("artisanal_shears", () ->
-			new ShearsItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(1024)));
+			new ShearsItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(1604)));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
 			new PanaceaItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.PANACEA)));
 	public static final RegistryObject<Item> LIGHTNING_BOTTLE = HELPER.createItem("lightning_bottle", () ->
-			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).craftRemainder(Items.GLASS_BOTTLE)));
+			new LightningBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)));
 	public static final RegistryObject<Item> BLUSTER_BOTTLE = HELPER.createItem("bluster_bottle", () ->
-			new BlusterBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION).craftRemainder(Items.GLASS_BOTTLE)));
+			new BlusterBottleItem(new Item.Properties().tab(CreativeModeTab.TAB_TRANSPORTATION).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)));
 
 	// crafting and brewing intermediaries
 	public static final RegistryObject<Item> SUNBIRD_FEATHER = HELPER.createItem("sunbird_feather", () ->

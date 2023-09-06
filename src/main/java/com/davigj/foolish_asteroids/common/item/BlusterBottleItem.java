@@ -1,5 +1,6 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -23,7 +24,8 @@ public class BlusterBottleItem extends Item {
         player.getCooldowns().addCooldown(this, 10);
         player.setOnGround(false);
         player.resetFallDistance();
-        player.push(0, 1.25 - 0.5 + (0.075) * (1.0D - player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0);
+        level.playSound(player, player, SoundEvents.GHAST_SHOOT, SoundSource.NEUTRAL, 0.4F, 3.0F);
+        player.push(0, 1.425 - 0.5 + (0.075) * (1.0D - player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0);
         player.awardStat(Stats.ITEM_USED.get(this));
         boolean filler = true;
         if (!player.getAbilities().instabuild && !level.isClientSide) {

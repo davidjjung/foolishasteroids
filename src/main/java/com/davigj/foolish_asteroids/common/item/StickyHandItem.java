@@ -104,7 +104,8 @@ public class StickyHandItem extends Item {
                     }
                 }
             } else {
-                level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.0F, 2.0F);
+                level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.25F, 2.0F);
+                level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, .85F, 1.25F);
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
                         ItemStack mainHandItem = ((LivingEntity) targetEntity).getMainHandItem();
@@ -112,7 +113,7 @@ public class StickyHandItem extends Item {
                             Random random = new Random();
                             for (int i = 0; i < 4; i++) {
                                 level.addParticle(ParticleTypes.END_ROD, targetEntity.getX() + random.nextDouble() - 0.5,
-                                        targetEntity.getY() + random.nextDouble(), targetEntity.getZ() + random.nextDouble() - 0.5, 0, 0, 0);
+                                        targetEntity.getEyeY() + random.nextDouble(), targetEntity.getZ() + random.nextDouble() - 0.5, 0, 0, 0);
                             }
                         }
                         break;
