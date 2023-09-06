@@ -151,6 +151,7 @@ public class PlayerActionEvents {
         }
     }
 
+    // TODO: replace antique ink functionality with a pen of some sort, if possible
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getPlayer();

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class BubbleBootsItem extends ArmorItem {
+    // TODO: dissociate soapiness from durability entirely. make it a separate nbt data that still determines the bar
     public BubbleBootsItem (ArmorMaterial materialIn, EquipmentSlot slot, Item.Properties builder) {
         super(materialIn, slot, builder);
     }

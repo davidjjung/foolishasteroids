@@ -51,9 +51,9 @@ public class StickyHandItem extends Item {
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseTicks) {
         CompoundTag tag = stack.getOrCreateTag();
+        int charge = tag.getInt(NBT_CHARGE);
         if (!level.isClientSide) {
-            int charge = tag.getInt(NBT_CHARGE) + 1;
-            tag.putInt(NBT_CHARGE, charge);
+            tag.putInt(NBT_CHARGE, charge + 1);
         } else {
             if (tag.getInt(NBT_CHARGE) == MAX_CHARGE) {
                 // TODO: fleshy streeeetching sound
@@ -65,6 +65,24 @@ public class StickyHandItem extends Item {
                     level.addParticle(ParticleTypes.END_ROD, entity.getX() + itemVelocity.x + (0.5 * (random.nextDouble() - 0.5)),
                             (entity.getEyeHeight() * 0.65) + entity.getY() + random.nextDouble(),
                             entity.getZ() + itemVelocity.z + (0.5 * (random.nextDouble() - 0.5)), 0, 0, 0);
+                }
+            }
+        }
+        if (charge >= MAX_CHARGE && level.isClientSide) {
+            float reachDistance = 2.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
+            Vec3 lookVector = entity.getLookAngle();
+            List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
+            for (Entity targetEntity : entities) {
+                if (targetEntity instanceof LivingEntity && targetEntity != entity && targetEntity.tickCount % 14 == 0) {
+                    ItemStack mainHandItem = ((LivingEntity) targetEntity).getMainHandItem();
+                    if (!mainHandItem.isEmpty()) {
+                        Random random = new Random();
+                        for (int i = 0; i < 1; i++) {
+                            level.addParticle(ParticleTypes.END_ROD, targetEntity.getX() + random.nextDouble() - 0.5,
+                                    targetEntity.getEyeY() + random.nextDouble(), targetEntity.getZ() + random.nextDouble() - 0.5, 0, 0, 0);
+                        }
+                    }
+                    break;
                 }
             }
         }
