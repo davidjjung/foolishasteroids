@@ -17,10 +17,12 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SOAPINESS;
+
 public class BubbleBootsItem extends ArmorItem {
     // TODO: dissociate soapiness from durability entirely. make it a separate nbt data that still determines the bar
     private static final String SOAPINESS = "Soapiness";
-    private static final int MAX_SOAPINESS = 250;
+
 
     public BubbleBootsItem(ArmorMaterial materialIn, EquipmentSlot slot, Item.Properties builder) {
         super(materialIn, slot, builder);

@@ -32,6 +32,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SOAPINESS;
+
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class PlayerActionEvents {
@@ -44,7 +46,7 @@ public class PlayerActionEvents {
         if (player.getItemInHand(event.getHand()).getItem() == ModRegistry.SOAP.get()
                 && player.getItemBySlot(EquipmentSlot.FEET).getItem() == FoolishAsteroidsItems.BUBBLEBOOTS.get()) {
             ItemStack armorStack = player.getItemBySlot(EquipmentSlot.FEET);
-            armorStack.getOrCreateTag().putInt("Soapiness", 250);
+            armorStack.getOrCreateTag().putInt("Soapiness", MAX_SOAPINESS);
             ItemStack handStack = player.getItemInHand(event.getHand());
             handStack.shrink(1);
         }
