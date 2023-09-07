@@ -11,6 +11,7 @@ import com.teamabnormals.autumnity.core.other.AutumnityTiers;
 import com.teamabnormals.autumnity.core.registry.AutumnityItems;
 import com.teamabnormals.autumnity.core.registry.AutumnityMobEffects;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -272,6 +273,12 @@ public class FoolishAsteroidsItems {
 			new GlassChiselItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(238)));
 	public static final RegistryObject<Item> ARTISANAL_SHEARS = HELPER.createItem("artisanal_shears", () ->
 			new ShearsItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(1604)));
+	public static final RegistryObject<Item> PIGLIN_PEN = HELPER.createItem("piglin_pen", () ->
+			new PiglinPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
+					new ResourceLocation("pigpen", "pigpen")));
+	public static final RegistryObject<Item> ANTIQUE_PEN = HELPER.createItem("antique_pen", () ->
+			new PiglinPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
+					new ResourceLocation("supplementaries", "antiquable")));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
