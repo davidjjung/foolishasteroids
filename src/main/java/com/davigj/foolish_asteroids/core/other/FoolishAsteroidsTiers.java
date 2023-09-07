@@ -18,7 +18,7 @@ public class FoolishAsteroidsTiers {
 
     static {
         BUBBLE_BLOWER = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "bubble_blower"), 23, new int[]{0, 0, 5, 0}, 3,
+                "foolish_asteroids", "bubble_blower"), 0, new int[]{0, 0, 5, 0}, 3,
                 ModSounds.BUBBLE_POP, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) ModRegistry.SOAP.get()});
         });

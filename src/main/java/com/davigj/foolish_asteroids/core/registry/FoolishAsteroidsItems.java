@@ -5,11 +5,6 @@ import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.other.FoolishAsteroidsTiers;
-import com.github.alexthe666.alexsmobs.entity.EntitySquidGrapple;
-import com.teamabnormals.autumnity.common.item.SnailShellChestplateItem;
-import com.teamabnormals.autumnity.core.other.AutumnityTiers;
-import com.teamabnormals.autumnity.core.registry.AutumnityItems;
-import com.teamabnormals.autumnity.core.registry.AutumnityMobEffects;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -259,7 +254,8 @@ public class FoolishAsteroidsItems {
 
 	// weapons and armor
 	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
-		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET,
+				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> PAPER_SABER = HELPER.createItem("paper_saber", () ->
 			new PaperSwordItem(Tiers.WOOD, 0, -1.8f, new Item.Properties().durability(32)
 					.tab(CreativeModeTab.TAB_COMBAT)));
@@ -274,10 +270,10 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> ARTISANAL_SHEARS = HELPER.createItem("artisanal_shears", () ->
 			new ShearsItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(1604)));
 	public static final RegistryObject<Item> PIGLIN_PEN = HELPER.createItem("piglin_pen", () ->
-			new PiglinPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
+			new FontPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
 					new ResourceLocation("pigpen", "pigpen")));
 	public static final RegistryObject<Item> ANTIQUE_PEN = HELPER.createItem("antique_pen", () ->
-			new PiglinPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
+			new FontPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
 					new ResourceLocation("supplementaries", "antiquable")));
 
 	// utility resources

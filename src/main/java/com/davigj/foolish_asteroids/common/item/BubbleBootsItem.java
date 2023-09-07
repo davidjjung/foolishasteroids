@@ -34,7 +34,7 @@ public class BubbleBootsItem extends ArmorItem {
         CompoundTag tag = stack.getOrCreateTag();
         int soapiness = tag.getInt(SOAPINESS);
         BlockPos bubblePos = player.blockPosition().below();
-        if (world.getBlockState(bubblePos).isAir() && soapiness > 0) {
+        if (world.getBlockState(bubblePos).isAir() && player.tickCount % 1.5 == 0 && soapiness > 0) {
             if (!world.isClientSide) {
                 world.setBlockAndUpdate(bubblePos, ModRegistry.BUBBLE_BLOCK.get().defaultBlockState());
                 tag.putInt(SOAPINESS, soapiness - 1);
@@ -83,5 +83,14 @@ public class BubbleBootsItem extends ArmorItem {
 
     public boolean isEnchantable(ItemStack p_41456_) {
         return false;
+    }
+
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return false;
+    }
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return 0;
     }
 }
