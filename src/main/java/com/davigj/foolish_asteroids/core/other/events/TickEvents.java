@@ -214,7 +214,6 @@ public class TickEvents {
             }
             if (player.tickCount % 5 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
                 Random rand = new Random();
-                rand.nextInt(1);
                 double x = player.getX() - 0.5;
                 double y = player.getY();
                 double z = player.getZ() - 0.5;
