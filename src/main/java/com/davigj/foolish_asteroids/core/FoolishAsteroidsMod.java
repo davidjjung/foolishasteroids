@@ -33,7 +33,8 @@ public class FoolishAsteroidsMod {
 	public static final TrackedData<Integer> STORED_ELECTRONS = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> BLUSTER_RECHARGE = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 	public static final TrackedData<Integer> BLUSTER_HARVEST = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
-	public static final TrackedData<Integer> TONGUES = TrackedData.Builder.create(DataProcessors.INT, () -> 2).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> TONGUES = TrackedData.Builder.create(DataProcessors.INT, () -> 4).enableSaving().enablePersistence().build();
+	public static final TrackedData<Integer> TEETH = TrackedData.Builder.create(DataProcessors.INT, () -> 3).enableSaving().enablePersistence().build();
 
 
 	public FoolishAsteroidsMod() {
@@ -62,6 +63,7 @@ public class FoolishAsteroidsMod {
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bluster_recharge"), BLUSTER_RECHARGE);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bluster_harvest"), BLUSTER_HARVEST);
 		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "tongues"), TONGUES);
+		TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "teeth"), TEETH);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

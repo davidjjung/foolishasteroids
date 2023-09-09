@@ -272,6 +272,8 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PIGLIN_PEN = HELPER.createItem("piglin_pen", () ->
 			new FontPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
 					new ResourceLocation("pigpen", "pigpen")));
+	public static final RegistryObject<Item> FORGOTTEN_PLIERS = HELPER.createItem("forgotten_pliers", () ->
+			new ForgottenPliersItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(24)));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
@@ -288,6 +290,8 @@ public class FoolishAsteroidsItems {
 			new SeveredTongueItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.SEVERED_TONGUE)));
 	public static final RegistryObject<Item> SILVER_TONGUE = HELPER.createItem("silver_tongue", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
+	public static final RegistryObject<Item> TOOTH = HELPER.createItem("tooth", () ->
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
