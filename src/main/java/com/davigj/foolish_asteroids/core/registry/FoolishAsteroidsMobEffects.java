@@ -5,7 +5,6 @@ import com.davigj.foolish_asteroids.common.effect.DisplacementEffect;
 import com.davigj.foolish_asteroids.common.effect.FingerlessEffect;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.DataUtil;
-import com.teamabnormals.neapolitan.common.effect.SlippingMobEffect;
 import com.teamabnormals.neapolitan.core.registry.NeapolitanMobEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

@@ -3,6 +3,7 @@ package com.davigj.foolish_asteroids.core.other.events;
 import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
@@ -20,6 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -192,8 +194,9 @@ public class ReactionEvents {
 
     @SubscribeEvent
     public static void onPotionAdded(PotionEvent.PotionApplicableEvent event) {
+        MobEffect effect = event.getPotionEffect().getEffect();
         if (!event.getEntity().level.isClientSide()) {
-            if (event.getPotionEffect().getEffect() == BCEffects.TIPSY.get() && event.getEntity() instanceof Player player) {
+            if (effect == BCEffects.TIPSY.get() && event.getEntity() instanceof Player player) {
                 MobEffectInstance tipsy = event.getPotionEffect();
                 int antiDrunk = TrackedDataManager.INSTANCE.getValue(player, FoolishAsteroidsMod.ANTI_DRUNK);
                 if (antiDrunk > 0) {
