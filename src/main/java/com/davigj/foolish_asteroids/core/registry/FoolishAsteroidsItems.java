@@ -272,9 +272,6 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> PIGLIN_PEN = HELPER.createItem("piglin_pen", () ->
 			new FontPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
 					new ResourceLocation("pigpen", "pigpen")));
-	public static final RegistryObject<Item> ANTIQUE_PEN = HELPER.createItem("antique_pen", () ->
-			new FontPenItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS),
-					new ResourceLocation("supplementaries", "antiquable")));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->

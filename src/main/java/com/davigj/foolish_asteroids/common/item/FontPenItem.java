@@ -1,7 +1,8 @@
 package com.davigj.foolish_asteroids.common.item;
 
+import net.mehvahdjukaar.supplementaries.common.block.tiles.HangingSignBlockTile;
+import net.mehvahdjukaar.supplementaries.common.block.util.TextHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -22,12 +23,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.phys.BlockHitResult;
 
-public class PiglinPenItem extends Item {
+public class FontPenItem extends Item {
     private static final int MAX_INK = 250;
     private final ResourceLocation font;
-    public PiglinPenItem(Properties p_41383_, ResourceLocation location) {
+    public FontPenItem(Properties p_41383_, ResourceLocation location) {
         super(p_41383_);
         this.font = location;
     }
@@ -39,7 +39,7 @@ public class PiglinPenItem extends Item {
         ItemStack pen = player.getItemInHand(hand);
         ItemStack stackToRename = (hand == InteractionHand.MAIN_HAND ? player.getOffhandItem() : player.getMainHandItem());
 
-        if (stackToRename != null && stackToRename.getHoverName() instanceof MutableComponent displayName) {
+        if (!stackToRename.isEmpty() && stackToRename.getHoverName() instanceof MutableComponent displayName) {
             if (stackToRename.getItem() != Items.WRITTEN_BOOK) {
                 if (!doesFontMatch(displayName)) {
                     displayName.withStyle(Style.EMPTY.withFont(font));
@@ -95,20 +95,16 @@ public class PiglinPenItem extends Item {
             BlockEntity blockEntity = world.getBlockEntity(blockPos);
             if (blockEntity instanceof SignBlockEntity) {
                 SignBlockEntity sign = (SignBlockEntity) blockEntity;
-
                 if (applyFontToSign(sign)) {
                     if (!world.isClientSide) {
-                        // No need to store data in the pen item
                         player.swing(context.getHand());
                     }
                     return InteractionResult.SUCCESS;
                 }
             }
         }
-
         return InteractionResult.PASS;
     }
-
 
     private boolean applyFontToSign(SignBlockEntity sign) {
         Component[] lines = sign.getMessages(true);

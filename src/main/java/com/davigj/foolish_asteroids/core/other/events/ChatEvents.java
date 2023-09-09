@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.Random;
@@ -24,6 +26,7 @@ import static com.davigj.foolish_asteroids.common.util.HearsayUtil.conversations
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class ChatEvents {
+    static Logger LOGGER = LogManager.getLogger(FoolishAsteroidsMod.MOD_ID);
 
     private static String updateSenderID(ItemStack itemStack, String currentSenderID) {
         CompoundTag tag = itemStack.getTag();
@@ -115,6 +118,6 @@ public class ChatEvents {
             }
         }
         event.setCanceled(true);
-        // TODO: Send a message that is ONLY visible in server logs, using trueSenderID with the original contents of the message.
+        LOGGER.info("Received chat from: {} - Message: {}", trueSenderID, event.getMessage());
     }
 }
