@@ -3,6 +3,8 @@ package com.davigj.foolish_asteroids.common.item;
 import com.davigj.foolish_asteroids.core.other.tags.FoolishAsteroidsBlockTags;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,8 +26,22 @@ public class PaperSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        boolean hasSharpness = false;
+        CompoundTag itemNBT = stack.getTag();
+        if (itemNBT != null && itemNBT.contains("Enchantments", 9)) {
+            ListTag enchantments = itemNBT.getList("Enchantments", 10);
+            for (int i = 0; i < enchantments.size(); i++) {
+                CompoundTag enchantmentTag = enchantments.getCompound(i);
+                String enchantmentId = enchantmentTag.getString("id");
+
+                if (enchantmentId.equals("minecraft:sharpness")) {
+                    hasSharpness = true;
+                    break; // You can break out of the loop since Silk Touch is found
+                }
+            }
+        }
         if (target != null) {
-            target.addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 100));
+            target.addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, (hasSharpness ? 1 : 0)));
         }
         return super.hurtEnemy(stack, target, attacker);
     }

@@ -34,7 +34,7 @@ public class BubbleBootsItem extends ArmorItem {
         CompoundTag tag = stack.getOrCreateTag();
         int soapiness = tag.getInt(SOAPINESS);
         BlockPos bubblePos = player.blockPosition().below();
-        if (world.getBlockState(bubblePos).isAir() && player.tickCount % 1.5 == 0 && soapiness > 0) {
+        if (world.getBlockState(bubblePos).isAir() && player.tickCount % 1 == 0 && soapiness > 0) {
             if (!world.isClientSide) {
                 world.setBlockAndUpdate(bubblePos, ModRegistry.BUBBLE_BLOCK.get().defaultBlockState());
                 tag.putInt(SOAPINESS, soapiness - 1);

@@ -256,6 +256,12 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
 		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET,
 				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+	public static final RegistryObject<Item> RETRO_SNEAKERS = HELPER.createItem("retro_sneakers", () -> {
+		return new RetroSneakersItem(FoolishAsteroidsTiers.RETRO, EquipmentSlot.FEET,
+				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+	public static final RegistryObject<Item> NOSTALGIC_GLASSES = HELPER.createItem("nostalgic_glasses", () -> {
+		return new NostalgicGlassesItem(FoolishAsteroidsTiers.NOSTALGIC, EquipmentSlot.HEAD,
+				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> PAPER_SABER = HELPER.createItem("paper_saber", () ->
 			new PaperSwordItem(Tiers.WOOD, 0, -1.8f, new Item.Properties().durability(32)
 					.tab(CreativeModeTab.TAB_COMBAT)));

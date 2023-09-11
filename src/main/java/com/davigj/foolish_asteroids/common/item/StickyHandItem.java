@@ -84,9 +84,6 @@ public class StickyHandItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         int charge = tag.getInt(NBT_CHARGE);
         if (charge >= STICKY_HAND_CHARGE_TICKS) {
-            stack.hurtAndBreak(1, entity, (temp) -> {
-                temp.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
-            });
             float reachDistance = 2.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
             Vec3 lookVector = entity.getLookAngle();
 
@@ -129,6 +126,9 @@ public class StickyHandItem extends Item {
                     }
                 }
             }
+            stack.hurtAndBreak(1, entity, (temp) -> {
+                temp.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
+            });
         }
 
         // Reset the charge

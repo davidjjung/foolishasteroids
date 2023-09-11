@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
 import com.brewinandchewin.core.registry.BCEffects;
+import com.davigj.foolish_asteroids.common.item.RetroSneakersItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
@@ -127,6 +128,15 @@ public class ReactionEvents {
         }
         if (playerVictim && source != DamageSource.LAVA && source != DamageSource.OUT_OF_WORLD && rainbowTimers.containsKey(player.getUUID())) {
             event.setCanceled(true);
+        }
+        if (playerVictim && source.isFall()) {
+            ItemStack gauntlets = player.getItemBySlot(EquipmentSlot.FEET);
+            if (gauntlets.getItem() instanceof RetroSneakersItem) {
+                event.setAmount(event.getAmount() * 0.25F);
+                if (event.getAmount() * 0.25F < 0.5F) {
+                    event.setCanceled(true);
+                }
+            }
         }
         Random random = new Random();
         if (event.getEntity().getType().toString().equals("entity.creeperoverhaul.dark_oak_creeper") && random.nextBoolean()) {
