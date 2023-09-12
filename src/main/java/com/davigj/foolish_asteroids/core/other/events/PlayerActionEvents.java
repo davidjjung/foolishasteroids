@@ -1,9 +1,15 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
+import com.davigj.foolish_asteroids.common.item.PetrificationMaskItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.starfish_studios.naturalist.entity.Snake;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -12,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -32,6 +39,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SNAKES;
 import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SOAPINESS;
 
 
@@ -44,7 +52,7 @@ public class PlayerActionEvents {
     public static void playerUse(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getPlayer();
         if (player.getItemInHand(event.getHand()).getItem() == ModRegistry.SOAP.get()
-                && player.getItemBySlot(EquipmentSlot.FEET).getItem() == FoolishAsteroidsItems.BUBBLEBOOTS.get()) {
+                && player.getItemBySlot(EquipmentSlot.FEET).getItem() == FoolishAsteroidsItems.BUBBLE_BOOTS.get()) {
             ItemStack armorStack = player.getItemBySlot(EquipmentSlot.FEET);
             armorStack.getOrCreateTag().putInt("Soapiness", MAX_SOAPINESS);
             ItemStack handStack = player.getItemInHand(event.getHand());
@@ -121,6 +129,28 @@ public class PlayerActionEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void playerTouchSnek(PlayerInteractEvent.EntityInteract event) {
+        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+        if (event.getTarget() instanceof Snake snake && stack.getItem() instanceof PetrificationMaskItem) {
+            CompoundTag stackTag = stack.getOrCreateTag();
+            ListTag snakesTag = stackTag.getList("Snakes", 10);
+            if (snakesTag.size() < MAX_SNAKES) {
+                event.setCanceled(true);
+                CompoundTag snakeData = new CompoundTag();
+                snake.save(snakeData);
+                snakeData.putString("EntityType", getEntityResourceLocation(snake).toString()); // Store the entity ID
+                snakesTag.add(snakeData);
+                stackTag.put("Snakes", snakesTag);
+                snake.remove(Entity.RemovalReason.DISCARDED);
+            }
+        }
+    }
+
+    private static ResourceLocation getEntityResourceLocation(Entity entity) {
+        return Registry.ENTITY_TYPE.getKey(entity.getType());
+    }
+
     static void teleport(double x, double y, double z, LivingEntity livingEntity) {
         Level world = livingEntity.getLevel();
 
@@ -139,7 +169,6 @@ public class PlayerActionEvents {
         }
     }
 
-    // TODO: replace antique ink functionality with a pen of some sort, if possible
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getPlayer();

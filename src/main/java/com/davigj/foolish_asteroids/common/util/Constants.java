@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Constants {
     public static final int DRINK_TIME = 24;
+    public static final int MAX_SNAKES = 5;
     public static final int MAX_SOAPINESS = 450;
     public static final int STICKY_HAND_CHARGE_TICKS = 30;
     public static final int PLIERS_CHARGE_TICKS = 80;

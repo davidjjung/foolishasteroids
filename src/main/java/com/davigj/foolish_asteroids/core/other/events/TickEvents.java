@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
 import com.davigj.foolish_asteroids.common.item.NostalgicGlassesItem;
+import com.davigj.foolish_asteroids.common.item.PetrificationMaskItem;
 import com.davigj.foolish_asteroids.common.item.RetroSneakersItem;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
@@ -42,6 +43,7 @@ import net.minecraftforge.fml.common.Mod;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -275,6 +277,37 @@ public class TickEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onPetrify(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        float reachDistance = 7.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
+        Vec3 lookVector = entity.getLookAngle();
+        Level level = entity.level;
+        List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
+
+        for (Entity nearbyEntity : entities) {
+            if (nearbyEntity instanceof Player && isWearingPetrificationMask((Player) nearbyEntity)) {
+                // This player is wearing the Petrification Mask and is within the player's line of sight
+                // TODO: She'll turn you to stone !!
+            }
+        }
+    }
+
+    // Function to check if a player is wearing the Petrification Mask
+    private static boolean isWearingPetrificationMask(Player player) {
+        ItemStack headSlot = player.getItemBySlot(EquipmentSlot.HEAD);
+        return !headSlot.isEmpty() && headSlot.getItem() instanceof PetrificationMaskItem;
+    }
+
+    private static boolean isPlayerLookingAtPlayer(Player viewer, Player target) {
+        Vec3 viewerLookVector = viewer.getLookAngle();
+        Vec3 viewerToTargetVector = target.position().subtract(viewer.position()).normalize();
+        double dotProduct = viewerLookVector.dot(viewerToTargetVector);
+        double threshold = 0.95;
+        return dotProduct >= threshold;
+    }
+
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {

@@ -253,8 +253,11 @@ public class FoolishAsteroidsItems {
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
 	// weapons and armor
-	public static final RegistryObject<Item> BUBBLEBOOTS = HELPER.createItem("bubbleboots", () -> {
+	public static final RegistryObject<Item> BUBBLE_BOOTS = HELPER.createItem("bubble_boots", () -> {
 		return new BubbleBootsItem(FoolishAsteroidsTiers.BUBBLE_BLOWER, EquipmentSlot.FEET,
+				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+	public static final RegistryObject<Item> PETRIFICATION_MASK = HELPER.createItem("mask_of_petrification", () -> {
+		return new PetrificationMaskItem(FoolishAsteroidsTiers.SNAKE, EquipmentSlot.HEAD,
 				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> RETRO_SNEAKERS = HELPER.createItem("retro_sneakers", () -> {
 		return new RetroSneakersItem(FoolishAsteroidsTiers.RETRO, EquipmentSlot.FEET,
