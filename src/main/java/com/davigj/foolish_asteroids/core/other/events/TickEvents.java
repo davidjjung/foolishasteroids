@@ -8,14 +8,10 @@ import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
-import com.mojang.math.Vector3f;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,21 +25,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -265,12 +256,22 @@ public class TickEvents {
         }
     }
     @SubscribeEvent
-    public static void onFovSet(EntityViewRenderEvent.FieldOfView event) {
+    public static void onFOVSetup(EntityViewRenderEvent.FieldOfView event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             ItemStack gauntlets = player.getItemBySlot(EquipmentSlot.FEET);
             if (gauntlets.getItem() instanceof RetroSneakersItem) {
-//                event.setFOV(100.0F);
+                event.setFOV(70.0F);
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void renderFirstPersonArm(RenderHandEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            ItemStack helm = player.getItemBySlot(EquipmentSlot.HEAD);
+            if (helm.getItem() instanceof NostalgicGlassesItem) {
+                event.setCanceled(true);
             }
         }
     }

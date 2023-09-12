@@ -1,25 +1,17 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
 import com.brewinandchewin.core.registry.BCEffects;
-import com.davigj.foolish_asteroids.common.item.RetroSneakersItem;
+import com.davigj.foolish_asteroids.common.item.MoonWalkersItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
-import com.teamabnormals.environmental.common.entity.animal.deer.AbstractDeer;
 import com.teamabnormals.environmental.common.entity.animal.deer.Deer;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -31,15 +23,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrownEnderpearl;
-import net.minecraft.world.item.ChorusFruitItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
@@ -50,7 +39,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import virtuoel.pehkui.api.ScaleTypes;
 
-import java.util.Objects;
 import java.util.Random;
 
 import static com.davigj.foolish_asteroids.common.item.elixir.HearsayElixirItem.oracleMap;
@@ -131,10 +119,10 @@ public class ReactionEvents {
         }
         if (playerVictim && source.isFall()) {
             ItemStack gauntlets = player.getItemBySlot(EquipmentSlot.FEET);
-            if (gauntlets.getItem() instanceof RetroSneakersItem) {
+            if (gauntlets.getItem() instanceof MoonWalkersItem) {
                 event.setAmount(event.getAmount() * 0.25F);
-                if (event.getAmount() * 0.25F < 0.5F) {
-                    event.setCanceled(true);
+                if (event.getAmount() < 0.5F) {
+                event.setCanceled(true);
                 }
             }
         }

@@ -259,6 +259,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> RETRO_SNEAKERS = HELPER.createItem("retro_sneakers", () -> {
 		return new RetroSneakersItem(FoolishAsteroidsTiers.RETRO, EquipmentSlot.FEET,
 				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+	public static final RegistryObject<Item> MOON_WALKERS = HELPER.createItem("moon_walkers", () -> {
+		return new MoonWalkersItem(FoolishAsteroidsTiers.MOON, EquipmentSlot.FEET,
+				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> NOSTALGIC_GLASSES = HELPER.createItem("nostalgic_glasses", () -> {
 		return new NostalgicGlassesItem(FoolishAsteroidsTiers.NOSTALGIC, EquipmentSlot.HEAD,
 				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
