@@ -20,6 +20,7 @@ public class FoolishAsteroidsTiers {
     public static final BlueprintArmorMaterial NOSTALGIC;
     public static final BlueprintArmorMaterial MOON;
     public static final BlueprintArmorMaterial SNAKE;
+    public static final BlueprintArmorMaterial BOUNDLESS;
 
     public FoolishAsteroidsTiers() {
     }
@@ -37,6 +38,11 @@ public class FoolishAsteroidsTiers {
         });
         MOON = new BlueprintArmorMaterial(new ResourceLocation(
                 "foolish_asteroids", "moon"), 0, new int[]{0, 0, 5, 0}, 5,
+                NeapolitanSoundEvents.ITEM_ICE_CUBES_EAT, 0.0F, 0.0F, () -> {
+            return Ingredient.of(new ItemLike[]{(ItemLike) APBlocks.MOONSTONE.get()});
+        });
+        BOUNDLESS = new BlueprintArmorMaterial(new ResourceLocation(
+                "foolish_asteroids", "boundless"), 0, new int[]{0, 0, 5, 0}, 5,
                 NeapolitanSoundEvents.ITEM_ICE_CUBES_EAT, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) APBlocks.MOONSTONE.get()});
         });

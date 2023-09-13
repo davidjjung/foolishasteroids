@@ -137,6 +137,7 @@ public class PlayerActionEvents {
             ListTag snakesTag = stackTag.getList("Snakes", 10);
             if (snakesTag.size() < MAX_SNAKES) {
                 event.setCanceled(true);
+                System.out.println(event.getCancellationResult());
                 CompoundTag snakeData = new CompoundTag();
                 snake.save(snakeData);
                 snakeData.putString("EntityType", getEntityResourceLocation(snake).toString()); // Store the entity ID

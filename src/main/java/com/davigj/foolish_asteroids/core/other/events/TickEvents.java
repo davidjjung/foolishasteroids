@@ -11,6 +11,7 @@ import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import gg.moonflower.mannequins.common.entity.Mannequin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -26,14 +27,23 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent;
@@ -257,6 +267,7 @@ public class TickEvents {
             }
         }
     }
+
     @SubscribeEvent
     public static void onFOVSetup(EntityViewRenderEvent.FieldOfView event) {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -267,6 +278,7 @@ public class TickEvents {
             }
         }
     }
+
     @SubscribeEvent
     public static void renderFirstPersonArm(RenderHandEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -281,22 +293,73 @@ public class TickEvents {
     @SubscribeEvent
     public static void onPetrify(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
-        float reachDistance = 7.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
-        Vec3 lookVector = entity.getLookAngle();
-        Level level = entity.level;
-        List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
+        if (entity instanceof Player && entity.tickCount % 20 == 0) {
+            float reachDistance = 28.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
+            Vec3 lookVector = entity.getLookAngle();
+            Vec3 eyePosition = entity.getEyePosition(1.0F);
+            Vec3 endPoint = eyePosition.add(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance);
 
-        for (Entity nearbyEntity : entities) {
-            if (nearbyEntity instanceof Player && isWearingPetrificationMask((Player) nearbyEntity)) {
-                // This player is wearing the Petrification Mask and is within the player's line of sight
-                // TODO: She'll turn you to stone !!
+            // Define the radius of chunks to consider around the player
+            int chunkRadius = 1; // Adjust as needed
+
+            // Define the Y-level range (min and max)
+            int minY = (int) entity.getY() - 30;
+            int maxY = (int) entity.getY() + 30;
+
+            // Get the player's chunk position
+            ChunkPos playerChunkPos = new ChunkPos(entity.blockPosition());
+            // Iterate through chunks in the specified radius around the player
+            for (int xOffset = -chunkRadius; xOffset <= chunkRadius; xOffset++) {
+                for (int zOffset = -chunkRadius; zOffset <= chunkRadius; zOffset++) {
+                    ChunkPos targetChunkPos = new ChunkPos(playerChunkPos.x + xOffset, playerChunkPos.z + zOffset);
+                    // Check if the chunk is loaded to avoid null references
+                    if (entity.level.hasChunk(targetChunkPos.x, targetChunkPos.z)) {
+                        // Get the entities in the chunk
+                        List<Entity> entitiesInChunk = entity.level.getEntities(null, new AABB(targetChunkPos.getMinBlockX(), minY, targetChunkPos.getMinBlockZ(), targetChunkPos.getMaxBlockX(), maxY, targetChunkPos.getMaxBlockZ()));
+                        entitiesInChunk.removeIf(targetEntity -> !(targetEntity instanceof LivingEntity));
+                        entitiesInChunk.removeIf(targetEntity -> !(targetEntity.getY() >= minY && targetEntity.getY() <= maxY));
+//                        ClipContext clipContext = new ClipContext(eyePosition, endPoint, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity);
+//                        HitResult hitResult = entity.level.clip(clipContext);
+//                        if (hitResult.getType() == HitResult.Type.MISS) {
+//                            break;
+//                        }
+                        // Iterate through entities in the chunk
+                        for (Entity targetEntity : entitiesInChunk) {
+                            // Use the bounding box of the target entity for ray tracing
+                            AABB entityBoundingBox = targetEntity.getBoundingBox().inflate(0.5F);
+                            // Perform ray tracing and hit detection
+                            EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level, entity, eyePosition, endPoint, entityBoundingBox, entity1 -> entity1 != entity);
+                            // Handle the result as needed
+                            if (entityHitResult != null) {
+                                Entity hitEntity = entityHitResult.getEntity();
+                                if (hitEntity instanceof LivingEntity living) {
+                                    if (isWearingPetrificationMask(living)) {
+                                        System.out.println("Whoa there pardner might wanna slow down");
+                                    }
+                                    living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 30, 0, false, false));
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+// /summon minecraft:zombie ~ ~ ~ {ArmorItems:[{id:"minecraft:chainmail_boots",Count:1b},{id:"minecraft:iron_leggings",Count:1b},{id:"minecraft:golden_chestplate",Count:1b},{id:"foolish_asteroids:mask_of_petrification",Count:1b}], NoAI:true}
 
     // Function to check if a player is wearing the Petrification Mask
-    private static boolean isWearingPetrificationMask(Player player) {
-        ItemStack headSlot = player.getItemBySlot(EquipmentSlot.HEAD);
+    private static boolean isWearingPetrificationMask(LivingEntity living) {
+        ItemStack headSlot = living.getItemBySlot(EquipmentSlot.HEAD);
+        if (living instanceof ArmorStand armorStand) {
+            System.out.println(armorStand);
+            for (ItemStack armorItem : armorStand.getArmorSlots()) {
+                if (!armorItem.isEmpty()) {
+                    if (armorItem.getItem() instanceof PetrificationMaskItem) {
+                        return true;
+                    }
+                }
+            }
+        }
         return !headSlot.isEmpty() && headSlot.getItem() instanceof PetrificationMaskItem;
     }
 

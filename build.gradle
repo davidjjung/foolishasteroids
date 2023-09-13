@@ -99,6 +99,8 @@ dependencies {
     implementation fg.deobf("curse.maven:guns-without-roses-405077:3751752")
     implementation fg.deobf("curse.maven:pig-pen-cipher-396234:3683674")
     implementation fg.deobf("curse.maven:ecologics-570463:3939725")
+    implementation fg.deobf("curse.maven:pollen-544350:4337349")
+    implementation fg.deobf("curse.maven:mannequins-488506:3717750")
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}")
