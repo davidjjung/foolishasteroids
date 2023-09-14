@@ -17,6 +17,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -61,6 +63,7 @@ import static com.davigj.foolish_asteroids.common.item.elixir.HearsayElixirItem.
 import static com.davigj.foolish_asteroids.common.item.elixir.IncendiaryElixirItem.smokingPlayers;
 import static com.davigj.foolish_asteroids.common.item.elixir.IndomitableElixirItem.rainbowTimers;
 import static com.davigj.foolish_asteroids.common.item.elixir.ProfoundElixirItem.chatDisableMap;
+import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SNAKES;
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
 public class TickEvents {
@@ -293,50 +296,38 @@ public class TickEvents {
     @SubscribeEvent
     public static void onPetrify(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
-        if (entity instanceof Player && entity.tickCount % 20 == 0) {
-            float reachDistance = 28.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
+        if (entity.tickCount % 20 == 0) {
+            float reachDistance = 36.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
             Vec3 lookVector = entity.getLookAngle();
             Vec3 eyePosition = entity.getEyePosition(1.0F);
             Vec3 endPoint = eyePosition.add(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance);
-
-            // Define the radius of chunks to consider around the player
-            int chunkRadius = 1; // Adjust as needed
-
-            // Define the Y-level range (min and max)
+            int chunkRadius = 1;
             int minY = (int) entity.getY() - 30;
             int maxY = (int) entity.getY() + 30;
-
-            // Get the player's chunk position
             ChunkPos playerChunkPos = new ChunkPos(entity.blockPosition());
-            // Iterate through chunks in the specified radius around the player
             for (int xOffset = -chunkRadius; xOffset <= chunkRadius; xOffset++) {
                 for (int zOffset = -chunkRadius; zOffset <= chunkRadius; zOffset++) {
                     ChunkPos targetChunkPos = new ChunkPos(playerChunkPos.x + xOffset, playerChunkPos.z + zOffset);
-                    // Check if the chunk is loaded to avoid null references
                     if (entity.level.hasChunk(targetChunkPos.x, targetChunkPos.z)) {
-                        // Get the entities in the chunk
                         List<Entity> entitiesInChunk = entity.level.getEntities(null, new AABB(targetChunkPos.getMinBlockX(), minY, targetChunkPos.getMinBlockZ(), targetChunkPos.getMaxBlockX(), maxY, targetChunkPos.getMaxBlockZ()));
                         entitiesInChunk.removeIf(targetEntity -> !(targetEntity instanceof LivingEntity));
                         entitiesInChunk.removeIf(targetEntity -> !(targetEntity.getY() >= minY && targetEntity.getY() <= maxY));
-//                        ClipContext clipContext = new ClipContext(eyePosition, endPoint, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity);
-//                        HitResult hitResult = entity.level.clip(clipContext);
-//                        if (hitResult.getType() == HitResult.Type.MISS) {
-//                            break;
-//                        }
-                        // Iterate through entities in the chunk
                         for (Entity targetEntity : entitiesInChunk) {
-                            // Use the bounding box of the target entity for ray tracing
                             AABB entityBoundingBox = targetEntity.getBoundingBox().inflate(0.5F);
-                            // Perform ray tracing and hit detection
                             EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity.level, entity, eyePosition, endPoint, entityBoundingBox, entity1 -> entity1 != entity);
-                            // Handle the result as needed
                             if (entityHitResult != null) {
-                                Entity hitEntity = entityHitResult.getEntity();
-                                if (hitEntity instanceof LivingEntity living) {
-                                    if (isWearingPetrificationMask(living)) {
-                                        System.out.println("Whoa there pardner might wanna slow down");
+                                ClipContext clipContext = new ClipContext(eyePosition, endPoint, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity);
+                                BlockHitResult hitResult = entity.level.clip(clipContext);
+                                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                                    double blockHitDistance = hitResult.getLocation().distanceTo(eyePosition);
+                                    double entityHitDistance = eyePosition.distanceTo(entityHitResult.getLocation());
+                                    if (blockHitDistance > entityHitDistance) {
+                                        Entity hitEntity = entityHitResult.getEntity();
+                                        if (hitEntity instanceof LivingEntity living) {
+                                            applyPetrifyEffect(living, entity);
+                                            applyPetrifyEffect(entity, living);
+                                        }
                                     }
-                                    living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 30, 0, false, false));
                                 }
                             }
                         }
@@ -350,27 +341,21 @@ public class TickEvents {
     // Function to check if a player is wearing the Petrification Mask
     private static boolean isWearingPetrificationMask(LivingEntity living) {
         ItemStack headSlot = living.getItemBySlot(EquipmentSlot.HEAD);
-        if (living instanceof ArmorStand armorStand) {
-            System.out.println(armorStand);
-            for (ItemStack armorItem : armorStand.getArmorSlots()) {
-                if (!armorItem.isEmpty()) {
-                    if (armorItem.getItem() instanceof PetrificationMaskItem) {
-                        return true;
-                    }
-                }
-            }
-        }
         return !headSlot.isEmpty() && headSlot.getItem() instanceof PetrificationMaskItem;
     }
 
-    private static boolean isPlayerLookingAtPlayer(Player viewer, Player target) {
-        Vec3 viewerLookVector = viewer.getLookAngle();
-        Vec3 viewerToTargetVector = target.position().subtract(viewer.position()).normalize();
-        double dotProduct = viewerLookVector.dot(viewerToTargetVector);
-        double threshold = 0.95;
-        return dotProduct >= threshold;
+    private static void applyPetrifyEffect(LivingEntity villain, LivingEntity victim) {
+        if (isWearingPetrificationMask(villain)) {
+            CompoundTag stackTag = villain.getItemBySlot(EquipmentSlot.HEAD).getOrCreateTag();
+            ListTag snakesTag = stackTag.getList("Snakes", 10);
+            if (snakesTag.size() > 1) {
+                victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 0, false, false));
+                if (snakesTag.size() == MAX_SNAKES) {
+                    victim.hurt(FoolishAsteroidsDamageSources.MEDUSA, 3.0F);
+                }
+            }
+        }
     }
-
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {

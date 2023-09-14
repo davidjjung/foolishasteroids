@@ -6,6 +6,7 @@ import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -29,6 +30,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -38,6 +42,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
 import virtuoel.pehkui.api.ScaleTypes;
+
+import java.util.List;
 
 import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SNAKES;
 import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SOAPINESS;
@@ -129,29 +135,6 @@ public class PlayerActionEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void playerTouchSnek(PlayerInteractEvent.EntityInteract event) {
-        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
-        if (event.getTarget() instanceof Snake snake && stack.getItem() instanceof PetrificationMaskItem) {
-            CompoundTag stackTag = stack.getOrCreateTag();
-            ListTag snakesTag = stackTag.getList("Snakes", 10);
-            if (snakesTag.size() < MAX_SNAKES) {
-                event.setCanceled(true);
-                System.out.println(event.getCancellationResult());
-                CompoundTag snakeData = new CompoundTag();
-                snake.save(snakeData);
-                snakeData.putString("EntityType", getEntityResourceLocation(snake).toString()); // Store the entity ID
-                snakesTag.add(snakeData);
-                stackTag.put("Snakes", snakesTag);
-                snake.remove(Entity.RemovalReason.DISCARDED);
-            }
-        }
-    }
-
-    private static ResourceLocation getEntityResourceLocation(Entity entity) {
-        return Registry.ENTITY_TYPE.getKey(entity.getType());
-    }
-
     static void teleport(double x, double y, double z, LivingEntity livingEntity) {
         Level world = livingEntity.getLevel();
 
@@ -168,6 +151,46 @@ public class PlayerActionEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() instanceof PetrificationMaskItem) {
+            Player player = event.getPlayer();
+            Level level = event.getWorld();
+            float reachDistance = 8 * ScaleTypes.REACH.getScaleData(player).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(player).getBaseScale();
+            Vec3 lookVector = player.getLookAngle();
+            List<Entity> entities = level.getEntities((Entity) null, player.getBoundingBox().expandTowards(
+                    lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
+            for (Entity targetEntity : entities) {
+                if (targetEntity instanceof Snake) {
+                    event.setCanceled(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerTouchSnek(PlayerInteractEvent.EntityInteract event) {
+        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+        if (event.getTarget() instanceof Snake snake && stack.getItem() instanceof PetrificationMaskItem) {
+            CompoundTag stackTag = stack.getOrCreateTag();
+            ListTag snakesTag = stackTag.getList("Snakes", 10);
+            if (snakesTag.size() < MAX_SNAKES) {
+                CompoundTag snakeData = new CompoundTag();
+                snake.save(snakeData);
+                snakeData.putString("EntityType", getEntityResourceLocation(snake).toString()); // Store the entity ID
+                snakesTag.add(snakeData);
+                stackTag.put("Snakes", snakesTag);
+                snake.remove(Entity.RemovalReason.DISCARDED);
+            }
+        }
+    }
+
+    private static ResourceLocation getEntityResourceLocation(Entity entity) {
+        return Registry.ENTITY_TYPE.getKey(entity.getType());
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)

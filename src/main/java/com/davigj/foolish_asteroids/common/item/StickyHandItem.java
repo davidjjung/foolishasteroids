@@ -60,9 +60,11 @@ public class StickyHandItem extends Item {
             }
         }
         if (charge >= STICKY_HAND_CHARGE_TICKS && level.isClientSide) {
-            float reachDistance = 2.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
+            float reachDistance = 2.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale()
+                    * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale();
             Vec3 lookVector = entity.getLookAngle();
-            List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
+            List<Entity> entities = level.getEntities((Entity) null, entity.getBoundingBox().expandTowards(
+                    lookVector.x * reachDistance, lookVector.y * reachDistance, lookVector.z * reachDistance).inflate(1.0D));
             for (Entity targetEntity : entities) {
                 if (targetEntity instanceof LivingEntity && targetEntity != entity && targetEntity.tickCount % 14 == 0) {
                     ItemStack mainHandItem = ((LivingEntity) targetEntity).getMainHandItem();

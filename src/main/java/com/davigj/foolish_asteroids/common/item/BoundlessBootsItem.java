@@ -16,8 +16,12 @@ public class BoundlessBootsItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!player.isCrouching() && player.level.isClientSide && !player.isOnGround()) {
-            player.setNoGravity(true);
+        if (player.level.isClientSide) {
+            if (!player.isCrouching() && !player.isOnGround()) {
+                player.setNoGravity(true);
+            } else {
+                player.setNoGravity(false);
+            }
         }
     }
 }
