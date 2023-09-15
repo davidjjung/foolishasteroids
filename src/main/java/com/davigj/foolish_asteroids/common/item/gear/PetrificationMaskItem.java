@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.gear;
 
 import com.davigj.foolish_asteroids.common.util.Constants;
 import com.starfish_studios.naturalist.entity.Snake;

@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.tools;
 
 import net.minecraft.world.item.Item;
 

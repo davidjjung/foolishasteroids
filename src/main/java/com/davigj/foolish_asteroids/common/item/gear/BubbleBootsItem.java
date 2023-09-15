@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.gear;
 
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;

@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.tools;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;

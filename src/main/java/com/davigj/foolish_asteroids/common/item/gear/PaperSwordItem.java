@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.gear;
 
 import com.davigj.foolish_asteroids.core.other.tags.FoolishAsteroidsBlockTags;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;

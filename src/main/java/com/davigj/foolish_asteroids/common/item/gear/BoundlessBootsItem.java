@@ -1,4 +1,4 @@
-package com.davigj.foolish_asteroids.common.item;
+package com.davigj.foolish_asteroids.common.item.gear;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffects;
