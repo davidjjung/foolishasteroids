@@ -75,16 +75,16 @@ public class CursedStaffItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         int charge = tag.getInt(NBT_CHARGE);
         if (charge >= CURSED_STAFF_CHARGE_TICKS && isItemEnchantable(entity.getItemInHand(InteractionHand.OFF_HAND))) {
-            if (!level.isClientSide && entity instanceof Player player) {
+            if (entity instanceof Player player) {
                 ItemStack offhandItem = entity.getItemInHand(InteractionHand.OFF_HAND);
                 if (offhandItem.getCount() > 1) {
                     ItemStack newItemStack = offhandItem.copy();
                     newItemStack.setCount(1);
                     offhandItem.shrink(1);
+                    applyRandomCurse(newItemStack);
                     if (!player.getInventory().add(newItemStack)) {
                         player.drop(newItemStack, false);
                     }
-                    applyRandomCurse(newItemStack);
                 } else {
                     applyRandomCurse(offhandItem);
                     if (offhandItem.isDamageableItem()) {

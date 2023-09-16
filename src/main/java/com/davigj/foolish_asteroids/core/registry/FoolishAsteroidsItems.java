@@ -292,7 +292,9 @@ public class FoolishAsteroidsItems {
 	public static final RegistryObject<Item> FORGOTTEN_PLIERS = HELPER.createItem("forgotten_pliers", () ->
 			new ForgottenPliersItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(24)));
 	public static final RegistryObject<Item> CURSED_STAFF = HELPER.createItem("cursed_staff", () ->
-			new CursedStaffItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS)));
+			new CursedStaffItem(new Item.Properties().durability(64).tab(CreativeModeTab.TAB_TOOLS)));
+	public static final RegistryObject<Item> HELMHORN = HELPER.createItem("helmhorn", () ->
+			new HelmhornItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS)));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->

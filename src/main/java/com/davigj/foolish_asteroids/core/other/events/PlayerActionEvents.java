@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
 import com.davigj.foolish_asteroids.common.item.gear.PetrificationMaskItem;
+import com.davigj.foolish_asteroids.common.item.tools.HelmhornItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.other.tags.FoolishAsteroidsItemTags;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
@@ -165,6 +166,10 @@ public class PlayerActionEvents {
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         ItemStack stack = event.getItemStack();
+        ItemStack mainhand = event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND);
+        if (mainhand.getItem() instanceof HelmhornItem && event.getHand().equals(InteractionHand.OFF_HAND)) {
+            event.setCanceled(true);
+        }
         if (stack.getItem() instanceof PetrificationMaskItem) {
             Player player = event.getPlayer();
             Level level = event.getWorld();
@@ -278,7 +283,9 @@ public class PlayerActionEvents {
     public static void onKeyInput(InputEvent.KeyInputEvent event) {    }
 
     @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {    }
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+
+    }
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {    }
