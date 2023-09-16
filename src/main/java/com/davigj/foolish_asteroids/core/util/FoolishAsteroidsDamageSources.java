@@ -9,4 +9,5 @@ public class FoolishAsteroidsDamageSources {
     public static final DamageSource VIRULENT = new DamageSource("virulent_damage").bypassArmor();
     public static final DamageSource TOOTH_PULL = new DamageSource("tooth_pull_damage").bypassArmor();
     public static final DamageSource MEDUSA = new DamageSource("medusa_damage").bypassArmor();
+    public static final DamageSource ONION = new DamageSource("onion_damage").bypassArmor();
 }

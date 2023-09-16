@@ -1,5 +1,7 @@
 package com.davigj.foolish_asteroids.core;
 
+import com.davigj.foolish_asteroids.common.item.FiftyTwoPickupItem;
+import com.davigj.foolish_asteroids.common.util.PickupUtil;
 import com.davigj.foolish_asteroids.core.other.FoolishAsteroidsCompat;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsMobEffects;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
@@ -74,6 +76,7 @@ public class FoolishAsteroidsMod {
 		event.enqueueWork(() -> {
 			FoolishAsteroidsCompat.registerCompat();
 			FoolishAsteroidsMobEffects.registerBrewingRecipes();
+//			PickupUtil.registerProjectileTypes();
 		});
 	}
 

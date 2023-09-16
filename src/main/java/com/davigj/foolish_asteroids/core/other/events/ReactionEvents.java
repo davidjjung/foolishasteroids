@@ -1,8 +1,8 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
 import com.brewinandchewin.core.registry.BCEffects;
-import com.davigj.foolish_asteroids.common.item.BoundlessBootsItem;
-import com.davigj.foolish_asteroids.common.item.MoonWalkersItem;
+import com.davigj.foolish_asteroids.common.item.gear.BoundlessBootsItem;
+import com.davigj.foolish_asteroids.common.item.gear.MoonWalkersItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
 import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
@@ -121,7 +121,7 @@ public class ReactionEvents {
         if (playerVictim && source.isFall()) {
             ItemStack gauntlets = player.getItemBySlot(EquipmentSlot.FEET);
             if (gauntlets.getItem() instanceof MoonWalkersItem|| gauntlets.getItem() instanceof BoundlessBootsItem) {
-                player.setNoGravity(false);
+                // TODO: the player like, plummets to the ground when they take damage in midair lol
                 event.setAmount(event.getAmount() * 0.25F);
                 if (event.getAmount() < 0.5F) {
                 event.setCanceled(true);

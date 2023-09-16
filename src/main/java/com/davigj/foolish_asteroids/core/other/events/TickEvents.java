@@ -1,8 +1,8 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
-import com.davigj.foolish_asteroids.common.item.NostalgicGlassesItem;
-import com.davigj.foolish_asteroids.common.item.PetrificationMaskItem;
-import com.davigj.foolish_asteroids.common.item.RetroSneakersItem;
+import com.davigj.foolish_asteroids.common.item.gear.NostalgicGlassesItem;
+import com.davigj.foolish_asteroids.common.item.gear.PetrificationMaskItem;
+import com.davigj.foolish_asteroids.common.item.gear.RetroSneakersItem;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
@@ -11,7 +11,6 @@ import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
-import gg.moonflower.mannequins.common.entity.Mannequin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -29,23 +28,17 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent;
@@ -296,6 +289,7 @@ public class TickEvents {
     @SubscribeEvent
     public static void onPetrify(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
+        // TODO: Medusa particles
         if (entity.tickCount % 20 == 0) {
             float reachDistance = 36.0F * ScaleTypes.REACH.getScaleData(entity).getBaseScale() * ScaleTypes.ENTITY_REACH.getScaleData(entity).getBaseScale(); // Adjust the reach distance as needed
             Vec3 lookVector = entity.getLookAngle();

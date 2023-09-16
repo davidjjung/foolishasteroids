@@ -2,7 +2,9 @@ package com.davigj.foolish_asteroids.core.other;
 
 import architectspalette.core.registry.APBlocks;
 import architectspalette.core.registry.APItems;
+import com.brewinandchewin.core.registry.BCItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
+import com.teamabnormals.autumnity.core.other.AutumnityTiers;
 import com.teamabnormals.blueprint.core.api.BlueprintArmorMaterial;
 import com.teamabnormals.environmental.core.registry.EnvironmentalSoundEvents;
 import com.teamabnormals.neapolitan.core.registry.NeapolitanSoundEvents;
@@ -27,32 +29,32 @@ public class FoolishAsteroidsTiers {
 
     static {
         BUBBLE_BLOWER = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "bubble_blower"), 0, new int[]{0, 0, 5, 0}, 0,
+                "foolish_asteroids", "bubble_blower"), 0, new int[]{0, 0, 0, 0}, 0,
                 ModSounds.BUBBLE_POP, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) ModRegistry.SOAP.get()});
         });
         RETRO = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "retro"), 0, new int[]{0, 0, 5, 0}, 5,
+                "foolish_asteroids", "retro"), 18, new int[]{0, 0, 0, 0}, 4,
                 ModSounds.SACK_BREAK, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) Items.WHITE_WOOL});
         });
         MOON = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "moon"), 0, new int[]{0, 0, 5, 0}, 5,
+                "foolish_asteroids", "moon"), 23, new int[]{1, 0, 0, 0}, 8,
                 NeapolitanSoundEvents.ITEM_ICE_CUBES_EAT, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) APBlocks.MOONSTONE.get()});
         });
         BOUNDLESS = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "boundless"), 0, new int[]{0, 0, 5, 0}, 5,
+                "foolish_asteroids", "boundless"), 32, new int[]{2, 0, 0, 0}, 5,
                 NeapolitanSoundEvents.ITEM_ICE_CUBES_EAT, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) APBlocks.MOONSTONE.get()});
         });
         NOSTALGIC = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "nostalgic"), 0, new int[]{0, 0, 5, 0}, 0,
+                "foolish_asteroids", "nostalgic"), 12, new int[]{0, 0, 0, 0}, 0,
                 ModSounds.SACK_BREAK, 0.0F, 0.0F, () -> {
-            return Ingredient.of(new ItemLike[]{(ItemLike) Items.PINK_DYE});
+            return Ingredient.of(new ItemLike[]{(ItemLike) Items.ROSE_BUSH});
         });
         SNAKE = new BlueprintArmorMaterial(new ResourceLocation(
-                "foolish_asteroids", "snake"), 0, new int[]{0, 0, 5, 0}, 0,
+                "foolish_asteroids", "snake"), 0, new int[]{0, 0, 0, 0}, 8,
                 NaturalistSoundEvents.SNAKE_HISS, 0.0F, 0.0F, () -> {
             return Ingredient.of(new ItemLike[]{(ItemLike) Items.CALCITE});
         });

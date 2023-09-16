@@ -1,12 +1,13 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
-import com.davigj.foolish_asteroids.common.item.PetrificationMaskItem;
+import com.davigj.foolish_asteroids.common.item.gear.PetrificationMaskItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.tags.FoolishAsteroidsItemTags;
 import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,6 +20,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,9 +32,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.Tags;
@@ -41,6 +44,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
+import samebutdifferent.ecologics.registry.ModItems;
+import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
+import vectorwing.farmersdelight.common.item.KnifeItem;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
@@ -114,6 +121,8 @@ public class PlayerActionEvents {
                 int tongues = manager.getValue(enderman, FoolishAsteroidsMod.TONGUES);
                 if (tongues > 0) {
                     player.getCooldowns().addCooldown(Items.SHEARS, 3 * 20);
+                    player.getCooldowns().addCooldown(ModItems.CRAB_CLAW.get(), 20);
+                    player.getCooldowns().addCooldown(FoolishAsteroidsItems.ARTISANAL_SHEARS.get(), 10);
                     manager.setValue(enderman, FoolishAsteroidsMod.TONGUES, tongues - 1);
                     enderman.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
                     ItemEntity itemEntity = new ItemEntity(player.level, enderman.getX(), enderman.getEyeY(), enderman.getZ(),
@@ -238,23 +247,39 @@ public class PlayerActionEvents {
 
             // Replace the grass block with a bottle of lightning
             player.level.setBlockAndUpdate(event.getPos(), GBlocks.LUMIERE_BLOCK.get().defaultBlockState());
-
-
             event.setCancellationResult(InteractionResult.SUCCESS);
             event.setCanceled(true);
-
+        }
+        if (clickedBlockState.getBlock() == ModBlocks.CUTTING_BOARD.get()) {
+            BlockEntity tileEntity = player.level.getBlockEntity(event.getPos());
+            if (tileEntity instanceof CuttingBoardBlockEntity board && board.getStoredItem().getItem() == vectorwing.farmersdelight.common.registry.ModItems.ONION.get()) {
+                if (heldItem.getItem() instanceof KnifeItem) {
+                    AABB boundingBox = new AABB(event.getPos()).inflate(3.0, 3.0, 3.0);
+                    // Apply Blindness effect to nearby living entities, including nearby Ghasts
+                    List<LivingEntity> livingEntities = player.level.getEntitiesOfClass(LivingEntity.class, boundingBox,
+                            (living) -> living != null && living.isAlive());
+                    for (LivingEntity livingEntity : livingEntities) {
+                        if (!livingEntity.getItemBySlot(EquipmentSlot.HEAD).m_204117_(FoolishAsteroidsItemTags.ONION_PROOF)) {
+                            livingEntity.hurt(FoolishAsteroidsDamageSources.ONION, 1.0F);
+                        }
+                        // Check if the entity is a Ghast
+                        if (livingEntity instanceof Ghast) {
+                            ItemEntity ghastTearEntity = new ItemEntity(player.level, livingEntity.getX(), livingEntity.getY(),
+                                    livingEntity.getZ(), new ItemStack(Items.GHAST_TEAR));
+                            player.level.addFreshEntity(ghastTearEntity);
+                        }
+                    }
+                }
+            }
         }
     }
 
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.KeyInputEvent event) {
-    }
+    public static void onKeyInput(InputEvent.KeyInputEvent event) {    }
 
     @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-    }
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {    }
 
     @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-    }
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {    }
 }

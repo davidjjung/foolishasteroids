@@ -1,8 +1,10 @@
 package com.davigj.foolish_asteroids.core.registry;
 
 import com.davigj.foolish_asteroids.common.item.*;
+import com.davigj.foolish_asteroids.common.item.gear.*;
 import com.davigj.foolish_asteroids.common.item.medal.*;
 import com.davigj.foolish_asteroids.common.item.elixir.*;
+import com.davigj.foolish_asteroids.common.item.tools.*;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.other.FoolishAsteroidsTiers;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
@@ -261,21 +263,21 @@ public class FoolishAsteroidsItems {
 				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> RETRO_SNEAKERS = HELPER.createItem("retro_sneakers", () -> {
 		return new RetroSneakersItem(FoolishAsteroidsTiers.RETRO, EquipmentSlot.FEET,
-				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+				(new Item.Properties()).durability(84).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> MOON_WALKERS = HELPER.createItem("moon_walkers", () -> {
 		return new MoonWalkersItem(FoolishAsteroidsTiers.MOON, EquipmentSlot.FEET,
-				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+				(new Item.Properties()).durability(100).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> BOUNDLESS_BOOTS = HELPER.createItem("boundless_boots", () -> {
 		return new BoundlessBootsItem(FoolishAsteroidsTiers.BOUNDLESS, EquipmentSlot.FEET,
-				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+				(new Item.Properties()).durability(256).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> NOSTALGIC_GLASSES = HELPER.createItem("nostalgic_glasses", () -> {
 		return new NostalgicGlassesItem(FoolishAsteroidsTiers.NOSTALGIC, EquipmentSlot.HEAD,
-				(new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));});
+				(new Item.Properties()).durability(94).tab(CreativeModeTab.TAB_COMBAT));});
 	public static final RegistryObject<Item> PAPER_SABER = HELPER.createItem("paper_saber", () ->
-			new PaperSwordItem(Tiers.WOOD, 0, -1.8f, new Item.Properties().durability(32)
+			new PaperSwordItem(Tiers.WOOD, 0, -1.8f, new Item.Properties().durability(24)
 					.tab(CreativeModeTab.TAB_COMBAT)));
 	public static final RegistryObject<Item> STICKY_HAND = HELPER.createItem("sticky_hand", () ->
-			new StickyHandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(64)));
+			new StickyHandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(40)));
 
 	// tools
 	public static final RegistryObject<Item> GIFT_OF_GAB = HELPER.createItem("gift_of_gab", () ->
@@ -289,6 +291,8 @@ public class FoolishAsteroidsItems {
 					new ResourceLocation("pigpen", "pigpen")));
 	public static final RegistryObject<Item> FORGOTTEN_PLIERS = HELPER.createItem("forgotten_pliers", () ->
 			new ForgottenPliersItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).durability(24)));
+	public static final RegistryObject<Item> CURSED_STAFF = HELPER.createItem("cursed_staff", () ->
+			new CursedStaffItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS)));
 
 	// utility resources
 	public static final RegistryObject<Item> PANACEA = HELPER.createItem("panacea", () ->
@@ -311,6 +315,12 @@ public class FoolishAsteroidsItems {
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
+	public static final RegistryObject<Item> ONION_SLICE = HELPER.createItem("onion_slice", () ->
+			new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD).food(FoolishAsteroidsFoods.ONION_SLICE)));
+
+	// truly misc. items
+//	public static final RegistryObject<Item> FIFTY_TWO_PICKUP = HELPER.createItem("fifty_two_pickup", () ->
+//			new FiftyTwoPickupItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
@@ -321,6 +331,7 @@ public class FoolishAsteroidsItems {
 			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 500, 2);
 		}, 1.0F).build();
 		public static final FoodProperties PANACEA = (new FoodProperties.Builder()).nutrition(0).saturationMod(0F).alwaysEat().build();
+		public static final FoodProperties ONION_SLICE = (new FoodProperties.Builder()).nutrition(1).saturationMod(0.6F).build();
 		public static final FoodProperties SEVERED_TONGUE = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.2F).effect(() -> {
 			return new MobEffectInstance((MobEffect) MobEffects.HUNGER, 180, 0);}, 1.0F).build();
 	}
