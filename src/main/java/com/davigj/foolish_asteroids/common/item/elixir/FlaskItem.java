@@ -1,7 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
+import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -58,8 +58,8 @@ public class FlaskItem extends Item {
                     }
                     player.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0, false, false));
                 }
-                player.hurt(FoolishAsteroidsDamageSources.VIRULENT, 1.0F);
-                return InteractionResultHolder.sidedSuccess(this.turnFlaskIntoItem(itemstack, player, new ItemStack(FoolishAsteroidsItems.VIRULENT_FLASK.get())), level.isClientSide());
+                player.hurt(FADamageSources.VIRULENT, 1.0F);
+                return InteractionResultHolder.sidedSuccess(this.turnFlaskIntoItem(itemstack, player, new ItemStack(FAItems.VIRULENT_FLASK.get())), level.isClientSide());
             }
         }
         return InteractionResultHolder.pass(itemstack);

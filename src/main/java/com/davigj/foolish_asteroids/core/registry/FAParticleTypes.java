@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class FoolishAsteroidsParticleTypes {
+public class FAParticleTypes {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, FoolishAsteroidsMod.MOD_ID);
 
     public static final RegistryObject<SimpleParticleType> ELECTRON = PARTICLE_TYPES.register("electron", () -> new SimpleParticleType(false));

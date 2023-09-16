@@ -5,9 +5,10 @@ import com.davigj.foolish_asteroids.common.item.gear.PetrificationMaskItem;
 import com.davigj.foolish_asteroids.common.item.gear.RetroSneakersItem;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsParticleTypes;
-import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
+import com.davigj.foolish_asteroids.core.registry.FAParticleTypes;
+import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.teamabnormals.autumnity.core.registry.AutumnityParticleTypes;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
@@ -80,13 +81,13 @@ public class TickEvents {
                     }
                 }
             }
-            if (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE) && player.tickCount % 20 == 0) {
+            if (manager.getValue(player, FADataProcessors.SERAPHIC_ACTIVE) && player.tickCount % 20 == 0) {
                 Vec3 lookDirection = player.getLookAngle();
                 double horizontalAngle = Math.atan2(lookDirection.z, lookDirection.x);
                 double degree = Math.toDegrees(horizontalAngle);
                 degree = (degree + 360) % 360;
                 boolean sinfulGaze = false;
-                switch (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_DIR)) {
+                switch (manager.getValue(player, FADataProcessors.SERAPHIC_DIR)) {
                     case 0 -> {
                         if (degree >= 180 && degree < 360) sinfulGaze = true;
                     }
@@ -101,7 +102,7 @@ public class TickEvents {
                     }
                 }
                 if (sinfulGaze) {
-                    player.hurt(FoolishAsteroidsDamageSources.SERAPHIC, 6.0f);
+                    player.hurt(FADamageSources.SERAPHIC, 6.0f);
                     TranslatableComponent message = new TranslatableComponent("message.seraphic.damage");
                     player.displayClientMessage(message, true);
                 }
@@ -123,16 +124,16 @@ public class TickEvents {
             if (oracleTime != null && System.currentTimeMillis() >= oracleMapTime) {
                 TranslatableComponent message = new TranslatableComponent("message.hearsay.use_end");
                 serverPlayer.displayClientMessage(message, true);
-                TrackedDataManager.INSTANCE.setValue(serverPlayer, FoolishAsteroidsMod.HEARSAY_ACTIVE, false);
+                TrackedDataManager.INSTANCE.setValue(serverPlayer, FADataProcessors.HEARSAY_ACTIVE, false);
                 oracleMap.remove(serverPlayer);
             }
-            if (player.tickCount % 20 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+            if (player.tickCount % 20 == 0 && manager.getValue(player, FADataProcessors.AUTUMNAL)) {
                 player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 0, false, false));
             }
-            int blusterHarvest = manager.getValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST);
+            int blusterHarvest = manager.getValue(player, FADataProcessors.BLUSTER_HARVEST);
             ItemStack stack;
             switch (blusterHarvest) {
-                case 4, 2 -> manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, blusterHarvest - 1);
+                case 4, 2 -> manager.setValue(player, FADataProcessors.BLUSTER_HARVEST, blusterHarvest - 1);
                 case 3 -> {
                     stack = player.getItemInHand(InteractionHand.MAIN_HAND);
                     Level level = player.getLevel();
@@ -140,12 +141,12 @@ public class TickEvents {
                         stack.shrink(1);
                         level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         if (stack.isEmpty()) {
-                            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
-                        } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
-                            player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+                            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(FAItems.BLUSTER_BOTTLE.get()));
+                        } else if (!player.getInventory().add(new ItemStack(FAItems.BLUSTER_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FAItems.BLUSTER_BOTTLE.get()), false);
                         }
                     }
-                    manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 0);
+                    manager.setValue(player, FADataProcessors.BLUSTER_HARVEST, 0);
                 }
                 case 1 -> {
                     stack = player.getItemInHand(InteractionHand.OFF_HAND);
@@ -154,12 +155,12 @@ public class TickEvents {
                         stack.shrink(1);
                         level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         if (stack.isEmpty()) {
-                            player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()));
-                        } else if (!player.getInventory().add(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()))) {
-                            player.drop(new ItemStack(FoolishAsteroidsItems.BLUSTER_BOTTLE.get()), false);
+                            player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(FAItems.BLUSTER_BOTTLE.get()));
+                        } else if (!player.getInventory().add(new ItemStack(FAItems.BLUSTER_BOTTLE.get()))) {
+                            player.drop(new ItemStack(FAItems.BLUSTER_BOTTLE.get()), false);
                         }
                     }
-                    manager.setValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST, 0);
+                    manager.setValue(player, FADataProcessors.BLUSTER_HARVEST, 0);
                 }
                 default -> {
                     break;
@@ -217,7 +218,7 @@ public class TickEvents {
                     smokingPlayers.remove(playerId);
                 }
             }
-            int rads = manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS);
+            int rads = manager.getValue(player, FADataProcessors.STORED_ELECTRONS);
             if (rads > 0) {
                 Level level = player.level;
                 Random random = new Random();
@@ -225,11 +226,11 @@ public class TickEvents {
                 double y = player.getY() + player.getEyeHeight() - (ScaleTypes.HEIGHT.getScaleData(player).getBaseScale() / 2);
                 double z = player.getZ();
                 if (random.nextInt(40) <= rads && !player.isSpectator() && !player.isCreative()) {
-                    level.addParticle(FoolishAsteroidsParticleTypes.ELECTRON.get(), x, y, z,
+                    level.addParticle(FAParticleTypes.ELECTRON.get(), x, y, z,
                             10, 3, 10);
                 }
             }
-            if (player.tickCount % 5 == 0 && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+            if (player.tickCount % 5 == 0 && manager.getValue(player, FADataProcessors.AUTUMNAL)) {
                 Random rand = new Random();
                 double x = player.getX() - 0.5;
                 double y = player.getY();
@@ -244,7 +245,7 @@ public class TickEvents {
                 double d6 = (double) ((float) z + rand.nextFloat());
                 level.addParticle((ParticleOptions) AutumnityParticleTypes.FALLING_MAPLE_LEAF.get(), d3, y + 0.025, d6, d0, d1, d2);
             }
-            int bluster = manager.getValue(player, FoolishAsteroidsMod.BLUSTER_HARVEST);
+            int bluster = manager.getValue(player, FADataProcessors.BLUSTER_HARVEST);
             if (bluster == 3) {
                 player.swing(InteractionHand.MAIN_HAND);
             } else if (bluster == 1) {
@@ -345,7 +346,7 @@ public class TickEvents {
             if (snakesTag.size() > 1) {
                 victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 0, false, false));
                 if (snakesTag.size() == MAX_SNAKES) {
-                    victim.hurt(FoolishAsteroidsDamageSources.MEDUSA, 3.0F);
+                    victim.hurt(FADamageSources.MEDUSA, 3.0F);
                 }
             }
         }
@@ -367,9 +368,9 @@ public class TickEvents {
             }
         }
         if (entity instanceof Ghast ghast && entity.tickCount % 20 == 0) {
-            int blusterTimer = manager.getValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE);
+            int blusterTimer = manager.getValue(ghast, FADataProcessors.BLUSTER_RECHARGE);
             if (blusterTimer != 0) {
-                manager.setValue(ghast, FoolishAsteroidsMod.BLUSTER_RECHARGE, blusterTimer - 1);
+                manager.setValue(ghast, FADataProcessors.BLUSTER_RECHARGE, blusterTimer - 1);
             }
         }
     }

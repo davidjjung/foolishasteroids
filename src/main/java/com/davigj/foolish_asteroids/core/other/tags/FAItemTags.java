@@ -4,9 +4,8 @@ import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.teamabnormals.blueprint.core.util.TagUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 
-public class FoolishAsteroidsItemTags {
+public class FAItemTags {
     public static final TagKey<Item> ONION_PROOF = itemTag("onion_proof_helmets");
 
     private static TagKey<Item> itemTag(String name) {

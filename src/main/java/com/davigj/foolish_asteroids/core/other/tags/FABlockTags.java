@@ -5,7 +5,7 @@ import com.teamabnormals.blueprint.core.util.TagUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
-public class FoolishAsteroidsBlockTags {
+public class FABlockTags {
     public static final TagKey<Block> GLASS_BLOCKS = blockTag("glass_blocks");
     public static final TagKey<Block> MUD_BRICKS = blockTag("mud_bricks");
 

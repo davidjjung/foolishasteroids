@@ -2,6 +2,7 @@ package com.davigj.foolish_asteroids.common.item;
 
 import com.davigj.foolish_asteroids.common.util.MorphUtilHelper;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -41,17 +42,17 @@ public class PanaceaItem extends Item {
             smokingPlayers.remove(player.getUUID());
             rainbowTimers.remove(player.getUUID());
             oracleMap.remove(player.getUUID());
-            if (manager.getValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
-                manager.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
+            if (manager.getValue(player, FADataProcessors.HIGHWAY_TO_HELL) != 0) {
+                manager.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 0);
                 TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
                 player.displayClientMessage(message, true);
-            } else if (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE)) {
-                manager.setValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE, false);
+            } else if (manager.getValue(player, FADataProcessors.SERAPHIC_ACTIVE)) {
+                manager.setValue(player, FADataProcessors.SERAPHIC_ACTIVE, false);
             }
-            manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, 0);
-            manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
-            manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
-            manager.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, 0);
+            manager.setValue(player, FADataProcessors.STORED_ELECTRONS, 0);
+            manager.setValue(player, FADataProcessors.RAD_POISONING, false);
+            manager.setValue(player, FADataProcessors.AUTUMNAL, false);
+            manager.setValue(player, FADataProcessors.ANTI_DRUNK, 0);
 
             if (MorphUtilHelper.isPlayerMorphed(player)) {
                 String commandToExecute = "/demorph " + entityTag;

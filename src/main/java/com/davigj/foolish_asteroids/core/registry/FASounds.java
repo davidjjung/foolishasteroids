@@ -5,7 +5,7 @@ import com.teamabnormals.blueprint.core.util.registry.SoundSubRegistryHelper;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.RegistryObject;
 
-public class FoolishAsteroidsSounds {
+public class FASounds {
     private static final SoundSubRegistryHelper HELPER = FoolishAsteroidsMod.REGISTRY_HELPER.getSoundSubHelper();
 
     public static final RegistryObject<SoundEvent> MUSHROOM = HELPER.createSoundEvent("item.mycological_elixir.mushroom");

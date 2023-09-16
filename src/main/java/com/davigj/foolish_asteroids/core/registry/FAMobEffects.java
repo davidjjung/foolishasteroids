@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class FoolishAsteroidsMobEffects {
+public class FAMobEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, FoolishAsteroidsMod.MOD_ID);
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, FoolishAsteroidsMod.MOD_ID);
 
@@ -33,9 +33,9 @@ public class FoolishAsteroidsMobEffects {
     public static final RegistryObject<Potion> DISPLACEMENT_STRONG = POTIONS.register("displacement_strong", () -> new Potion(new MobEffectInstance(DISPLACEMENT.get(), 1)));
 
     public static void registerBrewingRecipes() {
-        DataUtil.addMix(Potions.AWKWARD, FoolishAsteroidsItems.SUNBIRD_FEATHER.get(), ALOFT_NORMAL.get());
-        DataUtil.addMix(Potions.AWKWARD, FoolishAsteroidsItems.SILVER_TONGUE.get(), DISPLACEMENT_NORMAL.get());
-        DataUtil.addMix(Potions.AWKWARD, FoolishAsteroidsItems.BANANA_PEEL.get(), SLIPPING_NORMAL.get());
+        DataUtil.addMix(Potions.AWKWARD, FAItems.SUNBIRD_FEATHER.get(), ALOFT_NORMAL.get());
+        DataUtil.addMix(Potions.AWKWARD, FAItems.SILVER_TONGUE.get(), DISPLACEMENT_NORMAL.get());
+        DataUtil.addMix(Potions.AWKWARD, FAItems.BANANA_PEEL.get(), SLIPPING_NORMAL.get());
         DataUtil.addMix(SLIPPING_NORMAL.get(), Items.REDSTONE, SLIPPING_LONG.get());
         DataUtil.addMix(ALOFT_NORMAL.get(), Items.REDSTONE, ALOFT_LONG.get());
         DataUtil.addMix(DISPLACEMENT_NORMAL.get(), Items.GLOWSTONE, DISPLACEMENT_STRONG.get());

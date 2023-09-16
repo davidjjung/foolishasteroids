@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -35,7 +36,7 @@ public class HearsayElixirItem extends ElixirItem {
             assert entityLiving instanceof ServerPlayer;
             oracleMap.put((ServerPlayer) entityLiving, System.currentTimeMillis() + oracleDuration);
 
-            TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.HEARSAY_ACTIVE, true);
+            TrackedDataManager.INSTANCE.setValue(entityLiving, FADataProcessors.HEARSAY_ACTIVE, true);
             TranslatableComponent message = new TranslatableComponent("message.hearsay.user");
             ((Player) entityLiving).displayClientMessage(message, true);
         }

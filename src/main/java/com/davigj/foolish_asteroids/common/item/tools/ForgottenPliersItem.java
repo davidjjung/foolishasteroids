@@ -1,8 +1,9 @@
 package com.davigj.foolish_asteroids.common.item.tools;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
+import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -83,7 +84,7 @@ public class ForgottenPliersItem extends Item {
                     || targetEntity instanceof EntityBoneSerpent));
             for (Entity targetEntity : entities) {
                 if (targetEntity instanceof LivingEntity && targetEntity != entity && targetEntity.tickCount % 14 == 0
-                && manager.getValue(targetEntity, FoolishAsteroidsMod.TEETH) > 0) {
+                && manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
                     Random random = new Random();
                     for (int i = 0; i < 1; i++) {
                         level.addParticle(ParticleTypes.SNEEZE, targetEntity.getX() + random.nextDouble() - 0.5,
@@ -92,7 +93,7 @@ public class ForgottenPliersItem extends Item {
                     break;
                 }
             }
-            if (entities.isEmpty() && manager.getValue(entity, FoolishAsteroidsMod.TEETH) > 0 && entity.tickCount % 14 == 0) {
+            if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0 && entity.tickCount % 14 == 0) {
                 Random random = new Random();
                 for (int i = 0; i < 1; i++) {
                     level.addParticle(ParticleTypes.SNEEZE, entity.getX() + random.nextDouble() - 0.5,
@@ -125,13 +126,13 @@ public class ForgottenPliersItem extends Item {
             if (!level.isClientSide) {
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
-                        if (manager.getValue(targetEntity, FoolishAsteroidsMod.TEETH) > 0) {
+                        if (manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
                             defang(targetEntity, level, stack, (Player)entity);
                         }
                         break;
                     }
                 }
-                if (entities.isEmpty() && manager.getValue(entity, FoolishAsteroidsMod.TEETH) > 0) {
+                if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0) {
                     defang(entity, level, stack, (Player)entity);
                 }
             } else {
@@ -139,7 +140,7 @@ public class ForgottenPliersItem extends Item {
                 level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.25F, 2.0F);
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
-                        if (manager.getValue(targetEntity, FoolishAsteroidsMod.TEETH) > 0) {
+                        if (manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
                             Random random = new Random();
                             for (int i = 0; i < 4; i++) {
                                 level.addParticle(ParticleTypes.SNEEZE, targetEntity.getX() + random.nextDouble() - 0.5,
@@ -149,7 +150,7 @@ public class ForgottenPliersItem extends Item {
                         break;
                     }
                 }
-                if (entities.isEmpty() && manager.getValue(entity, FoolishAsteroidsMod.TEETH) > 0) {
+                if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0) {
                     Random random = new Random();
                     for (int i = 0; i < 1; i++) {
                         level.addParticle(ParticleTypes.SNEEZE, entity.getX() + random.nextDouble() - 0.5,
@@ -172,14 +173,14 @@ public class ForgottenPliersItem extends Item {
     public static void defang (Entity targetEntity, Level level, ItemStack stack, Player player) {
         Vec3 itemVector = targetEntity.getLookAngle();
         Vec3 itemVelocity = itemVector.scale(0.2);
-        ItemEntity itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(FoolishAsteroidsItems.TOOTH.get()));
+        ItemEntity itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(FAItems.TOOTH.get()));
         if (targetEntity instanceof EntityBoneSerpent) {
             itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(AMItemRegistry.BONE_SERPENT_TOOTH.get()));
         } else if (targetEntity instanceof Thrasher) {
             itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(UAItems.THRASHER_TOOTH.get()));
         }
         if (targetEntity instanceof Player) {
-            manager.setValue(targetEntity, FoolishAsteroidsMod.TEETH, manager.getValue(targetEntity, FoolishAsteroidsMod.TEETH) - 1);
+            manager.setValue(targetEntity, FADataProcessors.TEETH, manager.getValue(targetEntity, FADataProcessors.TEETH) - 1);
         }
         itemEntity.setDefaultPickUpDelay();
         double initialVelocityY = 0.11; // Adjust as needed
@@ -200,7 +201,7 @@ public class ForgottenPliersItem extends Item {
             }
         }
         if (!hasSilkTouch) {
-            targetEntity.hurt(FoolishAsteroidsDamageSources.TOOTH_PULL, 3.0F);
+            targetEntity.hurt(FADamageSources.TOOTH_PULL, 3.0F);
             if ((targetEntity instanceof Thrasher thrasher)) {
                 thrasher.setLastHurtByPlayer(player);
             }

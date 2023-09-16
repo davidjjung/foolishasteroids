@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -31,7 +32,7 @@ public class HeresyElixirItem extends ElixirItem {
         Player player = (Player) entityLiving;
         Random random = new Random();
         TrackedDataManager highway = TrackedDataManager.INSTANCE;
-        int heresyLevel = highway.getValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL);
+        int heresyLevel = highway.getValue(player, FADataProcessors.HIGHWAY_TO_HELL);
         ResourceKey<Level> dim = player.getLevel().dimension();
         if (dim == Level.OVERWORLD) {
             if (entityLiving instanceof ServerPlayer serverPlayer) {
@@ -41,7 +42,7 @@ public class HeresyElixirItem extends ElixirItem {
                             TranslatableComponent message = new TranslatableComponent("message.heresy.snap");
                             ((Player) entityLiving).displayClientMessage(message, true);
                             player.setSecondsOnFire(10);
-                            highway.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 1);
+                            highway.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 1);
                         } else {
                             TranslatableComponent message = new TranslatableComponent("message.heresy.weaken");
                             ((Player) entityLiving).displayClientMessage(message, true);
@@ -94,11 +95,11 @@ public class HeresyElixirItem extends ElixirItem {
             switch (heresyLevel) {
                 case 0 -> {
                     message = new TranslatableComponent("message.heresy.snap");
-                    highway.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 1);
+                    highway.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 1);
                 }
                 case 1 -> {
                     message = new TranslatableComponent("message.heresy.snapping");
-                    highway.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 2);
+                    highway.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 2);
                 }
                 case 2 -> {
                     message = new TranslatableComponent("message.heresy.snapped");
@@ -116,7 +117,7 @@ public class HeresyElixirItem extends ElixirItem {
                         message = new TranslatableComponent("message.heresy.snap");
                         ((Player) entityLiving).displayClientMessage(message, true);
                         player.setSecondsOnFire(10);
-                        highway.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 1);
+                        highway.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 1);
                     } else {
                         message = new TranslatableComponent("message.heresy.weaken");
                         ((Player) entityLiving).displayClientMessage(message, true);
@@ -125,7 +126,7 @@ public class HeresyElixirItem extends ElixirItem {
                     break;
                 case 1:
                     message = new TranslatableComponent("message.heresy.snap");
-                    highway.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 2);
+                    highway.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 2);
                     break;
                 case 2:
                     message = new TranslatableComponent("message.heresy.snapped");

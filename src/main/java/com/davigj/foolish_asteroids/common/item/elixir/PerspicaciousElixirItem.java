@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -17,10 +18,10 @@ public class PerspicaciousElixirItem extends ElixirItem {
     public void affectConsumer(ItemStack stack, Level level, LivingEntity entityLiving) {
         Player player = (Player)entityLiving;
         MinecraftServer server = entityLiving.getLevel().getServer();
-        int antiDrunk = TrackedDataManager.INSTANCE.getValue(entityLiving, FoolishAsteroidsMod.ANTI_DRUNK);
+        int antiDrunk = TrackedDataManager.INSTANCE.getValue(entityLiving, FADataProcessors.ANTI_DRUNK);
         if (server != null) {
             if (antiDrunk < 3) {
-                TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.ANTI_DRUNK, antiDrunk + 1);
+                TrackedDataManager.INSTANCE.setValue(entityLiving, FADataProcessors.ANTI_DRUNK, antiDrunk + 1);
                 TranslatableComponent message = new TranslatableComponent("message.perspicacious.glub");
                 player.displayClientMessage(message, true);
             } else {

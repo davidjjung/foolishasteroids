@@ -1,22 +1,17 @@
 package com.davigj.foolish_asteroids.core.other;
 
 import architectspalette.core.registry.APBlocks;
-import architectspalette.core.registry.APItems;
-import com.brewinandchewin.core.registry.BCItems;
 import com.starfish_studios.naturalist.registry.NaturalistSoundEvents;
-import com.teamabnormals.autumnity.core.other.AutumnityTiers;
 import com.teamabnormals.blueprint.core.api.BlueprintArmorMaterial;
-import com.teamabnormals.environmental.core.registry.EnvironmentalSoundEvents;
 import com.teamabnormals.neapolitan.core.registry.NeapolitanSoundEvents;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.mehvahdjukaar.supplementaries.setup.ModSounds;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
-public class FoolishAsteroidsTiers {
+public class FATiers {
     public static final BlueprintArmorMaterial BUBBLE_BLOWER;
     public static final BlueprintArmorMaterial RETRO;
     public static final BlueprintArmorMaterial NOSTALGIC;
@@ -24,7 +19,7 @@ public class FoolishAsteroidsTiers {
     public static final BlueprintArmorMaterial SNAKE;
     public static final BlueprintArmorMaterial BOUNDLESS;
 
-    public FoolishAsteroidsTiers() {
+    public FATiers() {
     }
 
     static {

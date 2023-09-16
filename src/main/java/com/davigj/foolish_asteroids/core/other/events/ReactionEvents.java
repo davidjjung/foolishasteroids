@@ -4,8 +4,9 @@ import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.common.item.gear.BoundlessBootsItem;
 import com.davigj.foolish_asteroids.common.item.gear.MoonWalkersItem;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
-import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
+import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.common.entity.animal.deer.Deer;
@@ -67,15 +68,15 @@ public class ReactionEvents {
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setTargetScale(modelHeight * 0.5f);
             ScaleTypes.HEIGHT.getScaleData(event.getEntity()).setScaleTickDelay(20);
         }
-        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.RAD_POISONING) && !source.isMagic()) {
+        if (playerVictim && manager.getValue(player, FADataProcessors.RAD_POISONING) && !source.isMagic()) {
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
         }
-        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) > 0 && !source.isMagic()) {
+        if (playerVictim && manager.getValue(player, FADataProcessors.STORED_ELECTRONS) > 0 && !source.isMagic()) {
             double explosionX = player.getX();
             double explosionY = player.getY() + player.getEyeHeight();
             double explosionZ = player.getZ();
             float explosionPower = 1.3f; // Adjust explosion power as needed
-            int electrons = manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS);
+            int electrons = manager.getValue(player, FADataProcessors.STORED_ELECTRONS);
             double explosionRadius = (0.25 * electrons) + 1; // Adjust the radius as needed
 
             for (LivingEntity entity : player.level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(explosionRadius, 2.0D, explosionRadius))) {
@@ -88,15 +89,15 @@ public class ReactionEvents {
                 }
             }
             player.level.explode(player, explosionX, explosionY, explosionZ, explosionPower, false, Explosion.BlockInteraction.NONE);
-            manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, manager.getValue(player, FoolishAsteroidsMod.STORED_ELECTRONS) - 1);
+            manager.setValue(player, FADataProcessors.STORED_ELECTRONS, manager.getValue(player, FADataProcessors.STORED_ELECTRONS) - 1);
             Random random = new Random();
             if (random.nextInt(5) <= 2) {
-                manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
+                manager.setValue(player, FADataProcessors.RAD_POISONING, false);
             }
         }
-        if (playerVictim && manager.getValue(player, FoolishAsteroidsMod.AUTUMNAL)) {
+        if (playerVictim && manager.getValue(player, FADataProcessors.AUTUMNAL)) {
             // TODO: Play sound of magical wind dispelling
-            manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
+            manager.setValue(player, FADataProcessors.AUTUMNAL, false);
         }
         if (playerVictim && event.getSource().equals(DamageSource.LIGHTNING_BOLT)) {
             // Check if the player is holding a glass bottle in either hand
@@ -105,7 +106,7 @@ public class ReactionEvents {
 
             if (mainHandItem.is(Items.GLASS_BOTTLE) || offHandItem.is(Items.GLASS_BOTTLE)) {
                 // Turn the glass bottle into a lightning bottle
-                ItemStack lightningBottle = new ItemStack(FoolishAsteroidsItems.LIGHTNING_BOTTLE.get()); // Replace with your lightning bottle item
+                ItemStack lightningBottle = new ItemStack(FAItems.LIGHTNING_BOTTLE.get()); // Replace with your lightning bottle item
                 if (mainHandItem.is(Items.GLASS_BOTTLE)) {
                     player.setItemInHand(InteractionHand.MAIN_HAND, lightningBottle);
                 } else {
@@ -153,7 +154,7 @@ public class ReactionEvents {
             rainbowTimers.remove(player.getUUID());
             oracleMap.remove(player.getUUID());
         }
-        if (event.getSource().equals(FoolishAsteroidsDamageSources.SERAPHIC) && event.getEntity() instanceof Player player) {
+        if (event.getSource().equals(FADamageSources.SERAPHIC) && event.getEntity() instanceof Player player) {
             BlockPos basaltPos = player.blockPosition();
             Level world = player.level;
 
@@ -179,17 +180,17 @@ public class ReactionEvents {
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        if (manager.getValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL) != 0) {
-            manager.setValue(player, FoolishAsteroidsMod.HIGHWAY_TO_HELL, 0);
+        if (manager.getValue(player, FADataProcessors.HIGHWAY_TO_HELL) != 0) {
+            manager.setValue(player, FADataProcessors.HIGHWAY_TO_HELL, 0);
             TranslatableComponent message = new TranslatableComponent("message.hearsay.forgiveness");
             event.getPlayer().displayClientMessage(message, true);
-        } else if (manager.getValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE)) {
-            manager.setValue(player, FoolishAsteroidsMod.SERAPHIC_ACTIVE, false);
+        } else if (manager.getValue(player, FADataProcessors.SERAPHIC_ACTIVE)) {
+            manager.setValue(player, FADataProcessors.SERAPHIC_ACTIVE, false);
         }
-        manager.setValue(player, FoolishAsteroidsMod.STORED_ELECTRONS, 0);
-        manager.setValue(player, FoolishAsteroidsMod.RAD_POISONING, false);
-        manager.setValue(player, FoolishAsteroidsMod.AUTUMNAL, false);
-        manager.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, 0);
+        manager.setValue(player, FADataProcessors.STORED_ELECTRONS, 0);
+        manager.setValue(player, FADataProcessors.RAD_POISONING, false);
+        manager.setValue(player, FADataProcessors.AUTUMNAL, false);
+        manager.setValue(player, FADataProcessors.ANTI_DRUNK, 0);
     }
 
     @SubscribeEvent
@@ -198,7 +199,7 @@ public class ReactionEvents {
         if (!event.getEntity().level.isClientSide()) {
             if (effect == BCEffects.TIPSY.get() && event.getEntity() instanceof Player player) {
                 MobEffectInstance tipsy = event.getPotionEffect();
-                int antiDrunk = TrackedDataManager.INSTANCE.getValue(player, FoolishAsteroidsMod.ANTI_DRUNK);
+                int antiDrunk = TrackedDataManager.INSTANCE.getValue(player, FADataProcessors.ANTI_DRUNK);
                 if (antiDrunk > 0) {
                     int lvl = tipsy.getAmplifier() + 1; // gets actual level
                     int duration = tipsy.getDuration();
@@ -211,10 +212,10 @@ public class ReactionEvents {
                         }
                     }
                     if (antiDrunk - lvl >= 0) {
-                        TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, antiDrunk - lvl);
+                        TrackedDataManager.INSTANCE.setValue(player, FADataProcessors.ANTI_DRUNK, antiDrunk - lvl);
                     } else {
                         // the incoming tipsy exceeds antidrunk
-                        TrackedDataManager.INSTANCE.setValue(player, FoolishAsteroidsMod.ANTI_DRUNK, 0);
+                        TrackedDataManager.INSTANCE.setValue(player, FADataProcessors.ANTI_DRUNK, 0);
                         if (existingTipsyLvl == 0) {
                             player.addEffect(new MobEffectInstance(BCEffects.TIPSY.get(), (int) (duration * 0.5), lvl - antiDrunk - 1));
                         } else {
@@ -234,7 +235,7 @@ public class ReactionEvents {
 
         if (target instanceof BananaPeel bananaPeel) {
             // Spawn the ItemEntity with the Banana Peel item
-            ItemEntity itemEntity = new ItemEntity(player.level, bananaPeel.getX(), bananaPeel.getY(), bananaPeel.getZ(), new ItemStack(FoolishAsteroidsItems.BANANA_PEEL.get()));
+            ItemEntity itemEntity = new ItemEntity(player.level, bananaPeel.getX(), bananaPeel.getY(), bananaPeel.getZ(), new ItemStack(FAItems.BANANA_PEEL.get()));
             player.level.addFreshEntity(itemEntity);
         }
     }

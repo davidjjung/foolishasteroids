@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.common.util;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,7 @@ public class HearsayUtil {
     public static TranslatableComponent getDialogueLine(Player player) {
         // retrieve index and simplify
         TrackedDataManager manager = TrackedDataManager.INSTANCE;
-        return conversations[manager.getValue(player, FoolishAsteroidsMod.CONVO_INDEX)][manager.getValue(player, FoolishAsteroidsMod.DIALOGUE_INDEX)];
+        return conversations[manager.getValue(player, FADataProcessors.CONVO_INDEX)][manager.getValue(player, FADataProcessors.DIALOGUE_INDEX)];
     }
 
     public static final TranslatableComponent[][] conversations = {

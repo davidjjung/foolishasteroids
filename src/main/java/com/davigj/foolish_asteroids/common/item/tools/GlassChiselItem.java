@@ -1,21 +1,17 @@
 package com.davigj.foolish_asteroids.common.item.tools;
 
-import com.davigj.foolish_asteroids.core.other.tags.FoolishAsteroidsBlockTags;
-import net.mehvahdjukaar.supplementaries.setup.ModSounds;
+import com.davigj.foolish_asteroids.core.other.tags.FABlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +32,7 @@ public class GlassChiselItem extends Item {
         ItemStack stack = context.getItemInHand();
         assert player != null;
         if (world.isClientSide()) {
-            if (state.m_204336_(FoolishAsteroidsBlockTags.GLASS_BLOCKS)) {
+            if (state.m_204336_(FABlockTags.GLASS_BLOCKS)) {
                 Random random = new Random();
                 for (int i = 0; i < 4; i++) {
                     world.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + random.nextDouble() - 0.5,
@@ -46,7 +42,7 @@ public class GlassChiselItem extends Item {
             }
             return InteractionResult.PASS;
         } else {
-            if (state.m_204336_(FoolishAsteroidsBlockTags.GLASS_BLOCKS)) {
+            if (state.m_204336_(FABlockTags.GLASS_BLOCKS)) {
                 if (!world.isClientSide()) {
                     stack.hurtAndBreak(1, player, (entity) -> {
                         entity.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);

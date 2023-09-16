@@ -1,6 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,7 @@ public class SusurrousElixirItem extends ElixirItem{
 
     public void affectConsumer(ItemStack stack, Level level, LivingEntity entityLiving) {
         // TODO: Play a magical autumnal breeze sfx on consumption
-        TrackedDataManager.INSTANCE.setValue(entityLiving, FoolishAsteroidsMod.AUTUMNAL, true);
+        TrackedDataManager.INSTANCE.setValue(entityLiving, FADataProcessors.AUTUMNAL, true);
     }
 
 }

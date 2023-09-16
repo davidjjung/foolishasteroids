@@ -1,7 +1,7 @@
 package com.davigj.foolish_asteroids.common.item.medal;
 
 import com.davigj.foolish_asteroids.common.util.MorphUtilHelper;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -18,8 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -35,7 +33,7 @@ public class FishyEmblemItem extends Item {
         // TODO: Coin flip sound
         level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         player.getCooldowns().addCooldown(this, 2 * 20);
-        player.getCooldowns().addCooldown(FoolishAsteroidsItems.BLANK_MEDALLION.get(), 20 * 20);
+        player.getCooldowns().addCooldown(FAItems.BLANK_MEDALLION.get(), 20 * 20);
         if (!level.isClientSide) {
             morph(player);
         }

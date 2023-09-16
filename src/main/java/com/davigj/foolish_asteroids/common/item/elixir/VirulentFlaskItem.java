@@ -1,6 +1,6 @@
 package com.davigj.foolish_asteroids.common.item.elixir;
 
-import com.davigj.foolish_asteroids.core.util.FoolishAsteroidsDamageSources;
+import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -34,8 +34,8 @@ public class VirulentFlaskItem extends ElixirItem {
                 case 4 -> player.addEffect(new MobEffectInstance(AMEffectRegistry.FEAR, 200, 0, false, false));
             }
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0, false, false));
-            player.hurt(FoolishAsteroidsDamageSources.VIRULENT, 6.0F);
+            player.hurt(FADamageSources.VIRULENT, 6.0F);
         }
-        player.hurt(FoolishAsteroidsDamageSources.VIRULENT, 1.0F);
+        player.hurt(FADamageSources.VIRULENT, 1.0F);
     }
 }

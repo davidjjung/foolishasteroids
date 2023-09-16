@@ -2,7 +2,8 @@ package com.davigj.foolish_asteroids.core.other.events;
 
 import com.davigj.foolish_asteroids.common.util.HearsayUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
-import com.davigj.foolish_asteroids.core.registry.FoolishAsteroidsItems;
+import com.davigj.foolish_asteroids.core.other.FADataProcessors;
+import com.davigj.foolish_asteroids.core.registry.FAItems;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -56,17 +57,17 @@ public class ChatEvents {
         boolean gab = false;
         ItemStack handItem = player.getMainHandItem();
         ItemStack offHandItem = player.getOffhandItem();
-        if (handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())
-                || offHandItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())) {
+        if (handItem.is(FAItems.GIFT_OF_GAB.get())
+                || offHandItem.is(FAItems.GIFT_OF_GAB.get())) {
             gab = true;
         }
         if (gab) {
-            if (handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get())) {
+            if (handItem.is(FAItems.GIFT_OF_GAB.get())) {
                 senderID = updateSenderID(handItem, senderID);
             } else {
                 senderID = updateSenderID(offHandItem, senderID);
             }
-            ItemStack usedItem = handItem.is(FoolishAsteroidsItems.GIFT_OF_GAB.get()) ? handItem : offHandItem;
+            ItemStack usedItem = handItem.is(FAItems.GIFT_OF_GAB.get()) ? handItem : offHandItem;
             usedItem.hurtAndBreak(1, player, (entity) -> {
                 entity.broadcastBreakEvent(handItem.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
             });
@@ -90,13 +91,13 @@ public class ChatEvents {
                     receiver.sendMessage(original, receiver.getUUID());
                 } else {
                     receiver.sendMessage(modified, receiver.getUUID());
-                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX) + 1;
-                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.CONVO_INDEX);
-                    TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, dialogueIndex);
+                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FADataProcessors.DIALOGUE_INDEX) + 1;
+                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FADataProcessors.CONVO_INDEX);
+                    TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.DIALOGUE_INDEX, dialogueIndex);
                     if (dialogueIndex == conversations[convoIndex].length) {
                         Random random = new Random();
-                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, 0);
-                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.CONVO_INDEX, random.nextInt(3));
+                        TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.DIALOGUE_INDEX, 0);
+                        TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.CONVO_INDEX, random.nextInt(3));
                     }
                 }
             }
@@ -104,13 +105,13 @@ public class ChatEvents {
             for (ServerPlayer receiver : Objects.requireNonNull(player.level.getServer()).getPlayerList().getPlayers()) {
                 if (oracleMap.containsKey(receiver)) {
                     receiver.sendMessage(modified, receiver.getUUID());
-                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX) + 1;
-                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FoolishAsteroidsMod.CONVO_INDEX);
-                    TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, dialogueIndex);
+                    int dialogueIndex = TrackedDataManager.INSTANCE.getValue(receiver, FADataProcessors.DIALOGUE_INDEX) + 1;
+                    int convoIndex = TrackedDataManager.INSTANCE.getValue(receiver, FADataProcessors.CONVO_INDEX);
+                    TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.DIALOGUE_INDEX, dialogueIndex);
                     if (dialogueIndex == conversations[convoIndex].length) {
                         Random random = new Random();
-                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.DIALOGUE_INDEX, 0);
-                        TrackedDataManager.INSTANCE.setValue(receiver, FoolishAsteroidsMod.CONVO_INDEX, random.nextInt(3));
+                        TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.DIALOGUE_INDEX, 0);
+                        TrackedDataManager.INSTANCE.setValue(receiver, FADataProcessors.CONVO_INDEX, random.nextInt(3));
                     }
                 } else {
                     receiver.sendMessage(original, receiver.getUUID());
