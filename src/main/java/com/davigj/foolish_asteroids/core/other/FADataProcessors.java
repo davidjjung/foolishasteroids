@@ -49,7 +49,7 @@ public class FADataProcessors {
         initialTeeth.add(new ItemStack(FAItems.TOOTH.get()));
         initialTeeth.add(new ItemStack(FAItems.TOOTH.get()));
         return initialTeeth;
-    }).build();
+    }).enableSaving().enablePersistence().build();
 
     public static final TrackedData<Integer> CONVO_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
     public static final TrackedData<Integer> DIALOGUE_INDEX = TrackedData.Builder.create(DataProcessors.INT, () -> (int) 1).enableSaving().enablePersistence().build();
@@ -64,9 +64,6 @@ public class FADataProcessors {
     public static final TrackedData<Integer> BLUSTER_RECHARGE = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
     public static final TrackedData<Integer> BLUSTER_HARVEST = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
     public static final TrackedData<Integer> TONGUES = TrackedData.Builder.create(DataProcessors.INT, () -> 4).enableSaving().enablePersistence().build();
-    public static final TrackedData<Integer> TEETH = TrackedData.Builder.create(DataProcessors.INT, () -> 3).enableSaving().enablePersistence().build();
-    public static final TrackedData<Integer> BONE_SERPENT_TEETH = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
-    public static final TrackedData<Integer> THRASHER_TEETH = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 
     public static void registerTrackedData() {
         TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "convo_index"), CONVO_INDEX);

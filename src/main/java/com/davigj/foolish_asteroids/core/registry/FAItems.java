@@ -311,19 +311,16 @@ public class FAItems {
 			new SeveredTongueItem(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.SEVERED_TONGUE)));
 	public static final RegistryObject<Item> SILVER_TONGUE = HELPER.createItem("silver_tongue", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
-	public static final RegistryObject<Item> TOOTH = HELPER.createItem("tooth", () ->
-			new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> BANANA_PEEL = HELPER.createItem("banana_peel", () ->
 			new BananaPeelItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> ZOMBIE_BRAIN = HELPER.createItem("zombie_brain", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).food(FoolishAsteroidsFoods.ZOMBIE_BRAIN)));
 	public static final RegistryObject<Item> ONION_SLICE = HELPER.createItem("onion_slice", () ->
 			new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD).food(FoolishAsteroidsFoods.ONION_SLICE)));
-
-	// truly misc. items
-//	public static final RegistryObject<Item> FIFTY_TWO_PICKUP = HELPER.createItem("fifty_two_pickup", () ->
-//			new FiftyTwoPickupItem(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
-
+	public static final RegistryObject<Item> TOOTH = HELPER.createItem("tooth", () ->
+			new ToothItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> SWEET_TOOTH = HELPER.createItem("sweet_tooth", () ->
+			new ToothItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
 			return new MobEffectInstance((MobEffect) MobEffects.CONFUSION, 320, 0);

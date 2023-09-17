@@ -11,7 +11,7 @@ public class Constants {
     public static final int MAX_SOAPINESS = 450;
     public static final int STICKY_HAND_CHARGE_TICKS = 30;
     public static final int CURSED_STAFF_CHARGE_TICKS = 90;
-    public static final int PLIERS_CHARGE_TICKS = 80;
+    public static final int PLIERS_CHARGE_TICKS = 20;
     public static final List<TextColor> RAINBOW_COLORS = Arrays.asList(
             TextColor.fromRgb(0xFC2847),
             TextColor.fromRgb(0xFFA343),

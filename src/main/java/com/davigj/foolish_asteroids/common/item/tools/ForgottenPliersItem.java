@@ -32,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 import static com.davigj.foolish_asteroids.common.util.Constants.PLIERS_CHARGE_TICKS;
@@ -58,6 +59,7 @@ public class ForgottenPliersItem extends Item {
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseTicks) {
         CompoundTag tag = stack.getOrCreateTag();
         int charge = tag.getInt(NBT_CHARGE);
+        Queue<ItemStack> teeth = manager.getValue(entity, FADataProcessors.TEETH_DATA);
         if (!level.isClientSide) {
             tag.putInt(NBT_CHARGE, charge + 1);
         } else {
@@ -83,8 +85,8 @@ public class ForgottenPliersItem extends Item {
             entities.removeIf(targetEntity -> !(targetEntity instanceof Player || targetEntity instanceof Thrasher
                     || targetEntity instanceof EntityBoneSerpent));
             for (Entity targetEntity : entities) {
-                if (targetEntity instanceof LivingEntity && targetEntity != entity && targetEntity.tickCount % 14 == 0
-                && manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
+                if (targetEntity instanceof LivingEntity && targetEntity != entity && targetEntity.tickCount % 14 == 0 &&
+                        !manager.getValue(targetEntity, FADataProcessors.TEETH_DATA).isEmpty()) {
                     Random random = new Random();
                     for (int i = 0; i < 1; i++) {
                         level.addParticle(ParticleTypes.SNEEZE, targetEntity.getX() + random.nextDouble() - 0.5,
@@ -93,7 +95,7 @@ public class ForgottenPliersItem extends Item {
                     break;
                 }
             }
-            if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0 && entity.tickCount % 14 == 0) {
+            if (entities.isEmpty() && !teeth.isEmpty() && entity.tickCount % 14 == 0) {
                 Random random = new Random();
                 for (int i = 0; i < 1; i++) {
                     level.addParticle(ParticleTypes.SNEEZE, entity.getX() + random.nextDouble() - 0.5,
@@ -122,25 +124,25 @@ public class ForgottenPliersItem extends Item {
             entities.remove(entity);
             entities.removeIf(targetEntity -> !(targetEntity instanceof LivingEntity));
             entities.removeIf(targetEntity -> !(targetEntity instanceof Player || targetEntity instanceof Thrasher
-                    ||targetEntity instanceof EntityBoneSerpent));
+                    || targetEntity instanceof EntityBoneSerpent));
             if (!level.isClientSide) {
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
-                        if (manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
-                            defang(targetEntity, level, stack, (Player)entity);
+                        if (!manager.getValue(targetEntity, FADataProcessors.TEETH_DATA).isEmpty()) {
+                            defang(targetEntity, level, stack, (Player) entity);
                         }
                         break;
                     }
                 }
-                if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0) {
-                    defang(entity, level, stack, (Player)entity);
+                if (entities.isEmpty() && !manager.getValue(entity, FADataProcessors.TEETH_DATA).isEmpty()) {
+                    defang(entity, level, stack, (Player) entity);
                 }
             } else {
                 // TODO: *CROMCH*
                 level.playSound((Player) entity, entity, AMSoundRegistry.GIANT_SQUID_TENTACLE, SoundSource.NEUTRAL, 1.25F, 2.0F);
                 for (Entity targetEntity : entities) {
                     if (targetEntity instanceof LivingEntity && targetEntity != entity) {
-                        if (manager.getValue(targetEntity, FADataProcessors.TEETH) > 0) {
+                        if (!manager.getValue(targetEntity, FADataProcessors.TEETH_DATA).isEmpty()) {
                             Random random = new Random();
                             for (int i = 0; i < 4; i++) {
                                 level.addParticle(ParticleTypes.SNEEZE, targetEntity.getX() + random.nextDouble() - 0.5,
@@ -150,7 +152,7 @@ public class ForgottenPliersItem extends Item {
                         break;
                     }
                 }
-                if (entities.isEmpty() && manager.getValue(entity, FADataProcessors.TEETH) > 0) {
+                if (entities.isEmpty() && !manager.getValue(entity, FADataProcessors.TEETH_DATA).isEmpty()) {
                     Random random = new Random();
                     for (int i = 0; i < 1; i++) {
                         level.addParticle(ParticleTypes.SNEEZE, entity.getX() + random.nextDouble() - 0.5,
@@ -158,9 +160,9 @@ public class ForgottenPliersItem extends Item {
                     }
                 }
             }
-            stack.hurtAndBreak(1, entity, (temp) -> {
-                temp.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
-            });
+//            stack.hurtAndBreak(1, entity, (temp) -> {
+//                temp.broadcastBreakEvent(stack.isEmpty() ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND);
+//            });
         }
 
         // Reset the charge
@@ -170,7 +172,7 @@ public class ForgottenPliersItem extends Item {
         }
     }
 
-    public static void defang (Entity targetEntity, Level level, ItemStack stack, Player player) {
+    public static void defang(Entity targetEntity, Level level, ItemStack stack, Player player) {
         Vec3 itemVector = targetEntity.getLookAngle();
         Vec3 itemVelocity = itemVector.scale(0.2);
         ItemEntity itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(FAItems.TOOTH.get()));
@@ -179,8 +181,12 @@ public class ForgottenPliersItem extends Item {
         } else if (targetEntity instanceof Thrasher) {
             itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), new ItemStack(UAItems.THRASHER_TOOTH.get()));
         }
-        if (targetEntity instanceof Player) {
-            manager.setValue(targetEntity, FADataProcessors.TEETH, manager.getValue(targetEntity, FADataProcessors.TEETH) - 1);
+        if (targetEntity instanceof Player victim) {
+            Queue<ItemStack> teeth = manager.getValue(victim, FADataProcessors.TEETH_DATA);
+            ItemStack firstTeeth = teeth.poll(); // Get and remove the first item from the queue.
+            assert firstTeeth != null;
+            itemEntity = new ItemEntity(level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), firstTeeth);
+            manager.setValue(targetEntity, FADataProcessors.TEETH_DATA, teeth);
         }
         itemEntity.setDefaultPickUpDelay();
         double initialVelocityY = 0.11; // Adjust as needed

@@ -7,8 +7,10 @@ import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.davigj.foolish_asteroids.core.other.tags.FAItemTags;
 import com.davigj.foolish_asteroids.core.registry.FAItems;
 import com.davigj.foolish_asteroids.core.util.FADamageSources;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.starfish_studios.naturalist.entity.Snake;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import com.teamabnormals.upgrade_aquatic.core.registry.UAItems;
 import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +33,10 @@ import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CakeBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -45,15 +50,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.galosphere.init.GBlocks;
 import samebutdifferent.ecologics.registry.ModItems;
+import vectorwing.farmersdelight.common.block.PieBlock;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
 
 import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SNAKES;
 import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SOAPINESS;
+import static com.davigj.foolish_asteroids.core.registry.FAItems.ARTISANAL_SHEARS;
 
 
 @Mod.EventBusSubscriber(modid = FoolishAsteroidsMod.MOD_ID)
@@ -64,12 +73,43 @@ public class PlayerActionEvents {
     @SubscribeEvent
     public static void playerUse(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getPlayer();
-        if (player.getItemInHand(event.getHand()).getItem() == ModRegistry.SOAP.get()
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() == ModRegistry.SOAP.get()
                 && player.getItemBySlot(EquipmentSlot.FEET).getItem() == FAItems.BUBBLE_BOOTS.get()) {
             ItemStack armorStack = player.getItemBySlot(EquipmentSlot.FEET);
             armorStack.getOrCreateTag().putInt("Soapiness", MAX_SOAPINESS);
             ItemStack handStack = player.getItemInHand(event.getHand());
             handStack.shrink(1);
+        }
+        Queue<ItemStack> teeth = manager.getValue(player, FADataProcessors.TEETH_DATA);
+        if (stack.getItem() == AMItemRegistry.BONE_SERPENT_TOOTH.get() || stack.getItem() == UAItems.THRASHER_TOOTH.get()) {
+            ItemStack implant = stack.copy();
+            implant.setCount(1);
+            teeth.add(implant);
+            stack.shrink(1);
+            manager.setValue(player, FADataProcessors.TEETH_DATA, teeth);
+        }
+        if (teeth.isEmpty() && stack.isEdible() && stack.getUseAnimation() != UseAnim.DRINK) {
+            event.setCanceled(true);
+        }
+        for (ItemStack tooth : teeth) {
+            if (!event.isCanceled() && stack.isEdible()) {
+                if (teeth.size() > 1) {
+
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTryEat(PlayerInteractEvent.RightClickBlock event) {
+        Queue<ItemStack> teeth = manager.getValue(event.getPlayer(), FADataProcessors.TEETH_DATA);
+        Block targetBlock = event.getPlayer().level.getBlockState(event.getHitVec().getBlockPos()).getBlock();
+        if (targetBlock instanceof CakeBlock || targetBlock instanceof PieBlock ||
+                Objects.requireNonNull(targetBlock.getRegistryName()).toString().equals("atmospheric:yucca_gateau")) {
+            if (teeth.isEmpty()) {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -122,7 +162,7 @@ public class PlayerActionEvents {
                 if (tongues > 0) {
                     player.getCooldowns().addCooldown(Items.SHEARS, 3 * 20);
                     player.getCooldowns().addCooldown(ModItems.CRAB_CLAW.get(), 20);
-                    player.getCooldowns().addCooldown(FAItems.ARTISANAL_SHEARS.get(), 10);
+                    player.getCooldowns().addCooldown(ARTISANAL_SHEARS.get(), 10);
                     manager.setValue(enderman, FADataProcessors.TONGUES, tongues - 1);
                     enderman.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
                     ItemEntity itemEntity = new ItemEntity(player.level, enderman.getX(), enderman.getEyeY(), enderman.getZ(),
@@ -133,7 +173,14 @@ public class PlayerActionEvents {
                     enderman.setPersistentAngerTarget(player.getUUID());
                     // TODO: Visual/audio cues
                     if (!player.getLevel().isClientSide) {
-                        teleport(player.getX(), player.getY(), player.getZ(), player);
+
+                        if (player.getItemInHand(event.getHand()).getItem() == ARTISANAL_SHEARS.get()) {
+                            if (player.getRandom().nextDouble() < 0.2) {
+                                teleport(player.getX(), player.getY(), player.getZ(), player);
+                            }
+                        } else {
+                            teleport(player.getX(), player.getY(), player.getZ(), player);
+                        }
                     }
                 }
                 if (tongues == 1) {
@@ -259,7 +306,6 @@ public class PlayerActionEvents {
             if (tileEntity instanceof CuttingBoardBlockEntity board && board.getStoredItem().getItem() == vectorwing.farmersdelight.common.registry.ModItems.ONION.get()) {
                 if (heldItem.getItem() instanceof KnifeItem) {
                     AABB boundingBox = new AABB(event.getPos()).inflate(3.0, 3.0, 3.0);
-                    // Apply Blindness effect to nearby living entities, including nearby Ghasts
                     List<LivingEntity> livingEntities = player.level.getEntitiesOfClass(LivingEntity.class, boundingBox,
                             (living) -> living != null && living.isAlive());
                     for (LivingEntity livingEntity : livingEntities) {
