@@ -34,7 +34,7 @@ public class FAMobEffects {
 
     public static void registerBrewingRecipes() {
         DataUtil.addMix(Potions.AWKWARD, FAItems.SUNBIRD_FEATHER.get(), ALOFT_NORMAL.get());
-        DataUtil.addMix(Potions.AWKWARD, FAItems.SILVER_TONGUE.get(), DISPLACEMENT_NORMAL.get());
+        DataUtil.addMix(Potions.AWKWARD, FAItems.SEVERED_TONGUE.get(), DISPLACEMENT_NORMAL.get());
         DataUtil.addMix(Potions.AWKWARD, FAItems.BANANA_PEEL.get(), SLIPPING_NORMAL.get());
         DataUtil.addMix(SLIPPING_NORMAL.get(), Items.REDSTONE, SLIPPING_LONG.get());
         DataUtil.addMix(ALOFT_NORMAL.get(), Items.REDSTONE, ALOFT_LONG.get());

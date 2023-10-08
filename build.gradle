@@ -101,6 +101,14 @@ dependencies {
     implementation fg.deobf("curse.maven:ecologics-570463:3939725")
     implementation fg.deobf("curse.maven:pollen-544350:4337349")
     implementation fg.deobf("curse.maven:mannequins-488506:3717750")
+    implementation fg.deobf("curse.maven:mob-catcher-324347:4083095")
+    implementation fg.deobf("curse.maven:atmospheric-362393:4367068")
+
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4396792")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4579981")
+    implementation fg.deobf("curse.maven:architectury-api-419699:4521465")
+    implementation fg.deobf("curse.maven:item-filters-309674:4553322")
+    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:4398375")
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft}:${project.jei}")

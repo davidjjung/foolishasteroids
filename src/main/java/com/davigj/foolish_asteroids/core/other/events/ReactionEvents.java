@@ -1,15 +1,19 @@
 package com.davigj.foolish_asteroids.core.other.events;
 
+import com.brewinandchewin.common.effect.TipsyEffect;
 import com.brewinandchewin.core.registry.BCEffects;
 import com.davigj.foolish_asteroids.common.item.gear.BoundlessBootsItem;
 import com.davigj.foolish_asteroids.common.item.gear.MoonWalkersItem;
+import com.davigj.foolish_asteroids.common.util.FeatUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.davigj.foolish_asteroids.core.registry.FAItems;
 import com.davigj.foolish_asteroids.core.util.FADamageSources;
 import com.starfish_studios.naturalist.registry.NaturalistItems;
+import com.teamabnormals.atmospheric.common.entity.projectile.PassionfruitSeed;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.environmental.common.entity.animal.deer.Deer;
+import com.teamabnormals.environmental.core.registry.EnvironmentalItems;
 import com.teamabnormals.neapolitan.common.entity.projectile.BananaPeel;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
@@ -22,9 +26,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
@@ -39,8 +45,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import vectorwing.farmersdelight.common.registry.ModItems;
 import virtuoel.pehkui.api.ScaleTypes;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.davigj.foolish_asteroids.common.item.elixir.HearsayElixirItem.oracleMap;
@@ -52,6 +60,28 @@ import static com.davigj.foolish_asteroids.common.item.elixir.IndomitableElixirI
 public class ReactionEvents {
 
     static TrackedDataManager manager = TrackedDataManager.INSTANCE;
+
+    @SubscribeEvent
+    public static void llamaDrama(LivingHurtEvent event) {
+        DamageSource source = event.getSource();
+        if (event.getEntity() instanceof Llama llama) {
+            System.out.println(source.getDirectEntity());
+            if (source.getEntity() != null && source.getDirectEntity() instanceof PassionfruitSeed seed && seed.getOwner() instanceof Player player) {
+                List<Integer> feats = manager.getValue(player, FADataProcessors.FEATS);
+                if (feats.get(1) == 0) {
+                    feats.set(1, 1);
+                    ItemEntity itemEntity = new ItemEntity(player.level, llama.getX(), llama.getEyeY(), llama.getZ(),
+                            new ItemStack(FAItems.COMET_MEDAL.get()));
+                    itemEntity.setDefaultPickUpDelay();
+                    itemEntity.setNoGravity(true);
+                    double initialVelocityY = 0.11;
+                    itemEntity.setDeltaMovement(0, initialVelocityY, 0);
+                    player.level.addFreshEntity(itemEntity);
+                    manager.setValue(player, FADataProcessors.FEATS, feats);
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -121,11 +151,11 @@ public class ReactionEvents {
         }
         if (playerVictim && source.isFall()) {
             ItemStack gauntlets = player.getItemBySlot(EquipmentSlot.FEET);
-            if (gauntlets.getItem() instanceof MoonWalkersItem|| gauntlets.getItem() instanceof BoundlessBootsItem) {
+            if (gauntlets.getItem() instanceof MoonWalkersItem || gauntlets.getItem() instanceof BoundlessBootsItem) {
                 // TODO: the player like, plummets to the ground when they take damage in midair lol
                 event.setAmount(event.getAmount() * 0.25F);
                 if (event.getAmount() < 0.5F) {
-                event.setCanceled(true);
+                    event.setCanceled(true);
                 }
             }
         }
@@ -144,6 +174,68 @@ public class ReactionEvents {
             assert spider != null;
             spider.setPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
             event.getEntity().level.addFreshEntity(spider);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerKillFeat(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player victim) || !(event.getSource().getEntity() instanceof Player killer)) {
+            return;
+        }
+        List<Integer> feats = manager.getValue(killer, FADataProcessors.FEATS);
+        for (MobEffectInstance effectInstance : killer.getActiveEffects()) {
+            if (effectInstance.getEffect() instanceof TipsyEffect && effectInstance.getAmplifier() >= 3) {
+                if (feats.get(6) == 0 && feats.get(5) == 0) {
+                    feats.set(5, FeatUtil.uuidToInt(victim));
+                } else if (feats.get(6) == 0 && feats.get(5) != FeatUtil.uuidToInt(victim)) {
+                    FeatUtil.medalMaterialize(killer);
+                    feats.set(6, 1);
+                }
+                break;
+            }
+        }
+        if (event.getSource().getDirectEntity() instanceof Arrow arrow) {
+            for (MobEffectInstance effect : arrow.potion.getEffects()) {
+                if (effect.getEffect() == MobEffects.REGENERATION) {
+                    if (feats.get(8) == 0 && feats.get(7) == 0) {
+                        feats.set(7, FeatUtil.uuidToInt(victim));
+                    } else if (feats.get(8) == 0 && feats.get(7) != FeatUtil.uuidToInt(victim)) {
+                        FeatUtil.medalMaterialize(killer);
+                        feats.set(8, 1);
+                    }
+                }
+                break;
+            }
+            System.out.println(arrow.potion.getEffects());
+        }
+        if (!event.getSource().isProjectile() && !event.getSource().isMagic() &&
+                killer.getMainHandItem().getItem() == ModItems.SKILLET.get() &&
+                killer.getInventory().armor.get(3).getItem() == EnvironmentalItems.THIEF_HOOD.get()) {
+            if (feats.get(10) == 0 && feats.get(9) == 0) {
+                feats.set(9, FeatUtil.uuidToInt(victim));
+            } else if (feats.get(10) == 0 && feats.get(9) != FeatUtil.uuidToInt(victim)) {
+                FeatUtil.medalMaterialize(killer);
+                feats.set(10, 1);
+            }
+        }
+        if (event.getSource().getDirectEntity() instanceof PassionfruitSeed) {
+            if (feats.get(12) == 0 && feats.get(11) == 0) {
+                feats.set(11, FeatUtil.uuidToInt(victim));
+            } else if (feats.get(12) == 0 && feats.get(11) != FeatUtil.uuidToInt(victim)) {
+                FeatUtil.medalMaterialize(killer);
+                feats.set(12, 1);
+            }
+        }
+
+        manager.setValue(killer, FADataProcessors.FEATS, feats);
+    }
+
+    private static void cleanKillData(List<Integer> feats, Player killer, Player victim, int featIndex1, int featIndex2) {
+        if (feats.get(featIndex2) == 0 && feats.get(featIndex1) == 0) {
+            feats.set(featIndex1, FeatUtil.uuidToInt(victim));
+        } else if (feats.get(featIndex2) == 0 && feats.get(featIndex1) != FeatUtil.uuidToInt(victim)) {
+            FeatUtil.medalMaterialize(killer);
+            feats.set(featIndex2, 1);
         }
     }
 

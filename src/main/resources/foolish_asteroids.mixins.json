@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "refmap": "foolish_asteroids.refmap.json",
   "mixins": [
+    "CombatTrackerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

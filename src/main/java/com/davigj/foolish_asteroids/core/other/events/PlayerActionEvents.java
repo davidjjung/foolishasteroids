@@ -83,11 +83,13 @@ public class PlayerActionEvents {
         }
         Queue<ItemStack> teeth = manager.getValue(player, FADataProcessors.TEETH_DATA);
         if (stack.getItem() == AMItemRegistry.BONE_SERPENT_TOOTH.get() || stack.getItem() == UAItems.THRASHER_TOOTH.get()) {
-            ItemStack implant = stack.copy();
-            implant.setCount(1);
-            teeth.add(implant);
-            stack.shrink(1);
-            manager.setValue(player, FADataProcessors.TEETH_DATA, teeth);
+            if (teeth.size() < 4) {
+                ItemStack implant = stack.copy();
+                implant.setCount(1);
+                teeth.add(implant);
+                stack.shrink(1);
+                manager.setValue(player, FADataProcessors.TEETH_DATA, teeth);
+            }
         }
         if (teeth.isEmpty() && stack.isEdible() && stack.getUseAnimation() != UseAnim.DRINK) {
             event.setCanceled(true);
@@ -131,7 +133,6 @@ public class PlayerActionEvents {
             float playerYaw = player.getYRot();
             float playerPitch = player.getXRot();
 
-            // Calculate the player's viewing direction vector and normalize it
             double playerViewX = -Math.sin(Math.toRadians(playerYaw)) * Math.cos(Math.toRadians(playerPitch));
             double playerViewY = -Math.sin(Math.toRadians(playerPitch));
             double playerViewZ = Math.cos(Math.toRadians(playerYaw)) * Math.cos(Math.toRadians(playerPitch));
@@ -141,12 +142,11 @@ public class PlayerActionEvents {
             playerViewY /= playerViewLength;
             playerViewZ /= playerViewLength;
 
-            // Calculate the vector from the player's position to the Enderman's head and normalize it
             double headX = enderman.getX();
-            double headY = enderman.getEyeY(); // Adjust this to the exact height of the Enderman's head
+            double headY = enderman.getEyeY();
             double headZ = enderman.getZ();
             double toHeadX = headX - player.getX();
-            double toHeadY = headY - (player.getY() + player.getEyeHeight()); // Adjust this to the player's eye height
+            double toHeadY = headY - (player.getY() + player.getEyeHeight());
             double toHeadZ = headZ - player.getZ();
 
             double toHeadLength = Math.sqrt(toHeadX * toHeadX + toHeadY * toHeadY + toHeadZ * toHeadZ);
@@ -179,7 +179,9 @@ public class PlayerActionEvents {
                                 teleport(player.getX(), player.getY(), player.getZ(), player);
                             }
                         } else {
-                            teleport(player.getX(), player.getY(), player.getZ(), player);
+                            if (player.getRandom().nextDouble() < 0.6 || tongues == 1) {
+                                teleport(player.getX(), player.getY(), player.getZ(), player);
+                            }
                         }
                     }
                 }

@@ -102,6 +102,10 @@
   "message.atomized.risky": "You feel the need to let off some radioactive steam...",
   "message.atomized.poisoned": "You feel unstable.",
 
+  "death.assassinated": "%s was assassinated",
+  "death.assassinated1": "%s was slain by an unknown assailant",
+  "death.assassinated2": "%s met a mysterious end",
+
   "item.foolish_asteroids.blank_medallion": "Blank Medallion",
   "item.foolish_asteroids.cow_medal": "Cow Medal",
   "item.foolish_asteroids.pig_medal": "Pig Medal",

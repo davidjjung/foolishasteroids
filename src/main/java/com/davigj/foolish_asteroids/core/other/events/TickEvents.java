@@ -4,6 +4,7 @@ import com.davigj.foolish_asteroids.common.item.gear.NostalgicGlassesItem;
 import com.davigj.foolish_asteroids.common.item.gear.PetrificationMaskItem;
 import com.davigj.foolish_asteroids.common.item.gear.RetroSneakersItem;
 import com.davigj.foolish_asteroids.common.item.elixir.HeresyElixirItem;
+import com.davigj.foolish_asteroids.common.util.FeatUtil;
 import com.davigj.foolish_asteroids.core.FoolishAsteroidsMod;
 import com.davigj.foolish_asteroids.core.other.FADataProcessors;
 import com.davigj.foolish_asteroids.core.registry.FAItems;
@@ -20,6 +21,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -29,6 +31,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
@@ -50,6 +54,7 @@ import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
 
@@ -63,6 +68,55 @@ import static com.davigj.foolish_asteroids.common.util.Constants.MAX_SNAKES;
 public class TickEvents {
 
     static TrackedDataManager manager = TrackedDataManager.INSTANCE;
+
+    @SubscribeEvent
+    public static void observationFeats(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof Pig pig && !entity.level.isClientSide() && pig.tickCount % 20 == 0) {
+            float height = ScaleTypes.HEIGHT.getScaleData(pig).getBaseScale();
+            float width = ScaleTypes.WIDTH.getScaleData(pig).getBaseScale();
+            float base = ScaleTypes.BASE.getScaleData(pig).getBaseScale();
+            if (height * width * base > 5) {
+                MinecraftServer server = pig.getServer();
+                if (server != null) {
+                    Iterable<ServerPlayer> players = server.getPlayerList().getPlayers();
+                    for (ServerPlayer player : players) {
+                        if (player.hasLineOfSight(pig)) {
+                            List<Integer> feats = manager.getValue(player, FADataProcessors.FEATS);
+                            if (feats.get(0) == 0) {
+                                feats.set(0, 1);
+                                FeatUtil.medalMaterialize(player);
+                                manager.setValue(player, FADataProcessors.FEATS, feats);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onToothlessDay (TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (!player.level.isClientSide && player.tickCount % 20 == 0 && event.phase == TickEvent.Phase.END) {
+            Queue<ItemStack> teeth = manager.getValue(player, FADataProcessors.TEETH_DATA);
+            List<Integer> feats = manager.getValue(player, FADataProcessors.FEATS);
+            if (feats.get(3) == 0) {
+                int toothlessTime = feats.get(2);
+                if (teeth.size() == 0) {
+                    feats.set(2, toothlessTime - 1);
+                } else {
+                    feats.set(2, 2400);
+                }
+                if (feats.get(2) == 0) {
+                    feats.set(3, 1);
+                    FeatUtil.medalMaterialize(player);
+                    FeatUtil.medalMaterialize(player);
+                }
+                manager.setValue(player, FADataProcessors.FEATS, feats);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {

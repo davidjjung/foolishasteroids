@@ -93,4 +93,11 @@ public class PetrificationMaskItem extends ArmorItem {
 
         return super.useOn(context);
     }
+
+    private void setCustomModelTexture(ItemStack itemstack, int numSnakes) {
+        // Assuming you have named your texture variants appropriately,
+        // set the texture based on the number of snakes held.
+        String textureVariant = "your_texture_variant_" + numSnakes; // Adjust the naming convention as per your resource pack
+        itemstack.getOrCreateTag().putString("CustomModelTexture", textureVariant);
+    }
 }

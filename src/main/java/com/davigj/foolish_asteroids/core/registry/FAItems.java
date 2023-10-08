@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.fml.common.Mod;
@@ -321,6 +322,7 @@ public class FAItems {
 			new ToothItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 	public static final RegistryObject<Item> SWEET_TOOTH = HELPER.createItem("sweet_tooth", () ->
 			new ToothItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
 	public static class FoolishAsteroidsFoods {
 		public static final FoodProperties ZOMBIE_BRAIN = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F).effect(() -> {
 			return new MobEffectInstance((MobEffect) MobEffects.CONFUSION, 320, 0);
